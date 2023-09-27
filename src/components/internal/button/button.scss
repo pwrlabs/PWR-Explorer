@@ -1,0 +1,52 @@
+.comp-button {
+    @apply px-6;
+    @apply py-2;
+
+    @apply h-[48px];
+
+    @apply rounded-full;
+
+    @apply text-sm;
+    @apply text-center;
+
+    @apply transition-all;
+    @apply duration-200;
+
+    @apply disabled:text-ghostly_grey-300;
+    @apply disabled:bg-ghostly_grey-300;
+
+    @apply disabled:border-transparent;
+    @apply disabled:cursor-not-allowed;
+
+    @apply disabled:hover:border-transparent;
+    @apply disabled:hover:cursor-not-allowed;
+
+    &.blue {
+        @apply bg-ablue-500;
+        @apply text-white;
+
+        @apply hover:bg-ablue-400;
+    }
+
+    &.secondary {
+        @apply bg-ghostly_grey-50;
+
+        @apply border;
+        @apply border-ghostly_grey-50;
+
+        @apply text-black;
+
+        @apply hover:bg-ghostly_grey-100;
+        @apply hover:border-ghostly_grey-100;
+
+        @apply active:bg-ghostly_grey-200;
+        @apply active:border-ghostly_grey-200;
+    }
+
+    &.medium {
+        @apply py-2;
+        @apply px-4;
+
+        @apply h-[36px];
+    }
+}

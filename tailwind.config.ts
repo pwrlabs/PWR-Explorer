@@ -1,20 +1,106 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/layout/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        ablue: {
+          50: "#EDE7FF",
+          100: "#D0C4FE",
+          200: "#AE9CFE",
+          300: "#8973FF",
+          400: "#6653FF",
+          500: "#112FF8",
+          600: "#112FF8",
+          700: "#0028F0",
+          800: "#0022EB",
+          900: "#0016E6",
+        },
+        agrey: {
+          50: "#F9F8FF",
+          100: "#F3F3FF",
+          200: "#ECEBFF",
+          300: "#DEDDF6",
+          400: "#BBBAD2",
+          500: "#9C9BB3",
+          600: "#737289",
+          700: "#5F5F74",
+          800: "#3F4054",
+          900: "#1E1F31",
+        },
+        ghostly_grey: {
+          50: "#F2F3F7",
+          100: "#DEE2EA",
+          200: "#C9CFDB",
+          300: "#B2BACB",
+          400: "#A0A9BD",
+          500: "#8E99B0",
+          600: "#7E899E",
+          700: "#6B7485",
+          800: "#5A616E",
+          900: "#464B55",
+        },
+        abrandc: {
+          dark: {
+            black: "#000000",
+            blackish: "#0C0D21",
+            grey: "#1E1F31",
+            blue: "#3333FF",
+            red: "#F65251",
+            green: "#00F696",
+          },
+          light: {
+            grey: "#F9F8FF",
+            blue: "#3333FF",
+            red: "#FC4137",
+            green: "#009545",
+            dark_grey: "#1E1F31",
+          },
+          white: "#FFFFFF",
+        },
+      },
+      fontFamily: {
+        space_grotesk: "var(--font-grotesk)",
       },
     },
   },
-  plugins: [],
-}
-export default config
+  plugins: [
+    function ({ addComponents }: any) {
+      const newContainer = {
+        ".container-2": {
+          maxWidth: "100%",
+
+          "@screen sm": {
+            paddingLeft: "16px",
+            paddingRight: "16px",
+          },
+          "@screen md": {
+            paddingLeft: "32px",
+            paddingRight: "32px",
+          },
+          "@screen lg": /* 1024px */ {
+            paddingLeft: "48px",
+            paddingRight: "48px",
+          },
+          "@screen xl": /* 1280px */ {
+            paddingLeft: "90px",
+            paddingRight: "90px",
+          },
+
+          "@screen 2xl": /* 1536px */ {
+            paddingLeft: "90px",
+            paddingRight: "90px",
+          },
+        },
+      };
+      addComponents(newContainer);
+    },
+  ],
+};
+export default config;

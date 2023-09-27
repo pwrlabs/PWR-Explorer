@@ -1,0 +1,34 @@
+.comp_text_button {
+    @apply px-2;
+    @apply py-1;
+
+    @apply text-base;
+    @apply text-white;
+    
+    @apply font-medium;
+
+    @apply transition-all;
+    @apply duration-200;
+
+    @apply hover:text-ablue-200;
+
+    @apply active:text-ablue-500;
+
+    @apply disabled:text-ghostly_grey-100;
+    @apply disabled:cursor-not-allowed;
+
+    &.small {
+        @apply text-sm;
+    }
+
+    &.xs{
+        @apply text-xs;
+        @apply font-normal;
+    }
+
+    &.blue {
+        @apply text-ablue-500;
+        @apply hover:text-ablue-200;
+        @apply active:text-ablue-500;
+    }
+}
