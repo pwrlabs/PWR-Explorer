@@ -13,7 +13,7 @@
   @apply border-agrey-800;
 
   @apply text-sm;
-  @apply text-ghostly_grey-300;
+  @apply text-agrey-600;
 
   @apply transition-all;
   @apply duration-200;
@@ -23,7 +23,7 @@
   @apply focus:outline-none;
   @apply focus:border-ablue-500;
 
-  @apply placeholder:text-ghostly_grey-300;
+  @apply placeholder:text-agrey-600;
   @apply placeholder:text-sm;
 
   @apply disabled:text-ghostly_grey-100;

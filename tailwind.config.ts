@@ -34,6 +34,18 @@ const config: Config = {
           800: "#3F4054",
           900: "#1E1F31",
         },
+        ared: {
+          50: "#FFEBEF",
+          100: "#FFCDD3",
+          200: "#F39B9B",
+          300: "#EB7375",
+          400: "#F65251",
+          500: "#FC4137",
+          600: "#ED3636",
+          700: "#DB2C30",
+          800: "#CE2429",
+          900: "#BF151C",
+        },
         ghostly_grey: {
           50: "#F2F3F7",
           100: "#DEE2EA",
@@ -75,27 +87,24 @@ const config: Config = {
       const newContainer = {
         ".container-2": {
           maxWidth: "100%",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
 
           "@screen sm": {
-            paddingLeft: "16px",
-            paddingRight: "16px",
+            maxWidth: "640px",
           },
           "@screen md": {
-            paddingLeft: "32px",
-            paddingRight: "32px",
+            maxWidth: "704px",
           },
           "@screen lg": /* 1024px */ {
-            paddingLeft: "48px",
-            paddingRight: "48px",
+            maxWidth: "928px",
           },
           "@screen xl": /* 1280px */ {
-            paddingLeft: "90px",
-            paddingRight: "90px",
+            maxWidth: "1100px",
           },
 
           "@screen 2xl": /* 1536px */ {
-            paddingLeft: "90px",
-            paddingRight: "90px",
+            maxWidth: "1356px",
           },
         },
       };
