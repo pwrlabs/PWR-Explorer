@@ -1,10 +1,11 @@
 import "src/scss/globals.scss";
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Montserrat, Space_Grotesk } from "next/font/google";
 
 const space_grotesk = Space_Grotesk({
   variable: "--font-grotesk",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {

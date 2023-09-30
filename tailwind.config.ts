@@ -78,7 +78,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        space_grotesk: "var(--font-grotesk)",
+        space_grotesk: ["var(--font-grotesk)"],
       },
     },
   },

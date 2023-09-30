@@ -11,9 +11,9 @@ export default function HeaderFooterLayout({
       {/* *~~*~~*~~*~~*~~ LAYOUT ~~*~~*~~*~~*~~* */}
       <HeaderComponent />
 
-      <div className="pt-[80px]"></div>
+      <div className="bg-abrandc-dark-blackish pt-[80px]"></div>
 
-      <div>{children}</div>
+      <div className="bg-abrandc-dark-blackish">{children}</div>
 
       <FooterComponent />
     </>
