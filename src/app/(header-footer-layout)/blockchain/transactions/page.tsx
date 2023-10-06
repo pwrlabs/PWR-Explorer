@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Transactions() {
   return (
-    <div className="container-2 mx-auto pb-20">
+    <div className="container-2 mx-auto">
       <div className="space-y-20">
         <section className="space-y-4">
           {/* Title */}
@@ -91,14 +91,153 @@ export default function Transactions() {
               </h2>
             </div>
             <div className="flex items-center gap-x-2 text-white">
-                <h3 className="">First</h3>
-                <h3 className="">Last</h3>
+              <h3 className="">First</h3>
+              <h3 className="">Last</h3>
             </div>
           </div>
 
           {/* Table */}
-          <div className="">
-            
+          <div className="w-full overflow-x-auto mt-5">
+            {/* hr */}
+            <div className="flex items-center gap-x-2 text-white text-sm font-bold h-[48px] px-3">
+              <Image
+                className="w-auto h-auto invisible"
+                src="/icons/eye.svg"
+                width={20}
+                height={20}
+                alt=""
+              />
+              <div className="flex items-center justify-center w-[140px]">
+                <h1 className="px-2">Txn Hash</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+              <div className="flex items-center justify-center w-[176px]">
+                <h1 className="px-2">Status</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+              <div className="flex items-center justify-center w-[176px]">
+                <h1 className="px-2">Block</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+              <div className="flex items-center justify-center w-[176px]">
+                <h1 className="px-2">Timestamp</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+              <div className="flex items-center justify-center w-[188px]">
+                <h1 className="px-2">From</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+              <div className="flex items-center justify-center w-[188px]">
+                <h1 className="px-2">To</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+              <div className="flex items-center justify-center w-[176px]">
+                <h1 className="px-2">Value</h1>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/info-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
+            </div>
+
+            {/* rows */}
+            {Array.from({ length: 5 }, (_, index) => (
+              <div
+                className={`flex items-center gap-x-2 font-medium h-[90px] p-3 rounded-[8px] ${
+                  index % 2 == 0 ? " bg-abrandc-dark-grey" : "bg-transparent"
+                }`}
+                key={index}
+              >
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/eye.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+                <Link href='/blockchain/transactions/details' className="w-[130px]">
+                  <h1 className="text-ablue-100">0x96d1643b7d...</h1>
+                </Link>
+                <div className="text-center w-[178px]">
+                  <h1 className="text-white font-normal">Success</h1>
+                </div>
+                <div className="text-center w-[178px]">
+                  <h1 className="text-ablue-100">17214042</h1>
+                </div>
+                <div className="text-center w-[178px]">
+                  <h1 className="text-white font-normal">12 secs ago</h1>
+                </div>
+                <div className="flex items-center justify-center gap-x-2 w-[188px]">
+                  <h1 className="text-ablue-100">0x71E5eE...4C1681</h1>
+                  <Image
+                    className="w-auto h-auto"
+                    src="/icons/copy.svg"
+                    width={20}
+                    height={20}
+                    alt=""
+                  />
+                </div>
+                <Image
+                  className="w-auto h-auto"
+                  src="/icons/arrow-circle.svg"
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+                <div className="flex items-center justify-center gap-x-2 w-[188px]">
+                  <h1 className="text-ablue-100">0x71E5eE...4C1681</h1>
+                  <Image
+                    className="w-auto h-auto"
+                    src="/icons/copy.svg"
+                    width={20}
+                    height={20}
+                    alt=""
+                  />
+                </div>
+                <div className="text-center w-[178px]">
+                  <h1 className="text-white font-normal">0.4857 PWR</h1>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </div>

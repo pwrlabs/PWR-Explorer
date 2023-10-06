@@ -45,7 +45,7 @@ export default function FooterComponent() {
   ];
 
   return (
-    <div className="bg-abrandc-dark-grey py-20">
+    <div className="bg-abrandc-dark-grey py-20 overflow-hidden">
       <div className="container-2 mx-auto">
         <div className="flex justify-between items-center">
           {/* Navigation */}

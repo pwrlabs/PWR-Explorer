@@ -1,0 +1,54 @@
+.checkbox {
+	/* Add if not using autoprefixer */
+	-webkit-appearance: none;
+	appearance: none;
+
+	@apply relative;
+
+    @apply w-[20px];
+    @apply h-[20px];
+
+    @apply border;
+    @apply rounded-full;
+
+    @apply border-agrey-500;
+
+    @apply cursor-pointer;
+
+	transition: all ease-in-out 200ms;
+}
+
+	.checkbox:active {
+		@apply bg-ablue-500;
+	}
+
+	.checkbox:checked {
+        @apply border-transparent;
+        @apply bg-ablue-500;
+	}
+
+	.checkbox:checked::after {
+		display: block;
+	}
+
+	.checkbox::after {
+		display: none;
+		content: '';
+
+		@apply absolute;
+        @apply left-1/2;
+        @apply top-[47%];
+		
+        @apply w-[5px];
+        @apply h-[10px];
+
+        @apply border;
+        @apply border-white;
+        
+		border-width: 0 3px 3px 0;
+
+		-webkit-transform: translate(-50%, -50%) rotate(45deg);
+		-ms-transform: translate(-50%, -50%) rotate(45deg);
+		transform: translate(-50%, -50%) rotate(45deg);
+	}
+

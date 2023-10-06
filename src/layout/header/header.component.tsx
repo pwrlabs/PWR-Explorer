@@ -26,7 +26,7 @@ export default function HeaderComponent() {
   ];
 
   return (
-    <nav className="bg-abrandc-dark-blackish">
+    <nav className="bg-abrandc-dark-blackish overflow-hidden">
       <div className="container-2 mx-auto flex items-center justify-between h-[80px]">
         <Image
           className="w-auto h-auto"

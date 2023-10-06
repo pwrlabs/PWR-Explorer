@@ -15,6 +15,8 @@ export default function HeaderFooterLayout({
 
       <div className="bg-abrandc-dark-blackish">{children}</div>
 
+      <div className="bg-abrandc-dark-blackish pt-[80px]"></div>
+
       <FooterComponent />
     </>
   );
