@@ -5,7 +5,7 @@ import Image from "next/image";
 import Button from "@/components/internal/button/button.component";
 import Tags from "@/components/internal/tags/tags.component";
 
-export default function TransactionsDetails() {
+export default function SingleTransaction() {
   const section_2_data = [
     {
       label: "From",
@@ -49,8 +49,8 @@ export default function TransactionsDetails() {
       </div>
 
       {/* Transaction details */}
-      <div className="flex justify-between items-start">
-        <div className={`space-y-4 mt-12 ${with_ad ? "max-w-[850px]" : ""}`}>
+      <div className="flex justify-between items-start mt-12">
+        <div className={`space-y-4 ${with_ad ? "max-w-[850px]" : ""}`}>
           {/* First section */}
           <section className="space-y-4">
             {/* Txn Hash */}
@@ -225,7 +225,11 @@ export default function TransactionsDetails() {
                 />
               </div>
               <div className="flex items-start gap-x-2 px-2 py-1">
-                <p className={`break-all ${with_ad ? 'max-w-[482px]' : 'max-w-[988px]'}`}>
+                <p
+                  className={`break-all ${
+                    with_ad ? "max-w-[482px]" : "max-w-[988px]"
+                  }`}
+                >
                   0xa9059cbb000000000000000000000000(recipient_address)000000000000000000000000000000000000000000000000000000000000000a
                 </p>
                 <Image
@@ -243,7 +247,7 @@ export default function TransactionsDetails() {
         {/* Ad */}
         {with_ad && (
           <Image
-            className="w-[241px] h-auto rounded-[30px] mt-12"
+            className="w-[241px] h-auto rounded-[30px]"
             src="/large-images/ad.png"
             width={100}
             height={100}
