@@ -5,7 +5,7 @@ import { Montserrat, Space_Grotesk } from "next/font/google";
 const space_grotesk = Space_Grotesk({
   variable: "--font-grotesk",
   subsets: ["latin"],
-  display: 'swap',
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -20,6 +20,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css"
+          rel="stylesheet"
+        />
+      </head>
       <body className={space_grotesk.className}>{children}</body>
     </html>
   );
