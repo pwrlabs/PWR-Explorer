@@ -5,12 +5,13 @@
   @apply h-[40px];
   @apply w-full;
 
-  @apply bg-abrandc-dark-blackish;
+  @apply dark:bg-abrandc-dark-blackish;
 
   @apply rounded-[8px];
 
   @apply border;
-  @apply border-agrey-800;
+  @apply dark:border-agrey-800;
+  @apply border-agrey-300;
 
   @apply text-sm;
   @apply text-agrey-600;

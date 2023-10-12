@@ -13,6 +13,7 @@
     "react": "latest",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "latest",
+    "react-icons": "^4.11.0",
     "sass": "^1.68.0"
   },
   "devDependencies": {
