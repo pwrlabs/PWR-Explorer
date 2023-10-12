@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
+  
+
+  
+  
+  .roll:nth-child(odd){
+    background-color: #1a202c;
+     
+  }
+
+  .sliding-con::-webkit-scrollbar {
+    width: 0.5em;
+    background: transparent; 
+  }
+
+  
+  .sliding-con::-webkit-scrollbar-track {
+    background: #1E1F31; 
+  }
+
+  
+  .sliding-con::-webkit-scrollbar-thumb {
+    background: #3f4054; 
+    border-radius: 10px;
+  }
+ 

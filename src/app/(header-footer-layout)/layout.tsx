@@ -9,7 +9,7 @@ export default function HeaderFooterLayout({
   return (
     <>
       {/* *~~*~~*~~*~~*~~ LAYOUT ~~*~~*~~*~~*~~* */}
-      <HeaderComponent />
+      {/* <HeaderComponent /> */}
 
       <div className="bg-abrandc-dark-blackish pt-[80px]"></div>
 
@@ -17,7 +17,7 @@ export default function HeaderFooterLayout({
 
       <div className="bg-abrandc-dark-blackish pt-[80px]"></div>
 
-      <FooterComponent />
+      {/* <FooterComponent /> */}
     </>
   );
 }
