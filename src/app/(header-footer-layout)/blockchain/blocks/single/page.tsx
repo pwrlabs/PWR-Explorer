@@ -20,11 +20,11 @@ export default function SingleBlock() {
   ];
 
   return (
-    <div className="container-2 mx-auto text-white">
+    <div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
       {/* Title */}
       <div className="flex items-center gap-x-2">
         <h1 className="px-2 py-1 text-[36px] font-bold leading-[44px]">
-          Transaction Details
+          Blocks Details
         </h1>
         <Tags>{block}</Tags>
       </div>
@@ -36,7 +36,7 @@ export default function SingleBlock() {
           {/* Block height */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-              <h1 className="text-agrey-600">Block Height</h1>
+              <h1 className="text-agrey-500dark:text-agrey-600">Block Height</h1>
               <Image
                 className="w-auto h-auto"
                 src="/icons/info-circle.svg"
@@ -50,7 +50,7 @@ export default function SingleBlock() {
           {/* Timestamp */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-              <h1 className="text-agrey-600">Timestamp</h1>
+              <h1 className="text-agrey-500 dark:text-agrey-600">Timestamp</h1>
               <Image
                 className="w-auto h-auto"
                 src="/icons/info-circle.svg"
@@ -75,7 +75,7 @@ export default function SingleBlock() {
           {/* Proposed on */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-              <h1 className="text-agrey-600">Proposed on</h1>
+              <h1 className="text-agrey-500 dark:text-agrey-600">Proposed on</h1>
               <Image
                 className="w-auto h-auto"
                 src="/icons/info-circle.svg"
@@ -86,14 +86,14 @@ export default function SingleBlock() {
             </div>
             <h2 className="px-2 py-1">
               Block proposed on slot{" "}
-              <span className="text-ablue-100 font-medium">6420882</span> epoch{" "}
-              <span className="text-ablue-100 font-medium">6420882</span>
+              <span className="dark:text-ablue-100 text-ablue-500 font-medium">6420882</span> epoch{" "}
+              <span className="dark:text-ablue-100 text-ablue-500 font-medium">6420882</span>
             </h2>
           </div>
           {/* Transactions */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-              <h1 className="text-agrey-600">Transactions</h1>
+              <h1 className="text-agrey-500 dark:text-agrey-600">Transactions</h1>
               <Image
                 className="w-auto h-auto"
                 src="/icons/info-circle.svg"
@@ -103,14 +103,14 @@ export default function SingleBlock() {
               />
             </div>
             <div className="flex items-center gap-x-2 px-2 py-1">
-              <h2 className="text-ablue-100 font-medium">157 transactions</h2>
+              <h2 className="dark:text-ablue-100 text-ablue-500 font-medium">157 transactions</h2>
               <h2>in this block</h2>
             </div>
           </div>
         </section>
 
         <br className="pt-4"></br>
-        <hr className="border-agrey-800" />
+        <hr className="dark:border-agrey-800 border-agrey-200" />
         <br className="pt-4"></br>
 
         {/* Second section */}
@@ -118,7 +118,7 @@ export default function SingleBlock() {
           {/* Fee */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-              <h1 className="text-agrey-600">Fee Recipient</h1>
+              <h1 className="text-agrey-500 dark:text-agrey-600">Fee Recipient</h1>
               <Image
                 className="w-auto h-auto"
                 src="/icons/info-circle.svg"
@@ -129,7 +129,7 @@ export default function SingleBlock() {
             </div>
             <div className="flex items-center">
               <div className="flex items-center gap-x-2 px-2 py-1">
-                <h2 className="text-ablue-100 font-medium">builder0x69</h2>
+                <h2 className="dark:text-ablue-100 text-ablue-500 font-medium">builder0x69</h2>
                 <Image
                   className=""
                   src="/icons/copy.svg"
@@ -148,7 +148,7 @@ export default function SingleBlock() {
               className="flex items-center gap-x-[100px] text-sm"
             >
               <div className="relative flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                <h1 className="text-agrey-600">{item.label}</h1>
+                <h1 className="text-agrey-500 dark:text-agrey-600">{item.label}</h1>
                 <Image
                   className=""
                   src="/icons/info-circle.svg"
@@ -163,7 +163,7 @@ export default function SingleBlock() {
           {/* Block confirmations */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="relative flex items-center pl-2">
-              <h1 className="text-agrey-600 w-[220px]">
+              <h1 className="text-agrey-500 dark:text-agrey-600 w-[220px]">
                 Number of Block Confirmations
               </h1>
               <Image
@@ -179,7 +179,7 @@ export default function SingleBlock() {
         </section>
 
         <br className="pt-4"></br>
-        <hr className="border-agrey-800" />
+        <hr className="dark:border-agrey-800 border-agrey-200" />
         <br className="pt-4"></br>
 
         {/* Third section */}
@@ -187,7 +187,7 @@ export default function SingleBlock() {
           {/* Burnt fees */}
           <div className="flex items-center gap-x-[100px] text-sm">
             <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-              <h1 className="text-agrey-600">Burnt fees</h1>
+              <h1 className="text-agrey-500 dark:text-agrey-600">Burnt fees</h1>
               <Image
                 className="w-auto h-auto"
                 src="/icons/info-circle.svg"
@@ -209,7 +209,7 @@ export default function SingleBlock() {
             height={24}
             alt=""
           />
-          <p className="text-sm text-agrey-600 leading-[24px] break-all">
+          <p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
             Blocks are batches of transactions linked via cryptographic hashes.
             Any tampering of a block would invalidate all following blocks as
             all subsequent hashes would change.

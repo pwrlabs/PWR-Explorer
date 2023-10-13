@@ -42,11 +42,11 @@ export default function Home() {
             </div>
 
             {/* Stats */}
-            <div className="flex gap-x-4 ">
+            <div className="flex md:flex-row flex-col gap-x-4 gap-y-4">
               {/* Pwr price and market cap  */}
               <div className="flex flex-col gap-y-4 xl:w-full">
                 {/* Price */}
-                <div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] w-[218px] bg-abrandc-light-grey">
+                <div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] md:w-[218px] bg-abrandc-light-grey">
                   <Image
                     className="w-auto h-auto"
                     src="/icons/pwr.svg"
@@ -67,7 +67,7 @@ export default function Home() {
                   </div>
                 </div>
                 {/* Market cap */}
-                <div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] w-[218px] bg-abrandc-light-grey">
+                <div className="flex items-center  gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] md:w-[218px] bg-abrandc-light-grey">
                   <Image
                     className="w-auto h-auto"
                     src="/icons/globe.svg"
@@ -89,7 +89,7 @@ export default function Home() {
               {/* Transactions, blocks, nodes */}
               <div className="flex flex-col gap-y-4 w-full">
                 {/* Transactions */}
-                <div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[405px] w-[218px] bg-abrandc-light-grey">
+                <div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[405px] md:w-[218px] bg-abrandc-light-grey">
                   <Image
                     className="w-auto h-auto"
                     src="/icons/transactions.svg"
@@ -109,9 +109,9 @@ export default function Home() {
                   </div>
                 </div>
                 {/* Blocks, nodes */}
-                <div className="flex gap-x-4 w-full">
+                <div className="flex flex-col md:flex-row gap-x-4 w-full gap-y-4">
                   {/* Blocks */}
-                  <div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 w-[195px] h-[88px]">
+                  <div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 md:w-[195px] h-[88px]">
                     <Image
                       className="w-auto h-auto"
                       src="/icons/clock.svg"
@@ -129,7 +129,7 @@ export default function Home() {
                     </div>
                   </div>
                   {/* Nodes */}
-                  <div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] py-4 px-3 w-[195px]  h-[88px]">
+                  <div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] py-4 px-3 md:w-[195px]  h-[88px]">
                     <Image
                       className="w-auto h-auto"
                       src="/icons/nodes.svg"
@@ -158,7 +158,7 @@ export default function Home() {
                   <span className="translate-y-[-23px]">840k</span>
                   <div className="flex flex-col gap-y-1">
                     <Image
-                      className="w-[262px] h-auto"
+                      className="md:w-[262px] h-auto w-[1000px]"
                       src="/graph.svg"
                       width={20}
                       height={20}
@@ -175,10 +175,10 @@ export default function Home() {
             </div>
 
             {/* Latest */}
-            <div className="flex gap-x-8">
+            <div className="flex md:flex-row flex-col gap-x-8 gap-y-5">
               {/* Latest Blocks */}
               <div className="flex flex-col w-full">
-                <h1 className="text-white text-2xl font-medium leading-[36px] mb-3">
+                <h1 className="dark:text-white text-abrandc-dark-grey text-2xl font-medium leading-[36px] mb-3">
                   Latest Block
                 </h1>
                 {Array.from({ length: 5 }, (_, index) => (
@@ -191,22 +191,20 @@ export default function Home() {
                     }`}
                   >
                     <Image
-                      className="w-auto h-auto"
+                      className="w-auto h-auto md:block hidden"
                       src="/icons/block.svg"
                       width={20}
                       height={20}
                       alt=""
                     />
-                    <div className="flex lg:justify-between justify-start items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
-                      <div className="flex flex-col gap-y-2">
-                        <h1 className="font-medium pr-2 translate-y-1">
-                          17214042
-                        </h1>
+                    <div className="flex flex-col md:flex-row lg:justify-between md:justify-start items-start md:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
+                      <div className="flex flex-row md:flex-col gap-y-2 gap-x-4 justify-center items-center ">
+                        <h1 className="font-medium pr-2 ">17214042</h1>
                         <h1 className="font-medium text-sm dark:text-white text-abrandc-dark-grey pr-2">
                           10 secs ago
                         </h1>
                       </div>
-                      <div className="flex flex-col gap-y-2">
+                      <div className="flex flex-col">
                         <h1 className="dark:text-white text-abrandc-dark-grey">
                           Fee Recipient
                           <span className="dark:text-ablue-300 text-ablue-200 font-medium pl-2">
@@ -240,7 +238,7 @@ export default function Home() {
 
               {/* Latest Transactions */}
               <div className="flex flex-col w-full">
-                <h1 className="text-white text-2xl font-medium leading-[36px] mb-3">
+                <h1 className="dark:text-white text-abrandc-dark-grey text-2xl font-medium leading-[36px] mb-3">
                   Latest Transactions
                 </h1>
                 {Array.from({ length: 5 }, (_, index) => (
@@ -253,23 +251,21 @@ export default function Home() {
                     }`}
                   >
                     <Image
-                      className="w-auto h-auto"
+                      className="w-auto h-auto md:block hidden"
                       src="/icons/list.svg"
                       width={20}
                       height={20}
                       alt=""
                     />
-                    <div className="flex lg:justify-between justify-start items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
-                      <div className="flex flex-col gap-y-2">
-                        <h1 className="font-medium pr-2 translate-y-1">
-                          0x7796a..
-                        </h1>
+                    <div className="flex flex-col md:flex-row lg:justify-between md:justify-start items-start md:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
+                      <div className="flex flex-row md:flex-col gap-y-2 gap-x-4 justify-center items-center ">
+                        <h1 className="font-medium pr-2">0x7796a..</h1>
                         <h1 className="font-medium text-sm dark:text-white text-abrandc-dark-grey pr-2">
                           10 secs ago
                         </h1>
                       </div>
-                      <div className="flex flex-col gap-y-2">
-                        <h1 className="dark:text-white text-abrandc-dark-grey">
+                      <div className="flex flex-col  ">
+                        <h1 className="dark:text-white text-abrandc-dark-grey mr-2">
                           From
                           <span className="font-medium dark:text-ablue-300 text-ablue-200 pl-1">
                             0x95222...feg5

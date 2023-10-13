@@ -33,7 +33,7 @@ export default function SingleTransaction() {
   const with_ad = true;
 
   return (
-    <div className="container-2 mx-auto text-white">
+    <div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
       {/* Title */}
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-x-2">
@@ -56,7 +56,9 @@ export default function SingleTransaction() {
             {/* Txn Hash */}
             <div className="flex items-center gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                <h1 className="text-agrey-600">Transaction Hash</h1>
+                <h1 className="text-agrey-500 dark:text-agrey-600">
+                  Transaction Hash
+                </h1>
                 <Image
                   className="w-auto h-auto"
                   src="/icons/info-circle.svg"
@@ -81,7 +83,9 @@ export default function SingleTransaction() {
             {/* Txn size */}
             <div className="flex items-center gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                <h1 className="text-agrey-600">Transaction Size (Bytes)</h1>
+                <h1 className="text-agrey-500 dark:text-agrey-600">
+                  Transaction Size (Bytes)
+                </h1>
                 <Image
                   className="w-auto h-auto"
                   src="/icons/info-circle.svg"
@@ -97,7 +101,7 @@ export default function SingleTransaction() {
             {/* Block */}
             <div className="flex items-center gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                <h1 className="text-agrey-600">Block</h1>
+                <h1 className="text-agrey-500 dark:text-agrey-600">Block</h1>
                 <Image
                   className="w-auto h-auto"
                   src="/icons/info-circle.svg"
@@ -109,7 +113,7 @@ export default function SingleTransaction() {
               <div className="flex items-center gap-x-3">
                 <div className="flex items-center gap-x-2 px-2 py-1">
                   <input type="checkbox" checked className="checkbox" />
-                  <h2 className="text-ablue-100 font-medium">17222820</h2>
+                  <h2 className="dark:text-ablue-100 text-ablue-500 font-medium">17222820</h2>
                 </div>
                 <Tags>1153 Block Confirmations</Tags>
               </div>
@@ -117,7 +121,9 @@ export default function SingleTransaction() {
             {/* Timestamp */}
             <div className="flex items-center gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                <h1 className="text-agrey-600">Timestamp</h1>
+                <h1 className="text-agrey-500 dark:text-agrey-600">
+                  Timestamp
+                </h1>
                 <Image
                   className="w-auto h-auto"
                   src="/icons/info-circle.svg"
@@ -142,7 +148,7 @@ export default function SingleTransaction() {
           </section>
 
           <br className="pt-4"></br>
-          <hr className="border-agrey-800" />
+          <hr className="dark:border-agrey-800 border-agrey-200" />
           <br className="pt-4"></br>
 
           {/* Second section */}
@@ -153,7 +159,9 @@ export default function SingleTransaction() {
                 className="flex items-center gap-x-[100px] text-sm"
               >
                 <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                  <h1 className="text-agrey-600">{item.label}</h1>
+                  <h1 className="text-agrey-500 dark:text-agrey-600">
+                    {item.label}
+                  </h1>
                   <Image
                     className="w-auto h-auto"
                     src="/icons/info-circle.svg"
@@ -163,7 +171,9 @@ export default function SingleTransaction() {
                   />
                 </div>
                 <div className="flex items-center gap-x-2 px-2 py-1">
-                  <h2 className="text-ablue-100 font-medium">{item.value}</h2>
+                  <h2 className="dark:text-ablue-100 text-ablue-500 font-medium font-medium">
+                    {item.value}
+                  </h2>
                   <Image
                     className=""
                     src="/icons/copy.svg"
@@ -177,7 +187,7 @@ export default function SingleTransaction() {
           </section>
 
           <br className="pt-4"></br>
-          <hr className="border-agrey-800" />
+          <hr className="dark:border-agrey-800 border-agrey-200" />
           <br className="pt-4"></br>
 
           {/* Third section */}
@@ -188,7 +198,9 @@ export default function SingleTransaction() {
                 className="flex items-center gap-x-[100px] text-sm"
               >
                 <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                  <h1 className="text-agrey-600">{item.label}</h1>
+                  <h1 className="text-agrey-500 dark:text-agrey-600">
+                    {item.label}
+                  </h1>
                   <Image
                     className="w-auto h-auto"
                     src="/icons/info-circle.svg"
@@ -208,14 +220,18 @@ export default function SingleTransaction() {
                     />
                   )}
                   <h2>{item.value}</h2>
-                  <h3 className="text-agrey-600 font-medium">{item.amount}</h3>
+                  <h3 className="text-agrey-500 dark:text-agrey-600 font-medium">
+                    {item.amount}
+                  </h3>
                 </div>
               </div>
             ))}
             {/* Data (Hex) */}
             <div className="flex items-center gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
-                <h1 className="text-agrey-600">Data (Hex)</h1>
+                <h1 className="text-agrey-500 dark:text-agrey-600">
+                  Data (Hex)
+                </h1>
                 <Image
                   className="w-auto h-auto"
                   src="/icons/info-circle.svg"
@@ -265,7 +281,7 @@ export default function SingleTransaction() {
           height={24}
           alt=""
         />
-        <p className="text-sm text-agrey-600 leading-[24px] break-all">
+        <p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
           A transaction is a cryptographically signed instruction that changes
           the blockchain state. Block explorers trach the details of all
           transactions in network.

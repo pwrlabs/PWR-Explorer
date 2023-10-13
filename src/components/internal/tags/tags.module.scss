@@ -5,10 +5,10 @@
     @apply w-fit;
     @apply h-[32px];
     
-    @apply bg-abrandc-dark-grey;
+    @apply dark:bg-abrandc-dark-grey;
     @apply rounded-[8px];
-
-    @apply  text-white;
+	@apply bg-abrandc-light-grey;
+    @apply  dark:text-white;
     @apply text-sm;
     @apply font-medium;
 
