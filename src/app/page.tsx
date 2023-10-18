@@ -23,7 +23,7 @@ export default function Home() {
 							<div className="field lg:w-[800px] w-full relative">
 								{/* Filter */}
 								<div className="absolute left-6 top-[18px]">
-									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-sm font-medium">
+									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
 										<span>All Filters</span>
 										<Image
 											className="w-auto h-auto"
@@ -42,11 +42,11 @@ export default function Home() {
 						</div>
 
 						{/* Stats */}
-						<div className="flex md:flex-row flex-col gap-x-4 gap-y-4">
+						<div className="flex xl:flex-row flex-col gap-x-4 gap-y-4">
 							{/* Pwr price and market cap  */}
 							<div className="flex flex-col gap-y-4 xl:w-full">
 								{/* Price */}
-								<div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] md:w-[218px] bg-abrandc-light-grey">
+								<div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] xl:w-[218px] bg-abrandc-light-grey">
 									<Image
 										className="w-auto h-auto"
 										src="/icons/pwr.svg"
@@ -55,7 +55,7 @@ export default function Home() {
 										alt=""
 									/>
 									<div className="flex flex-col gap-y-2">
-										<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">
+										<h1 className="text-agrey-600 text-xl font-medium leading-[24px]">
 											PWR PRICE
 										</h1>
 										<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
@@ -67,7 +67,7 @@ export default function Home() {
 									</div>
 								</div>
 								{/* Market cap */}
-								<div className="flex items-center  gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] md:w-[218px] bg-abrandc-light-grey">
+								<div className="flex items-center  gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[316px] xl:w-[218px] bg-abrandc-light-grey">
 									<Image
 										className="w-auto h-auto"
 										src="/icons/globe.svg"
@@ -76,7 +76,7 @@ export default function Home() {
 										alt=""
 									/>
 									<div className="flex flex-col gap-y-2">
-										<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">
+										<h1 className="text-agrey-600 text-xl font-medium leading-[24px]">
 											PWR MARKET CAP
 										</h1>
 										<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
@@ -89,7 +89,7 @@ export default function Home() {
 							{/* Transactions, blocks, nodes */}
 							<div className="flex flex-col gap-y-4 w-full">
 								{/* Transactions */}
-								<div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[405px] md:w-[218px] bg-abrandc-light-grey">
+								<div className="flex items-center gap-x-4 dark:bg-agrey-900 rounded-[12px] p-4 xl:w-[405px] xl:w-[218px] bg-abrandc-light-grey">
 									<Image
 										className="w-auto h-auto"
 										src="/icons/transactions.svg"
@@ -98,7 +98,7 @@ export default function Home() {
 										alt=""
 									/>
 									<div className="flex flex-col gap-y-2 w-full">
-										<div className="flex justify-between items-center text-agrey-600 text-sm font-medium leading-[24px]">
+										<div className="flex justify-between items-center text-agrey-600 text-xl font-medium leading-[24px]">
 											<h1>TRANSACTIONS</h1>
 											<h1>TPS</h1>
 										</div>
@@ -109,9 +109,9 @@ export default function Home() {
 									</div>
 								</div>
 								{/* Blocks, nodes */}
-								<div className="flex flex-col md:flex-row gap-x-4 w-full gap-y-4">
+								<div className="flex flex-col xl:flex-row gap-x-4 w-full gap-y-4">
 									{/* Blocks */}
-									<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 md:w-[195px] h-[88px]">
+									<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 xl:w-[195px] h-[88px]">
 										<Image
 											className="w-auto h-auto"
 											src="/icons/clock.svg"
@@ -120,7 +120,7 @@ export default function Home() {
 											alt=""
 										/>
 										<div className="flex flex-col gap-y-2">
-											<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">
+											<h1 className="text-agrey-600 text-xl font-medium leading-[24px]">
 												BLOCKS
 											</h1>
 											<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
@@ -129,7 +129,7 @@ export default function Home() {
 										</div>
 									</div>
 									{/* Nodes */}
-									<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] py-4 px-3 md:w-[195px]  h-[88px]">
+									<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] py-4 px-3 xl:w-[195px]  h-[88px]">
 										<Image
 											className="w-auto h-auto"
 											src="/icons/nodes.svg"
@@ -138,7 +138,7 @@ export default function Home() {
 											alt=""
 										/>
 										<div className="flex flex-col gap-y-2">
-											<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">
+											<h1 className="text-agrey-600 text-xl font-medium leading-[24px]">
 												VALIDATOR NODES
 											</h1>
 											<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
@@ -151,14 +151,14 @@ export default function Home() {
 
 							{/* Graph */}
 							<div className="flex flex-col gap-y-4 border rounded-xl p-4 w-full">
-								<h1 className="text-agrey-600 text-sm font-medium">
+								<h1 className="text-agrey-600 text-xl font-medium">
 									TRANSACTION HISTORY IN 14 DAYS
 								</h1>
-								<div className="flex gap-x-2 mt-4 font-medium text-sm text-agrey-600 items-end">
+								<div className="flex gap-x-2 mt-4 font-medium text-xl text-agrey-600 items-end">
 									<span className="translate-y-[-23px]">840k</span>
 									<div className="flex flex-col gap-y-1">
 										<Image
-											className="md:w-[262px] h-auto w-[1000px]"
+											className="xl:w-[262px] h-auto w-[1000px]"
 											src="/graph.svg"
 											width={20}
 											height={20}
@@ -175,7 +175,7 @@ export default function Home() {
 						</div>
 
 						{/* Latest */}
-						<div className="flex md:flex-row flex-col gap-x-8 gap-y-5">
+						<div className="flex xl:flex-row flex-col gap-x-8 gap-y-5">
 							{/* Latest Blocks */}
 							<div className="flex flex-col w-full">
 								<h1 className="dark:text-white text-abrandc-dark-grey text-2xl font-medium leading-[36px] mb-3">
@@ -191,16 +191,16 @@ export default function Home() {
 										}`}
 									>
 										<Image
-											className="w-auto h-auto md:block hidden"
+											className="w-auto h-auto xl:block hidden"
 											src="/icons/block.svg"
 											width={20}
 											height={20}
 											alt=""
 										/>
-										<div className="flex flex-col md:flex-row lg:justify-between md:justify-start items-start md:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
-											<div className="flex flex-row md:flex-col gap-y-2 gap-x-4 justify-center items-center ">
+										<div className="flex flex-col xl:flex-row lg:justify-between xl:justify-start items-start xl:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
+											<div className="flex flex-row xl:flex-col gap-y-2 gap-x-4 justify-center items-center ">
 												<h1 className="font-medium pr-2 ">17214042</h1>
-												<h1 className="font-medium text-sm dark:text-white text-abrandc-dark-grey pr-2">
+												<h1 className="font-medium text-xl dark:text-white text-abrandc-dark-grey pr-2">
 													10 secs ago
 												</h1>
 											</div>
@@ -214,7 +214,7 @@ export default function Home() {
 												<h1 className="font-medium">89 txns</h1>
 											</div>
 											<div className="flex flex-col gap-y-2">
-												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-[8px] dark:text-white text-abrandc-dark-grey text-sm py-1 px-2">
+												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-[8px] dark:text-white text-abrandc-dark-grey text-xl py-1 px-2">
 													0.49867 PWR
 												</h1>
 											</div>
@@ -251,16 +251,16 @@ export default function Home() {
 										}`}
 									>
 										<Image
-											className="w-auto h-auto md:block hidden"
+											className="w-auto h-auto xl:block hidden"
 											src="/icons/list.svg"
 											width={20}
 											height={20}
 											alt=""
 										/>
-										<div className="flex flex-col md:flex-row lg:justify-between md:justify-start items-start md:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
-											<div className="flex flex-row md:flex-col gap-y-2 gap-x-4 justify-center items-center ">
+										<div className="flex flex-col xl:flex-row lg:justify-between xl:justify-start items-start xl:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200">
+											<div className="flex flex-row xl:flex-col gap-y-2 gap-x-4 justify-center items-center ">
 												<h1 className="font-medium pr-2">0x7796a..</h1>
-												<h1 className="font-medium text-sm dark:text-white text-abrandc-dark-grey pr-2">
+												<h1 className="font-medium text-xl dark:text-white text-abrandc-dark-grey pr-2">
 													10 secs ago
 												</h1>
 											</div>
@@ -279,7 +279,7 @@ export default function Home() {
 												</h1>
 											</div>
 											<div className="flex flex-col gap-y-2">
-												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-[8px] dark:text-white text-abrandc-dark-grey text-sm py-1 px-2">
+												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-[8px] dark:text-white text-abrandc-dark-grey text-xl py-1 px-2">
 													0.49867 PWR
 												</h1>
 											</div>

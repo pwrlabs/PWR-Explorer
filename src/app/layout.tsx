@@ -1,6 +1,8 @@
 import 'src/scss/globals.scss';
 import type { Metadata } from 'next';
 import { Montserrat, Space_Grotesk } from 'next/font/google';
+import ContextComponent from 'src/components/context/context.component';
+import AppInit from '@/components/app-init/app-init.component';
 
 const space_grotesk = Space_Grotesk({
 	variable: '--font-grotesk',
@@ -22,7 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					rel="stylesheet"
 				/>
 			</head>
-			<body className={space_grotesk.className}>{children}</body>
+			<body className={space_grotesk.className}>
+				<ContextComponent>
+					<AppInit>{children}</AppInit>
+				</ContextComponent>
+			</body>
 		</html>
 	);
 }

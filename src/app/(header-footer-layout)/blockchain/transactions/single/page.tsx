@@ -35,26 +35,26 @@ export default function SingleTransaction() {
   return (
     <div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
       {/* Title */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-x-2">
-          <h1 className="px-2 py-1 text-[36px] font-bold leading-[44px]">
+      <div className="flex xl:flex-row flex-col justify-between items-center">
+        <div className="flex flex-1 items-center xl:gap-x-2 gap-x-8 ">
+          <h1 className="px-2 py-1 xl:text-[36px] text-[24px] font-bold leading-[44px]">
             Transaction Details
           </h1>
           <Tags>Transfer</Tags>
         </div>
-        <div className="flex items-center gap-x-2">
-          <Button className="blue !h-[36px]">Buy</Button>
-          <Button className="blue !h-[36px]">Exchange</Button>
+        <div className="flex flex-1 items-center gap-x-2 w-full xl:justify-end justify-center">
+          <Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Buy</Button>
+          <Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Exchange</Button>
         </div>
       </div>
 
       {/* Transaction details */}
-      <div className="flex justify-between items-start mt-12">
+      <div className="flex xl:flex-row flex-col justify-between items-start mt-12">
         <div className={`space-y-4 ${with_ad ? "max-w-[850px]" : ""}`}>
           {/* First section */}
           <section className="space-y-4">
             {/* Txn Hash */}
-            <div className="flex items-center gap-x-[100px] text-sm">
+            <div className="flex xl:flex-row flex-col xl:items-center items-start  gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
                 <h1 className="text-agrey-500 dark:text-agrey-600">
                   Transaction Hash
@@ -99,7 +99,7 @@ export default function SingleTransaction() {
               </div>
             </div>
             {/* Block */}
-            <div className="flex items-center gap-x-[100px] text-sm">
+            <div className="flex xl:flex-row flex-col xl:items-center items-start  gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
                 <h1 className="text-agrey-500 dark:text-agrey-600">Block</h1>
                 <Image
@@ -119,7 +119,7 @@ export default function SingleTransaction() {
               </div>
             </div>
             {/* Timestamp */}
-            <div className="flex items-center gap-x-[100px] text-sm">
+            <div className="flex xl:flex-row flex-col xl:items-center items-start  gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
                 <h1 className="text-agrey-500 dark:text-agrey-600">
                   Timestamp
@@ -156,7 +156,7 @@ export default function SingleTransaction() {
             {section_2_data.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-x-[100px] text-sm"
+                className="flex xl:flex-row flex-col xl:items-center items-start  gap-x-[100px] text-sm"
               >
                 <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
                   <h1 className="text-agrey-500 dark:text-agrey-600">
@@ -195,7 +195,7 @@ export default function SingleTransaction() {
             {section_3_data.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-x-[100px] text-sm"
+                className="flex xl:flex-row flex-col xl:items-center items-start  gap-x-[100px] text-sm"
               >
                 <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
                   <h1 className="text-agrey-500 dark:text-agrey-600">
@@ -227,7 +227,7 @@ export default function SingleTransaction() {
               </div>
             ))}
             {/* Data (Hex) */}
-            <div className="flex items-center gap-x-[100px] text-sm">
+            <div className="flex xl:flex-row flex-col items-center gap-x-[100px] text-sm">
               <div className="flex items-center gap-x-2 px-2 py-1 w-[220px]">
                 <h1 className="text-agrey-500 dark:text-agrey-600">
                   Data (Hex)

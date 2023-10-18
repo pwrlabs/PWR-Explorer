@@ -11,7 +11,7 @@ export default function Transactions() {
           <h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
             Transactions
           </h1>
-          <div className="flex items-center gap-x-4">
+          <div className="flex xl:flex-row flex-col gap-y-4 items-center gap-x-4">
             {/* Transactions */}
             <div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 w-full">
               <Image
@@ -100,6 +100,7 @@ export default function Transactions() {
           {/* Table */}
           <div className="w-full mt-5 overflow-x-auto">
             {/* hr */}
+           
             <div className="flex items-center gap-x-2 text-white text-sm font-bold h-[48px] px-3">
               <Image
                 className="w-auto h-auto invisible"
@@ -108,7 +109,7 @@ export default function Transactions() {
                 height={20}
                 alt=""
               />
-              <div className="flex items-center justify-center w-[140px]">
+              <div className="flex items-center justify-center xl:w-[140px] w-[200px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   Txn Hash
                 </h1>
@@ -120,7 +121,7 @@ export default function Transactions() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[176px]">
+              <div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   Status
                 </h1>
@@ -132,7 +133,7 @@ export default function Transactions() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[176px]">
+              <div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   Block
                 </h1>
@@ -144,7 +145,7 @@ export default function Transactions() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[176px]">
+              <div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   Timestamp
                 </h1>
@@ -156,7 +157,7 @@ export default function Transactions() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[188px]">
+              <div className="flex items-center justify-center w-[188px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   From
                 </h1>
@@ -168,7 +169,7 @@ export default function Transactions() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[188px]">
+              <div className="flex items-center justify-center w-[188px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   To
                 </h1>
@@ -180,7 +181,7 @@ export default function Transactions() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[176px]">
+              <div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
                   Value
                 </h1>
@@ -197,7 +198,7 @@ export default function Transactions() {
             {/* rows */}
             {Array.from({ length: 5 }, (_, index) => (
               <div
-                className={`flex items-center gap-x-2 font-medium h-[90px] p-3 rounded-[8px] ${
+                className={`flex items-center gap-x-2 font-medium h-[90px] p-3 rounded-[8px] w-full${
                   index % 2 == 0
                     ? " dark:bg-abrandc-dark-grey bg-abrandc-light-grey"
                     : "bg-transparent"
@@ -213,33 +214,33 @@ export default function Transactions() {
                 />
                 <Link
                   href="/blockchain/transactions/details"
-                  className="w-[130px]"
+                  className="w-[130px] xl:px-0 px-16"
                 >
                   <h1 className="dark:text-ablue-300 text-ablue-200">
                     0x96d1643b7d...
                   </h1>
                 </Link>
-                <div className="text-center w-[178px]">
-                  <h1 className="dark:text-white text-abrandc-dark-grey font-normal">
+                <div className="text-center w-[178px] xl:px-0 px-16">
+                  <h1 className="dark:text-white text-abrandc-dark-grey font-normal xl:px-0 px-8">
                     Success
                   </h1>
                 </div>
-                <div className="text-center w-[178px]">
+                <div className="text-center w-[178px] xl:px-0 px-24">
                   <h1 className="dark:text-ablue-300 text-ablue-200">
                     17214042
                   </h1>
                 </div>
-                <div className="text-center w-[178px]">
+                <div className="text-center w-[178px] xl:px-0 px-24">
                   <h1 className="dark:text-white text-abrandc-dark-grey font-normal">
                     12 secs ago
                   </h1>
                 </div>
-                <div className="flex items-center justify-center gap-x-2 w-[188px]">
+                <div className="flex items-center justify-center gap-x-2 w-[188px] xl:px-0 pl-44">
                   <h1 className="dark:text-ablue-100 text-ablue-500">
                     0x71E5eE...4C1681
                   </h1>
                   <Image
-                    className="w-auto h-auto"
+                    className="w-auto h-auto xl:px-0 px-16"
                     src="/icons/copy.svg"
                     width={20}
                     height={20}
@@ -253,7 +254,7 @@ export default function Transactions() {
                   />
                 </div>
 
-                <div className="flex items-center justify-center gap-x-2 w-[188px]">
+                <div className="flex items-center justify-center gap-x-2 w-[188px] xl:px-0 px-16">
                   <h1 className="dark:text-ablue-100 text-ablue-500">
                     0x71E5eE...4C1681
                   </h1>

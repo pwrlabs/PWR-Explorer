@@ -7,12 +7,12 @@ export default class ThemeService {
 
 	constructor() {}
 
-	async loadTheme() {
-		const theme = (await localStorage.getItem(STORAGE_KEYS.theme)) as Theme;
+	loadTheme() {
+		const theme = localStorage.getItem(STORAGE_KEYS.theme) as Theme;
 		this._switchTheme(theme);
 	}
 
-	async toggleTheme() {
+	toggleTheme() {
 		const theme = localStorage.getItem(STORAGE_KEYS.theme) === 'light' ? 'dark' : 'light';
 		localStorage.setItem(STORAGE_KEYS.theme, theme);
 		this._switchTheme(theme);
@@ -21,7 +21,7 @@ export default class ThemeService {
 	private _switchTheme(newTheme: Theme) {
 		if (typeof window === 'undefined') return;
 
-		const html = document.querySelector('html') as HTMLElement;
+		const html = document.querySelector('html')!;
 
 		html.classList.replace(this._theme, newTheme);
 		this._theme = newTheme;
