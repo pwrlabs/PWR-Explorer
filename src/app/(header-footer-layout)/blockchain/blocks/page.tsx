@@ -52,7 +52,7 @@ export default function Blocks() {
                 (Showing the last 500k blocks)
               </h2>
             </div>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-x-2 dark:text-white text-abrandc-dark-grey">
               <h2>First</h2>
               <h2>Last</h2>
             </div>

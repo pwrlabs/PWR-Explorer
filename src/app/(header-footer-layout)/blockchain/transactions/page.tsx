@@ -91,7 +91,7 @@ export default function Transactions() {
                 (Showing the last 500k records)
               </h2>
             </div>
-            <div className="flex items-center gap-x-2 text-white">
+            <div className="flex items-center gap-x-2 dark:text-white text-abrandc-dark-grey">
               <h3 className="">First</h3>
               <h3 className="">Last</h3>
             </div>
