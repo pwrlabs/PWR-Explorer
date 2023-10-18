@@ -25,7 +25,7 @@ export default function Blocks() {
           <h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
             Blocks
           </h1>
-          <div className="flex items-center gap-x-4">
+          <div className="flex xl:flex-row flex-col gap-y-4 items-center gap-x-4">
             {info.map((item, index) => (
               <div
                 key={index}
@@ -62,8 +62,8 @@ export default function Blocks() {
           <div className="overflow-x-auto">
             {/* hr */}
             <div className="flex items-center gap-x-2 text-white text-sm font-bold h-[48px] px-3">
-              <div className="flex items-center w-[231px]">
-                <h1 className="px-2 dark:text-white text-abrandc-dark-grey">
+              <div className="flex items-center xl:w-[231px]">
+                <h1 className="dark:text-white text-abrandc-dark-grey xl:px-2 px-8">
                   Block
                 </h1>
                 <Image
@@ -74,7 +74,7 @@ export default function Blocks() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[144px]">
+              <div className="flex items-center justify-center xl:w-[144px] w-[200px] xl:px-0 px-16">
               <h1 className="px-2 dark:text-white text-abrandc-dark-grey">Age</h1>
                 <Image
                   className="w-auto h-auto"
@@ -84,7 +84,7 @@ export default function Blocks() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[232px]">
+              <div className="flex items-center justify-center w-[232px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">Txn</h1>
                 <Image
                   className="w-auto h-auto"
@@ -94,7 +94,7 @@ export default function Blocks() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[232px]">
+              <div className="flex items-center justify-center w-[232px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">Fee Recipient</h1>
                 <Image
                   className="w-auto h-auto"
@@ -104,7 +104,7 @@ export default function Blocks() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[232px]">
+              <div className="flex items-center justify-center w-[232px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">Reward</h1>
                 <Image
                   className="w-auto h-auto"
@@ -114,7 +114,7 @@ export default function Blocks() {
                   alt=""
                 />
               </div>
-              <div className="flex items-center justify-center w-[220px]">
+              <div className="flex items-center justify-center w-[220px] xl:px-0 px-16">
                 <h1 className="px-2 dark:text-white text-abrandc-dark-grey">Burnt Fees (PWR)</h1>
                 <Image
                   className="w-auto h-auto"
@@ -134,16 +134,16 @@ export default function Blocks() {
                 }`}
                 key={index}
               >
-                <Link href="/blockchain/blocks/details" className="w-[231px]">
+                <Link href="/blockchain/blocks/details" className="w-[231px] xl:px-0 px-8">
                   <h1 className="dark:text-ablue-100 text-ablue-500 pl-2">26</h1>
                 </Link>
                 <div className="text-center w-[144px]">
-                  <h1 className="font-normal dark:text-white text-abrandc-dark-grey">12 secs ago</h1>
+                  <h1 className="font-normal dark:text-white text-abrandc-dark-grey xl:px-0 px-20">12 secs ago</h1>
                 </div>
-                <div className="text-center w-[231px]">
+                <div className="text-center w-[231px] xl:px-0 px-24">
                   <h1 className="dark:text-ablue-100 text-ablue-500">157</h1>
                 </div>
-                <div className="flex justify-center items-center gap-x-2 w-[231px]">
+                <div className="flex justify-center items-center gap-x-2 w-[231px] xl:px-0 px-12">
                   <h1 className="dark:text-ablue-100 text-ablue-500">builder0x69</h1>
                   <Image
                     className=""
@@ -153,10 +153,10 @@ export default function Blocks() {
                     alt=""
                   />
                 </div>
-                <div className="text-center w-[231px]">
+                <div className="text-center w-[231px] xl:px-0 px-16">
                   <h1 className="font-normal dark:text-white text-abrandc-dark-grey">0.04759 PWR</h1>
                 </div>
-                <div className="flex items-center justify-center gap-x-2 w-[220px] px-1">
+                <div className="flex items-center justify-center gap-x-2 w-[220px] xl:px-1 px-20">
                   <h1 className="font-normal dark:text-white text-abrandc-dark-grey">0.04759 PWR</h1>
                   <h2 className="text-agrey-500 font-normal">(-91.78%)</h2>
                 </div>

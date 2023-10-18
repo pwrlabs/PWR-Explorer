@@ -9,6 +9,7 @@ import Button from "@/components/internal/button/button.component";
 
 import { FaMoon, FaFilter } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 export default function HeaderComponent() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -89,27 +90,14 @@ export default function HeaderComponent() {
         <div className="md:hidden">
           <button onClick={toggleMobileNav}>
             {/* This is a simple burger icon. You can replace this with any SVG or icon library you prefer. */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+         <RxHamburgerMenu size={25}/>
           </button>
         </div>
 
         {/* Mobile navigation menu */}
         {mobileNavOpen && (
           <div className="absolute top-0 left-0 w-full h-full bg-white md:hidden z-50 p-4">
-            <div className="flex justify-between py-3">
+            <div className="flex justify-between itmes-center py-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="126"
@@ -126,15 +114,15 @@ export default function HeaderComponent() {
               </svg>
               <button onClick={toggleMobileNav}><MdOutlineCancel size={25} className="text-agrey-500"/></button>
             </div>
-            <div className="field lg:w-[800px] w-full relative ">
+            <div className="field lg:w-[800px] w-full relative my-4 ">
               {/* Filter */}
-              <div className="absolute left-6 top-[18px]">
+              <div className="absolute left-6 top-[13px]">
                 <button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-sm font-medium">
                   <FaFilter size={20} className="text-agrey-500" />
                 </button>
               </div>
               <input
-                className="text-field !h-[64px] !rounded-[16px] !pl-20"
+                className="text-field !h-[50px] !rounded-[16px] !pl-20"
                 placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
               />
             </div>
