@@ -1,37 +1,36 @@
 .text-field {
-  @apply py-2;
-  @apply px-3;
+	@apply py-2;
+	@apply px-3;
 
-  @apply h-[40px];
-  @apply w-full;
+	@apply h-[40px];
+	@apply w-full;
 
-  @apply dark:bg-abrandc-dark-blackish;
+	@apply dark:bg-abrandc-dark-blackish;
 
-  @apply rounded-[8px];
+	@apply rounded-[8px];
 
-  @apply border;
-  @apply dark:border-agrey-800;
-  @apply border-agrey-300;
+	@apply border;
+	@apply dark:border-agrey-800;
+	@apply border-agrey-300;
 
-  @apply text-sm;
-  @apply text-agrey-600;
+	@apply text-sm;
+	@apply text-agrey-600;
 
-  @apply transition-all;
-  @apply duration-200;
-  @apply ease-in-out;
+	@apply transition-all;
+	@apply duration-200;
+	@apply ease-in-out;
 
-  @apply hover:text-ablue-200;
+	// @apply hover:text-ablue-200;
 
-  @apply focus:outline-none;
-  @apply focus:border-ablue-500;
+	@apply focus:outline-none;
+	@apply focus:border-ablue-500;
 
-  @apply placeholder:text-agrey-600;
-  @apply placeholder:text-sm;
+	@apply placeholder:text-agrey-600;
+	@apply placeholder:text-sm;
 
-  @apply disabled:text-ghostly_grey-100;
+	@apply disabled:text-ghostly_grey-100;
 
-  &.invalid {
-    @apply border-abrandc-light-red;
-  }
+	&.invalid {
+		@apply border-abrandc-light-red;
+	}
 }
-

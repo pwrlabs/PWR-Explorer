@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from 'axios';
 
 import api from './api';
+import { ExplorerInfoResponse } from './responses/explorer-info.response';
 
 interface Transaction {
 	txnHash: string;
@@ -46,16 +47,21 @@ const QueryApi = {
 			});
 		},
 	},
-	explorer:{
-		info: async (): Promise<AxiosResponse> => {
-			const url = api.explorer.info();
-			return axios({
+	explorer: {
+		info: async (): Promise<ExplorerInfoResponse> => {
+			const url = api.explorer.info;
+
+			const res = await axios<ExplorerInfoResponse>({
 				method: 'get',
 				url,
 			});
+
+			if (res.data.status === 'failure') throw new Error('Failed to fetch explorer info');
+
+			return res.data;
 		},
 	},
-	transcations:{
+	transcations: {
 		details: async (txnHash: string): Promise<AxiosResponse> => {
 			const url = api.transactions.details(txnHash);
 			return axios({
@@ -69,9 +75,8 @@ const QueryApi = {
 				method: 'get',
 				url,
 			});
-		}
-		
-	}
+		},
+	},
 };
 
 export default QueryApi;
