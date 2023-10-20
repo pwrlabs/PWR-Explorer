@@ -37,14 +37,10 @@ type AppInitProps = {
 };
 
 export default function AppInit({ children }: AppInitProps) {
-	// *~~*~~*~~ pending txns svc ~~*~~*~~* //
-
 	// *~~*~~*~~ Auth svc ~~*~~*~~* //
-
 	const themeSvc = useContext<ThemeService>(ThemeSvcContext);
 
-	// *~~*~~*~~ Storage ~~*~~*~~* //
-	// const [loading, setLoading] = useState(true);
+	// *~~*~~*~~ state ~~*~~*~~* //
 	const [appLoaded, setAppLoaded] = useState<boolean>(false);
 
 	function devCommands() {
@@ -73,18 +69,8 @@ export default function AppInit({ children }: AppInitProps) {
 				const button = document.createElement('button');
 				button.innerText = command.name;
 				button.onclick = command.execute;
-
-				const styles = {
-					backgroundColor: 'white',
-					color: 'black',
-					border: '1px solid black',
-					padding: '5px',
-					margin: '5px',
-				};
-
-				for (const style in styles) {
-					button.style[style] = styles[style];
-				}
+				button.classList.add('comp_button');
+				button.classList.add('blue');
 
 				container.appendChild(button);
 			}

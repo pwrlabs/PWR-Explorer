@@ -8,7 +8,7 @@ import { useState } from 'react';
 import HeaderComponent from 'src/layout/header/header.component';
 import FooterComponent from 'src/layout/footer/footer.component';
 
-import timeAgo, { BnToDec, numberWithCommas, shortenAddress } from 'src/shared/utils/formatters';
+import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
 
 import { useQuery } from 'react-query';
 import QueryApi from 'src/shared/api/query-api';
@@ -243,7 +243,7 @@ export default function Home() {
 							</div>
 						</div>
 
-						{/* Latest */}
+						{/* Latest blocks & txns */}
 						<div className="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-5">
 							{/* Latest Blocks */}
 							<div className="latest_blocks">

@@ -2,298 +2,302 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { BsArrowRightShort } from 'react-icons/bs';
 import { useQuery } from 'react-query';
 import QueryApi from '@/shared/api/query-api';
-import { useState } from 'react';
+import QUERY_KEYS from '@/static/query.keys';
+
+import StatBox from '@/components/internal/stat-box/stat-box.component';
+import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/utils/formatters';
+
+const headers = [
+	{
+		id: 0,
+		name: 'Txn Hash',
+	},
+	{
+		id: 1,
+		name: 'Block',
+	},
+	{
+		id: 2,
+		name: 'Timestamp',
+	},
+	{
+		id: 3,
+		name: 'From',
+	},
+	{
+		id: 4,
+		name: '', // Direction
+	},
+	{
+		id: 5,
+		name: 'To',
+	},
+	{
+		id: 6,
+		name: 'Value',
+	},
+];
 
 export default function Transactions() {
-	const [allTxns, setAllTxns] = useState([]);
-	const latestTxn = useQuery(['latestTxn'], () => QueryApi.transcations.latest(10), {
-		onSuccess: (data) => {
-			setAllTxns(data?.data.data.txns);
-		},
-	});
-
-	console.log('latestTxn', latestTxn.data?.data.data);
+	const {
+		data: txnsData,
+		isLoading: txnsLoading,
+		isError: txnsError,
+	} = useQuery([QUERY_KEYS.latest_txns], () => QueryApi.transcations.latest(10));
 
 	return (
-		<div className="container-2 mx-auto">
-			<div className="space-y-20">
-				<section className="space-y-4">
-					{/* Title */}
-					<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
-						Transactions
-					</h1>
-					<div className="flex xl:flex-row flex-col gap-y-4 items-center gap-x-4">
-						{/* Transactions */}
-						<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 w-full">
-							<Image
-								className="w-auto h-auto px-2.5"
-								src="/icons/transactions.svg"
-								width={20}
-								height={20}
-								alt=""
-							/>
-							<div className="flex flex-col gap-y-2">
-								<h1 className="font-medium text-agrey-600 text-sm">
-									TRANSACTIONS (24H) PWR
-								</h1>
-								<h2 className="dark:text-white text-abrandc-dark-grey font-bold">
-									{latestTxn.data?.data.data.transactionCountPast24Hours}
-									<span className="text-[#00F696] font-normal pl-2">
-										( {latestTxn.data?.data.data.transactionCountPercentageChangeComparedToPreviousDay}%)
-									</span>
-								</h2>
-							</div>
-						</div>
+		<main className="container-2 mx-auto space-y-20">
+			<section className="space-y-4">
+				{/* Title */}
+				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
+					Transactions
+				</h1>
 
-						{/* Transactions Fee */}
-						<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 w-full">
-							<Image
-								className="w-auto h-auto px-2.5"
-								src="/icons/pwr.svg"
-								width={20}
-								height={20}
-								alt=""
-							/>
-							<div className="flex flex-col gap-y-2">
-								<h1 className="font-medium text-agrey-600 text-sm">
-									TRANSACTION FEE (24h)
-								</h1>
-								<h2 className="dark:text-white text-abrandc-dark-grey font-bold">
-									{latestTxn.data?.data.data.transactionCountPast24Hours} PWR
-									<span className="text-abrandc-dark-red font-normal pl-2">
-										(
-										{
-											latestTxn.data?.data.data
-												.totalTransactionFeesPercentageChangeComparedToPreviousDay
-										}
-										%)
-									</span>
-								</h2>
-							</div>
-						</div>
+				{/* stats */}
+				<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
+					{/* Transactions */}
+					<StatBox
+						title="TRANSACTIONS (24h)"
+						valueComp={() => (
+							<>
+								<span>{txnsData?.data?.transactionCountPast24Hours}</span>
+								<span
+									className={`font-medium  pl-2 pr-2 ${
+										txnsData?.data?.transactionCountPast24Hours > 0
+											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
+											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
+									}`}
+								>
+									(
+									{
+										txnsData?.data
+											?.transactionCountPercentageChangeComparedToPreviousDay
+									}
+									%)
+								</span>
+							</>
+						)}
+						icon="/icons/arrows.svg"
+					/>
 
-						{/* Avg Transactions Fee */}
-						<div className="flex items-center gap-x-4 dark:bg-agrey-900 bg-abrandc-light-grey  rounded-[12px] p-4 w-full h-[88px]">
-							<Image
-								className="w-auto h-auto px-2.5"
-								src="/icons/transactions.svg"
-								width={20}
-								height={20}
-								alt=""
-							/>
-							<div className="flex flex-col gap-y-2">
-								<h1 className="font-medium text-agrey-600 text-sm">
-									AVG. TRANSACTION FEE (24h)
-								</h1>
-								<h2 className="dark:text-white text-abrandc-dark-grey font-bold">
-									{latestTxn.data?.data.data.averageTransactionFeePast24Hours} USD
-									<span className="text-abrandc-dark-red font-normal pl-2">
-										(
-										{
-											latestTxn.data?.data.data
-												.averageTransactionFeePercentageChangeComparedToPreviousDay
-										}
-										%)
-									</span>
-								</h2>
-							</div>
-						</div>
+					{/* Transactions fee */}
+					<StatBox
+						title="TRANSACTION FEE (24h)"
+						valueComp={() => (
+							<>
+								<span>
+									{numberWithCommas(
+										txnsData?.data?.totalTransactionFeesPast24Hours | 0
+									)}{' '}
+									PWR
+								</span>
+								<span
+									className={`font-medium  pl-2 pr-2 ${
+										txnsData?.data &&
+										txnsData?.data
+											?.totalTransactionFeesPercentageChangeComparedToPreviousDay >
+											0
+											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
+											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
+									}`}
+								>
+									(
+									{
+										txnsData?.data
+											?.totalTransactionFeesPercentageChangeComparedToPreviousDay
+									}
+									%)
+								</span>
+							</>
+						)}
+						icon="/icons/pwr.svg"
+					/>
+
+					{/* AVG Transaction fee */}
+					<StatBox
+						title="AVG. TRANSACTION FEE (24h)"
+						valueComp={() => (
+							<>
+								<span>{txnsData?.data?.averageTransactionFeePast24Hours} USD</span>
+								<span
+									className={`font-medium  pl-2 pr-2 ${
+										txnsData?.data &&
+										txnsData?.data
+											?.totalTransactionFeesPercentageChangeComparedToPreviousDay >
+											0
+											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
+											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
+									}`}
+								>
+									(
+									{
+										txnsData?.data
+											?.averageTransactionFeePercentageChangeComparedToPreviousDay
+									}
+									%)
+								</span>
+							</>
+						)}
+						icon="/icons/arrows.svg"
+					/>
+				</div>
+			</section>
+
+			{/* Table */}
+			<section>
+				{/* Title */}
+				<div className="flex justify-between items-center">
+					<div>
+						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+							More than {txnsData?.data?.transactionCountPast24Hours} transactions
+							found
+						</h1>
+						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+							(Showing the last 500k records)
+						</h2>
 					</div>
-				</section>
+					<div className="flex items-center gap-x-2 text-white">
+						<h3 className="">First</h3>
+						<h3 className="">Last</h3>
+					</div>
+				</div>
 
 				{/* Table */}
-				<section className="overflow-x-auto">
-					<div className="flex justify-between items-center">
-						<div className="dark:text-white text-abrandc-dark-grey font-medium">
-							<h1 className="leading-[26px] px-2 py-1">
-								More than 1,381,417,561 transactions found
-							</h1>
-							<h2 className="text-xs px-2 py-1">(Showing the last 500k records)</h2>
-						</div>
-						<div className="flex items-center gap-x-2 text-white">
-							<h3 className="">First</h3>
-							<h3 className="">Last</h3>
-						</div>
-					</div>
+				<div className="w-full mt-5 overflow-x-auto">
+					<table className="table-auto bg-awhite w-full">
+						{/* table header */}
+						<thead className="sticky top-0">
+							<tr>
+								{headers.map((header, idx) => (
+									<th
+										className=" dark:text-white text-abrandc-dark-grey"
+										key={idx}
+									>
+										{header.name.length > 0 && (
+											<div className="flex px-2 py-1 justify-center items-center gap-x-2">
+												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+													{header.name}
+												</div>
+												<div className="text-agrey-500 dark:text-agrey-600">
+													{/* info icon */}
+													<i className="fa-sm far fa-info-circle" />
+												</div>
+											</div>
+										)}
+									</th>
+								))}
+							</tr>
+						</thead>
 
-					{/* Table */}
-					<div className="w-full mt-5 overflow-x-auto">
-						{/* hr */}
+						{/* table body */}
+						<tbody>
+							{txnsLoading ? (
+								<div>Loading...</div>
+							) : (
+								txnsData?.data?.txns.map((txn, idx) => (
+									<tr
+										key={txn.txnHash}
+										className={` ${
+											idx % 2 == 0
+												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+												: 'bg-transparent'
+										}`}
+									>
+										{/* txn hash */}
+										<td className="xl:px-12 px-2 py-8">
+											<div className="flex gap-x-2 justify-center">
+												<div>
+													<Image
+														className="w-auto h-auto"
+														src="/icons/eye.svg"
+														width={20}
+														height={20}
+														alt=""
+													/>
+												</div>
 
-						<div className="flex items-center gap-x-2 text-white text-sm font-bold h-[48px] px-3">
-							<Image
-								className="w-auto h-auto invisible"
-								src="/icons/eye.svg"
-								width={20}
-								height={20}
-								alt=""
-							/>
-							<div className="flex items-center justify-center xl:w-[140px] w-[200px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Txn Hash
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Status
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Block
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Timestamp
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[188px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									From
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[188px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">To</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[176px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Value
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-						</div>
+												<Link
+													href="/"
+													className="dark:text-ablue-300 text-ablue-200 font-medium"
+												>
+													{shortenAddress(txn.txnHash)}
+												</Link>
+											</div>
+										</td>
 
-						{/* rows */}
-            {allTxns.map((txn, index) => (
-							<div
-								className={`flex items-center gap-x-2 font-medium h-[90px] p-3 rounded-[8px] w-full${
-									index % 2 == 0
-										? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-										: 'bg-transparent'
-								}`}
-								key={index}
-							>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/eye.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-								<Link
-									href="/blockchain/transactions/details"
-									className="w-[130px] xl:px-0 px-16"
-								>
-									<h1 className="dark:text-ablue-300 text-ablue-200">
-                  {txn.txnHash.substring(0, 7)}...
-									</h1>
-								</Link>
-								<div className="text-center w-[178px] xl:px-0 px-16">
-									<h1 className="dark:text-white text-abrandc-dark-grey font-normal xl:px-0 px-8">
-										Success
-									</h1>
-								</div>
-								<div className="text-center w-[178px] xl:px-0 px-24">
-									<h1 className="dark:text-ablue-300 text-ablue-200">{txn.blockNumber}</h1>
-								</div>
-								<div className="text-center w-[178px] xl:px-0 px-24">
-									<h1 className="dark:text-white text-abrandc-dark-grey font-normal">
-										{txn.timeStamp}
-									</h1>
-								</div>
-								<div className="flex items-center justify-center gap-x-2 w-[188px] xl:px-0 pl-44">
-									<h1 className="dark:text-ablue-100 text-ablue-500">
-									{txn.from.substring(0, 7)}...
-									</h1>
-									<Image
-										className="w-auto h-auto xl:px-0 px-16"
-										src="/icons/copy.svg"
-										width={20}
-										height={20}
-										alt=""
-									/>
-								</div>
-								<div className="w-6 h-6 mx-2 bg-violet-100 dark:bg-agrey-800 rounded-full flex justify-center items-center">
-									<BsArrowRightShort
-										size={30}
-										className="text-agrey-500 dark:text-agrey-600"
-									/>
-								</div>
+										{/* block */}
+										<td className="xl:px-12 px-2 py-8">
+											<Link
+												href="/"
+												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+											>
+												{txn.blockNumber}
+											</Link>
+										</td>
 
-								<div className="flex items-center justify-center gap-x-2 w-[188px] xl:px-0 px-16">
-									<h1 className="dark:text-ablue-100 text-ablue-500">
-                  {txn.to.substring(0, 7)}...
-									</h1>
-									<Image
-										className="w-auto h-auto"
-										src="/icons/copy.svg"
-										width={20}
-										height={20}
-										alt=""
-									/>
-								</div>
-								<div className="text-center w-[178px]">
-									<h1 className="dark:text-white text-abrandc-dark-grey font-normal">
-										{txn.value} PWR
-									</h1>
-								</div>
-							</div>
-						))}
-					</div>
-				</section>
-			</div>
-		</div>
+										{/* time ago */}
+										<td className="xl:px-12 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+												{timeAgo(txn.timeStamp)}
+											</div>
+										</td>
+
+										{/* from */}
+										<td className="xl:pl-12 pl-2 pr-2 py-8">
+											<div className="flex gap-x-2 justify-center">
+												<Link
+													href="/"
+													className="dark:text-ablue-100 text-ablue-500 font-medium"
+												>
+													{shortenAddress(txn.from, 4)}
+												</Link>
+
+												<button className="text-agrey-500 dark:text-agrey-600">
+													<i className="far fa-clone" />
+												</button>
+											</div>
+										</td>
+
+										{/* direction */}
+										<td className="px-2 py-8">
+											<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
+												<div className="text-agrey-500 dark:text-agrey-600">
+													<i className="fas fa-arrow-right fa-sm" />
+												</div>
+											</div>
+										</td>
+
+										{/* To */}
+										<td className="xl:pr-12  pr-2 pl-2 py-8">
+											<div className="flex gap-x-2 justify-center">
+												<Link
+													href="/"
+													className="dark:text-ablue-100 text-ablue-500 font-medium"
+												>
+													{shortenAddress(txn.to, 4)}
+												</Link>
+
+												<button className="text-agrey-500 dark:text-agrey-600">
+													<i className="far fa-clone" />
+												</button>
+											</div>
+										</td>
+
+										{/* value */}
+										<td className="xl:px-12 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+												{BnToDec(txn.value, 9)} PWR
+											</div>
+										</td>
+									</tr>
+								))
+							)}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</main>
 	);
 }

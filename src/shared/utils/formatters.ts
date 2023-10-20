@@ -4,7 +4,7 @@ export function numberWithCommas(num: number): string {
 	return num.toLocaleString('en-US');
 }
 
-export default function timeAgo(timestamp: number): string {
+export function timeAgo(timestamp: number): string {
 	const seconds = Math.floor((new Date().getTime() - timestamp * 1000) / 1000);
 
 	const intervals = {

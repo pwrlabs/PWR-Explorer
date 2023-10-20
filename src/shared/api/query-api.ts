@@ -2,6 +2,7 @@ import axios, { type AxiosResponse } from 'axios';
 
 import api from './api';
 import { ExplorerInfoResponse } from './responses/explorer-info.response';
+import { LatestTransactionsResponse } from './responses/txn/latests-txns.response';
 
 interface Transaction {
 	txnHash: string;
@@ -12,16 +13,6 @@ interface Transaction {
 	value: number;
 	valueInUsd: number;
 }
-
-// interface Block {
-// 	blockHash: string;
-// 	blockNumber: number;
-// 	transactions: Transaction[];
-// }
-
-// interface ExplorerInfo {
-// 	latestBlock: Block;
-// }
 
 const QueryApi = {
 	blocks: {
@@ -69,12 +60,17 @@ const QueryApi = {
 				url,
 			});
 		},
-		latest: async (count: number): Promise<AxiosResponse> => {
+		latest: async (count: number): Promise<LatestTransactionsResponse> => {
 			const url = api.transactions.latest(count);
-			return axios({
+
+			const res = await axios({
 				method: 'get',
 				url,
 			});
+
+			if (res.data.status === 'failure') throw new Error('Failed to fetch explorer info');
+
+			return res.data;
 		},
 	},
 };
