@@ -4,6 +4,8 @@ import { Montserrat, Space_Grotesk } from 'next/font/google';
 import ContextComponent from 'src/components/context/context.component';
 import AppInit from '@/components/app-init/app-init.component';
 
+import 'src/components/internal/button/button.scss';
+
 const space_grotesk = Space_Grotesk({
 	variable: '--font-grotesk',
 	subsets: ['latin'],

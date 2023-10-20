@@ -1,53 +1,77 @@
-.comp-button {
-    @apply px-6;
-    @apply py-2;
+.comp_button {
+	@apply relative;
 
-    @apply h-[48px];
+	@apply px-6;
+	@apply py-2;
 
-    @apply rounded-full;
+	@apply h-[48px];
 
-    @apply text-sm;
-    @apply text-center;
+	@apply overflow-hidden;
 
-    @apply transition-all;
-    @apply duration-200;
-    @apply ease-in-out;
+	@apply rounded-full;
 
-    @apply disabled:text-ghostly_grey-300;
-    @apply disabled:bg-ghostly_grey-300;
+	@apply text-sm;
+	@apply text-center;
 
-    @apply disabled:border-transparent;
-    @apply disabled:cursor-not-allowed;
+	// @apply transition-all;
+	// @apply duration-200;
+	// @apply ease-in-out;
 
-    @apply disabled:hover:border-transparent;
-    @apply disabled:hover:cursor-not-allowed;
+	@apply disabled:text-ghostly_grey-300;
+	@apply disabled:bg-ghostly_grey-300;
 
-    &.blue {
-        @apply bg-ablue-500;
-        @apply text-white;
+	@apply disabled:border-transparent;
+	@apply disabled:cursor-not-allowed;
 
-        @apply hover:bg-ablue-400;
-    }
+	@apply disabled:hover:border-transparent;
+	@apply disabled:hover:cursor-not-allowed;
 
-    &.secondary {
-        @apply bg-ghostly_grey-50;
+	.click_overlay {
+		@apply absolute;
 
-        @apply border;
-        @apply border-ghostly_grey-50;
+		border-radius: 50%;
+		transform: scale(0);
+		animation: ripple 500ms linear;
 
-        @apply text-black;
+		@apply bg-white;
+		@apply bg-opacity-70;
 
-        @apply hover:bg-ghostly_grey-100;
-        @apply hover:border-ghostly_grey-100;
+		@apply pointer-events-none;
+	}
 
-        @apply active:bg-ghostly_grey-200;
-        @apply active:border-ghostly_grey-200;
-    }
+	&.blue {
+		@apply bg-ablue-500;
+		@apply text-white;
 
-    &.medium {
-        @apply py-2;
-        @apply px-4;
+		@apply hover:bg-ablue-400;
+	}
 
-        @apply h-[36px];
-    }
+	&.secondary {
+		@apply bg-ghostly_grey-50;
+
+		@apply border;
+		@apply border-ghostly_grey-50;
+
+		@apply text-black;
+
+		@apply hover:bg-ghostly_grey-100;
+		@apply hover:border-ghostly_grey-100;
+
+		@apply active:bg-ghostly_grey-200;
+		@apply active:border-ghostly_grey-200;
+	}
+
+	&.medium {
+		@apply py-2;
+		@apply px-4;
+
+		@apply h-[36px];
+	}
+}
+
+@keyframes ripple {
+	to {
+		transform: scale(4);
+		opacity: 0;
+	}
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import 'src/components/internal/text-field/text-field.scss';
 
 import Image from 'next/image';
@@ -6,7 +8,14 @@ import Link from 'next/link';
 import HeaderComponent from '@/layout/header/header.component';
 import FooterComponent from '@/layout/footer/footer.component';
 
+import { useQuery } from 'react-query';
+import QueryApi from '@/shared/api/query-api';
+
 export default function Home() {
+	const blocksQuery = useQuery(['blocks'], () => QueryApi.blocks.latests(5));
+
+	console.log(blocksQuery);
+
 	return (
 		<>
 			<HeaderComponent />
