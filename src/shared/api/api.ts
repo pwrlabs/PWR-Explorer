@@ -8,7 +8,17 @@ const api = {
 
 	blocks: {
 		latests: (count: number) => `${_baseUrl}/latestBlocks/?count=${count}`,
+		details: (blockNumber: number) => `${_baseUrl}/blockDetails/?blockNumber=${blockNumber}`,
+		allTxn: (blockNumber: number) => `${_baseUrl}/blockTransactions/?blockNumber=${blockNumber}`,
 	},
+	explorer:{
+		info: () => `${_baseUrl}/explorerInfo/`,
+	},
+	transactions:{
+		details: (txnHash: string) => `${_baseUrl}/transactionDetails/?txnHash=${txnHash}`,
+		latest: (count: number) => `${_baseUrl}/latestTransactions/?count=${count}`,
+	}
+
 };
 
 export default api;
