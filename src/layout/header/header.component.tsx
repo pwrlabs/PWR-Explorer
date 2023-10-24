@@ -153,7 +153,7 @@ export default function HeaderComponent() {
 							<Button className="blue medium w-2/4">Get Wallet</Button>
 						</div>
 						<div className="my-5 ">
-							<h1 className="text-agrey-500">Interface</h1>
+							<h1 className="text-agrey-500 dark:text-agrey-600">Interface</h1>
 							<div className="w-full bg-abrandc-light-grey flex justify-between h-[52px] px-4 py-2 rounded-lg  items-center ">
 								<button
 									className="theme_btn text-agrey-500 dark:text-white"
