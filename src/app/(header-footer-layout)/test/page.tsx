@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 
+import axios from 'axios';
+
 import QueryApi from '@/shared/api/query-api';
 import timeAgo, { BnToDec, shortenAddress } from '@/shared/utils/formatters';
 import QUERY_KEYS from '@/static/query.keys';
@@ -9,36 +11,47 @@ import Link from 'next/link';
 import { useQuery } from 'react-query';
 import Button from 'src/components/internal/button/button.component';
 
-const headers = [
-	{
-		id: 0,
-		name: 'Txn Hash',
-	},
-	{
-		id: 1,
-		name: 'Block',
-	},
-	{
-		id: 2,
-		name: 'Timestamp',
-	},
-	{
-		id: 3,
-		name: 'From',
-	},
-	{
-		id: 4,
-		name: '', // Direction
-	},
-	{
-		id: 5,
-		name: 'To',
-	},
-	{
-		id: 6,
-		name: 'Value',
-	},
-];
+import Pagination from '@/components/internal/pagination/pagination.component';
+import { log } from 'console';
+import { useState } from 'react';
+
+const m = {};
+let t = 10;
+for (let i = 0; i < t; i++) {
+	Object.assign(m, {
+		[`_${i + 1}`]: {
+			totalPages: t,
+			currentPage: i + 1,
+			itemsPerPage: 10,
+			totalItems: t * 10,
+			nextPage: i + 2 > t ? null : i + 2,
+			previousPage: i < 1 ? null : i,
+			startIndex: i * 10,
+			endIndex: i * 10 + 9,
+		},
+	});
+}
+
+async function fetchTodos(page: number) {
+	const res = await axios({
+		method: 'GET',
+		url: `https://jsonplaceholder.typicode.com/todos?_page=${page}&_limit=10`,
+	});
+
+	return {
+		todos: res.data,
+		metadata: {
+			totalPages: 20,
+			currentPage: page,
+			itemsPerPage: 10,
+			totalItems: 200,
+			nextPage: page + 1 > 20 ? null : page + 1,
+			previousPage: page - 1 < 1 ? null : page - 1,
+			startIndex: (page - 1) * 10,
+			endIndex: (page - 1) * 10 + 9,
+		},
+	};
+}
 
 export default function TestPage() {
 	const {
@@ -47,136 +60,50 @@ export default function TestPage() {
 		isError: txnsError,
 	} = useQuery([QUERY_KEYS.latest_txns], () => QueryApi.transcations.latest(10));
 
-	console.log('🚀 ~ file: page.tsx:9 ~ TestPage ~ txnsData:', txnsData);
-	return (
-		<div className="container">
-			<table className="table-auto">
-				{/* table header */}
-				<thead className="sticky top-0">
-					<tr>
-						{headers.map((header, idx) => (
-							<th className=" dark:text-white text-abrandc-dark-grey" key={idx}>
-								{header.name.length > 0 && (
-									<div className="flex px-2 py-1 justify-center items-center gap-x-2">
-										<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-											{header.name}
-										</div>
-										<div className="text-agrey-500 dark:text-agrey-600">
-											{/* info icon */}
-											<i className="fa-sm far fa-info-circle" />
-										</div>
-									</div>
-								)}
-							</th>
-						))}
-					</tr>
-				</thead>
+	const [currentPage, setCurrentPage] = useState(1);
+	const [limit] = useState(10);
 
-				{/* table body */}
-				<tbody>
-					{txnsLoading ? (
-						<div>Loading...</div>
-					) : (
-						txnsData?.data?.txns.map((txn, idx) => (
-							<tr
-								key={txn.txnHash}
-								className={`${
-									idx % 2 == 0
-										? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-										: 'bg-transparent'
+	const {
+		data: todos_data,
+		isLoading: todos_loading,
+		isError: todos_error,
+	} = useQuery(['todos', currentPage], () => fetchTodos(currentPage));
+
+	function handlePageChange(page: number) {
+		setCurrentPage(page);
+	}
+
+	return (
+		<div className="container2 px-8">
+			{todos_loading ? (
+				<div>loading...</div>
+			) : todos_error ? (
+				<div>error...</div>
+			) : (
+				<>
+					<div className="space-y-2">
+						{todos_data?.todos.map((todo, idx) => (
+							<div
+								key={idx}
+								className={`p-2 flex gap-x-2 items-center ${
+									todo.completed ? 'bg-green-200' : 'bg-blue-100'
 								}`}
 							>
-								{/* txn hash */}
-								<td className="px-12 py-8">
-									<div className="flex gap-x-2">
-										<div>
-											<Image
-												className="w-auto h-auto"
-												src="/icons/eye.svg"
-												width={20}
-												height={20}
-												alt=""
-											/>
-										</div>
+								<div>{todo.id}</div>
+								<div>{todo.title}</div>
+							</div>
+						))}
+					</div>
 
-										<Link
-											href="/"
-											className="dark:text-ablue-300 text-ablue-200 font-medium"
-										>
-											{shortenAddress(txn.txnHash)}
-										</Link>
-									</div>
-								</td>
-
-								{/* block */}
-								<td className="px-12 py-8">
-									<Link
-										href="/"
-										className="dark:text-ablue-300 text-ablue-200 font-medium"
-									>
-										{txn.blockNumber}
-									</Link>
-								</td>
-
-								{/* time ago */}
-								<td className="px-12 py-8">
-									<div className="dark:text-white text-abrandc-dark-grey font-normal">
-										{timeAgo(txn.timeStamp)}
-									</div>
-								</td>
-
-								{/* from */}
-								<td className="px-12 py-8">
-									<div className="flex gap-x-2">
-										<Link
-											href="/"
-											className="dark:text-ablue-100 text-ablue-500 font-medium"
-										>
-											{shortenAddress(txn.from, 4)}
-										</Link>
-
-										<button className="text-agrey-500 dark:text-agrey-600">
-											<i className="far fa-clone" />
-										</button>
-									</div>
-								</td>
-
-								{/* direction */}
-								<td className="px-12 py-8">
-									<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
-										<div className="text-agrey-500 dark:text-agrey-600">
-											<i className="fas fa-arrow-right fa-sm" />
-										</div>
-									</div>
-								</td>
-
-								{/* To */}
-								<td className="px-12 py-8">
-									<div className="flex gap-x-2">
-										<Link
-											href="/"
-											className="dark:text-ablue-100 text-ablue-500 font-medium"
-										>
-											{shortenAddress(txn.to, 4)}
-										</Link>
-
-										<button className="text-agrey-500 dark:text-agrey-600">
-											<i className="far fa-clone" />
-										</button>
-									</div>
-								</td>
-
-								{/* value */}
-								<td className="px-12 py-8">
-									<div className="dark:text-white text-abrandc-dark-grey font-normal">
-										{BnToDec(txn.value, 9)} PWR
-									</div>
-								</td>
-							</tr>
-						))
-					)}
-				</tbody>
-			</table>
+					<Pagination metadata={todos_data?.metadata} onPageChange={handlePageChange} />
+				</>
+			)}
+			{/* {Object.entries(m).map(([key, value], idx) => (
+				<div className="flex gap-x-[300px] items-center" key={idx}>
+					<div>pagination: {idx + 1}</div>
+					<Pagination metadata={value} />
+				</div>
+			))} */}
 		</div>
 	);
 }

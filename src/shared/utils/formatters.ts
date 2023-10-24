@@ -8,20 +8,21 @@ export function timeAgo(timestamp: number): string {
 	const seconds = Math.floor((new Date().getTime() - timestamp * 1000) / 1000);
 
 	const intervals = {
-		year: 31536000,
-		month: 2592000,
-		week: 604800,
-		day: 86400,
-		hour: 3600,
-		minute: 60,
-		second: 1,
+		year: { singular: 'year', plural: 'years', seconds: 31536000 },
+		month: { singular: 'month', plural: 'months', seconds: 2592000 },
+		week: { singular: 'week', plural: 'weeks', seconds: 604800 },
+		day: { singular: 'day', plural: 'days', seconds: 86400 },
+		hour: { singular: 'hour', plural: 'hours', seconds: 3600 },
+		minute: { singular: 'min', plural: 'mins', seconds: 60 },
+		second: { singular: 'sec', plural: 'secs', seconds: 1 },
 	};
 
-	for (const [intervalName, intervalSeconds] of Object.entries(intervals)) {
-		const intervalCount = Math.floor(seconds / intervalSeconds);
+	for (const [intervalName, interval] of Object.entries(intervals)) {
+		const intervalCount = Math.floor(seconds / interval.seconds);
 
 		if (intervalCount >= 1) {
-			return `${intervalCount} ${intervalName}${intervalCount > 1 ? 's' : ''} ago`;
+			const intervalText = intervalCount > 1 ? interval.plural : interval.singular;
+			return `${intervalCount} ${intervalText} ago`;
 		}
 	}
 

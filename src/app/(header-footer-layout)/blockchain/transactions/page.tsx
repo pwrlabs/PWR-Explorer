@@ -6,37 +6,49 @@ import { useQuery } from 'react-query';
 import QueryApi from '@/shared/api/query-api';
 import QUERY_KEYS from '@/static/query.keys';
 
+import Tooltip from '@/components/internal/tooltip/tooltip.component';
+
 import StatBox from '@/components/internal/stat-box/stat-box.component';
 import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/utils/formatters';
+
+import ROUTES from '@/static/router.data';
+import Pagination from '@/components/internal/pagination/pagination.component';
 
 const headers = [
 	{
 		id: 0,
 		name: 'Txn Hash',
+		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 1,
 		name: 'Block',
+		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 2,
 		name: 'Timestamp',
+		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 3,
 		name: 'From',
+		thClass: 'xl:pl-8 pl-2 pr-2',
 	},
 	{
 		id: 4,
 		name: '', // Direction
+		thClass: ' px-2',
 	},
 	{
 		id: 5,
 		name: 'To',
+		thClass: 'xl:pr-8 pr-2 pl-2',
 	},
 	{
 		id: 6,
 		name: 'Value',
+		thClass: 'xl:px-8 px-2',
 	},
 ];
 
@@ -45,7 +57,13 @@ export default function Transactions() {
 		data: txnsData,
 		isLoading: txnsLoading,
 		isError: txnsError,
-	} = useQuery([QUERY_KEYS.latest_txns], () => QueryApi.transcations.latest(10));
+	} = useQuery([QUERY_KEYS.latest_txns], () => QueryApi.transcations.latest(10), {
+		staleTime: 1000 * 60 * 5,
+	});
+
+	function copyToClipboard(text: string) {
+		navigator.clipboard.writeText(text);
+	}
 
 	return (
 		<main className="container-2 mx-auto space-y-20">
@@ -166,17 +184,17 @@ export default function Transactions() {
 
 				{/* Table */}
 				<div className="w-full mt-5 overflow-x-auto">
-					<table className="table-auto bg-awhite w-full">
+					<table className="table-auto bg-awhite w-full min-w-[900px]">
 						{/* table header */}
 						<thead className="sticky top-0">
 							<tr>
 								{headers.map((header, idx) => (
 									<th
-										className=" dark:text-white text-abrandc-dark-grey"
+										className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
 										key={idx}
 									>
 										{header.name.length > 0 && (
-											<div className="flex px-2 py-1 justify-center items-center gap-x-2">
+											<div className="flex justify-center items-center gap-x-2">
 												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 													{header.name}
 												</div>
@@ -194,7 +212,9 @@ export default function Transactions() {
 						{/* table body */}
 						<tbody>
 							{txnsLoading ? (
-								<div>Loading...</div>
+								<tr>
+									<td>Loading</td>
+								</tr>
 							) : (
 								txnsData?.data?.txns.map((txn, idx) => (
 									<tr
@@ -206,8 +226,8 @@ export default function Transactions() {
 										}`}
 									>
 										{/* txn hash */}
-										<td className="xl:px-12 px-2 py-8">
-											<div className="flex gap-x-2 justify-center">
+										<td className="xl:px-8 px-2 py-8">
+											<div className="flex gap-x-2 justify-start">
 												<div>
 													<Image
 														className="w-auto h-auto"
@@ -219,7 +239,7 @@ export default function Transactions() {
 												</div>
 
 												<Link
-													href="/"
+													href={`${ROUTES.transactions}/${txn.txnHash}`}
 													className="dark:text-ablue-300 text-ablue-200 font-medium"
 												>
 													{shortenAddress(txn.txnHash)}
@@ -228,9 +248,9 @@ export default function Transactions() {
 										</td>
 
 										{/* block */}
-										<td className="xl:px-12 px-2 py-8">
+										<td className="xl:px-8 px-2 py-8">
 											<Link
-												href="/"
+												href={`${ROUTES.blocks}/${txn.blockNumber}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
 												{txn.blockNumber}
@@ -238,14 +258,14 @@ export default function Transactions() {
 										</td>
 
 										{/* time ago */}
-										<td className="xl:px-12 px-2 py-8">
+										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 												{timeAgo(txn.timeStamp)}
 											</div>
 										</td>
 
 										{/* from */}
-										<td className="xl:pl-12 pl-2 pr-2 py-8">
+										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
 													href="/"
@@ -254,14 +274,23 @@ export default function Transactions() {
 													{shortenAddress(txn.from, 4)}
 												</Link>
 
-												<button className="text-agrey-500 dark:text-agrey-600">
-													<i className="far fa-clone" />
-												</button>
+												<Tooltip
+													text="Copied to clipbloard"
+													position="up"
+													trigger="click"
+												>
+													<button
+														className="text-agrey-500 dark:text-agrey-600"
+														onClick={() => copyToClipboard(txn.from)}
+													>
+														<i className="far fa-clone" />
+													</button>
+												</Tooltip>
 											</div>
 										</td>
 
 										{/* direction */}
-										<td className="px-2 py-8">
+										<td className="px-2 py-8 flex justify-center">
 											<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
 												<div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fas fa-arrow-right fa-sm" />
@@ -270,7 +299,7 @@ export default function Transactions() {
 										</td>
 
 										{/* To */}
-										<td className="xl:pr-12  pr-2 pl-2 py-8">
+										<td className="xl:pr-8 pr-2 pl-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
 													href="/"
@@ -279,14 +308,23 @@ export default function Transactions() {
 													{shortenAddress(txn.to, 4)}
 												</Link>
 
-												<button className="text-agrey-500 dark:text-agrey-600">
-													<i className="far fa-clone" />
-												</button>
+												<Tooltip
+													text="Copied to clipbloard"
+													position="up"
+													trigger="click"
+												>
+													<button
+														className="text-agrey-500 dark:text-agrey-600"
+														onClick={() => copyToClipboard(txn.to)}
+													>
+														<i className="far fa-clone" />
+													</button>
+												</Tooltip>
 											</div>
 										</td>
 
 										{/* value */}
-										<td className="xl:px-12 px-2 py-8">
+										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 												{BnToDec(txn.value, 9)} PWR
 											</div>
@@ -296,6 +334,22 @@ export default function Transactions() {
 							)}
 						</tbody>
 					</table>
+				</div>
+
+				<div>
+					<Pagination
+						metadata={{
+							currentPage: 1,
+							totalPages: 10,
+							totalItems: 100,
+							startIndex: 0,
+							endIndex: 9,
+							itemsPerPage: 10,
+							nextPage: 2,
+							previousPage: null,
+						}}
+						onPageChange={(page: number) => {}}
+					/>
 				</div>
 			</section>
 		</main>

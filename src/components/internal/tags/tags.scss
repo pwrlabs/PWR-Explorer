@@ -1,0 +1,38 @@
+.tags {
+	@apply py-1;
+	@apply px-2;
+
+	@apply w-fit;
+	@apply h-[32px];
+
+	@apply dark:bg-abrandc-dark-grey;
+	@apply rounded-[8px];
+	@apply bg-abrandc-light-grey;
+	@apply dark:text-white;
+	@apply text-sm;
+	@apply font-medium;
+
+	&.light {
+		@apply bg-abrandc-light-grey;
+		@apply text-abrandc-dark-grey;
+	}
+
+	&.grey {
+		background-color: #c9cfdb;
+		color: white;
+	}
+
+	&.active {
+		border: 1px solid #112ff8;
+	}
+
+	/* &:hover {
+		background-color: #ecebff;
+	} */
+
+	&:disabled {
+		background-color: #f2f3f7;
+		color: #dee2ea;
+		border: transparent;
+	}
+}

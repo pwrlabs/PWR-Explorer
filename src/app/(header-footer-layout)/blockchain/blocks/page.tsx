@@ -5,51 +5,118 @@ import { useQuery } from 'react-query';
 import QueryApi from '@/shared/api/query-api';
 import { useState } from 'react';
 
+import StatBox from '@/components/internal/stat-box/stat-box.component';
+import QUERY_KEYS from '@/static/query.keys';
+import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
+import Tooltip from '@/components/internal/tooltip/tooltip.component';
+import { copyToClipboard } from '@/shared/utils/functions';
+import ROUTES from '@/static/router.data';
+import Pagination from '@/components/internal/pagination/pagination.component';
+
+const headers = [
+	{
+		id: 0,
+		name: 'Block',
+		thClass: 'xl:px-8 px-2',
+	},
+	{
+		id: 1,
+		name: 'Age',
+		thClass: 'xl:px-8 px-2',
+	},
+	{
+		id: 2,
+		name: 'Txns',
+		thClass: 'xl:px-8 px-2',
+	},
+	{
+		id: 3,
+		name: 'Fee Recipient',
+		thClass: 'xl:px-8 px-2',
+	},
+	{
+		id: 4,
+		name: 'Reward', // Direction
+		thClass: 'xl:px-8 px-2',
+	},
+	{
+		id: 5,
+		name: 'Shared Rewards',
+		thClass: 'xl:px-8 px-2',
+	},
+];
+
 export default function Blocks() {
 	const [latestBlocks, setLatestBlocks] = useState([]);
 
-	const blocksQuery = useQuery(['blocks'], () => QueryApi.blocks.latests(10), {
-		onSuccess: (data) => {
-			setLatestBlocks(data?.data.data.blocks);
-		},
-	});
-	const info = [
-		{
-			label: 'NETWORK UTILIZATION (24h)',
-			value: `${blocksQuery.data?.data.data.networkUtilizationPast24Hours}%`,
-		},
-		{
-			label: 'BLOCK SIZE (24h)',
-			value: `${blocksQuery.data?.data.data.averageBlockSizePast24Hours} bytes`,
-		},
-		{
-			label: 'BLOCK REWARDS (24h)',
-			value: `${blocksQuery.data?.data.data.totalBlockRewardsPast24Hours}%`,
-		},
-	];
+	const {
+		data: blocks_data,
+		isLoading: blocks_loading,
+		isError: blocks_error,
+	} = useQuery([QUERY_KEYS.latest_blocks], () => QueryApi.blocks.latests(10));
+
+	// const info = [
+	// 	{
+	// 		label: 'NETWORK UTILIZATION (24h)',
+	// 		value: `${blocksQuery.data?.data.data.networkUtilizationPast24Hours}%`,
+	// 	},
+	// 	{
+	// 		label: 'BLOCK SIZE (24h)',
+	// 		value: `${blocksQuery.data?.data.data.averageBlockSizePast24Hours} bytes`,
+	// 	},
+	// 	{
+	// 		label: 'BLOCK REWARDS (24h)',
+	// 		value: `${blocksQuery.data?.data.data.totalBlockRewardsPast24Hours}%`,
+	// 	},
+	// ];
 
 	return (
-		<div className="container-2 mx-auto text-white">
+		<div className="container-2 mx-auto">
 			<div className="space-y-12">
-				{/* Title */}
+				{/* first container */}
 				<div className="space-y-4 ">
+					{/* Title */}
 					<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
 						Blocks
 					</h1>
-					<div className="flex xl:flex-row flex-col gap-y-4 items-center gap-x-4">
-						{info.map((item, index) => (
-							<div
-								key={index}
-								className="flex flex-col justify-center gap-y-1 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[12px] p-4 w-full h-[88px]"
-							>
-								<h2 className="text-agrey-600 text-sm font-medium px-2">
-									{item.label}
-								</h2>
-								<h3 className="font-bold px-2 dark:text-white text-abrandc-dark-grey">
-									{item.value}
-								</h3>
-							</div>
-						))}
+					{/* stats */}
+					<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
+						{/* Transactions */}
+						<StatBox
+							title="NETWORK UTILIZATION (24h)"
+							valueComp={() => (
+								<>
+									<span>{blocks_data?.data?.networkUtilizationPast24Hours}$</span>
+								</>
+							)}
+						/>
+
+						<StatBox
+							title="BLOCK SIZE (24h)"
+							valueComp={() => (
+								<>
+									<span>
+										{blocks_data?.data?.averageBlockSizePast24Hours} Bytes
+									</span>
+								</>
+							)}
+						/>
+
+						<StatBox
+							title="BLOCK REWARDS (24h)"
+							valueComp={() => (
+								<>
+									<span>
+										{BnToDec(
+											blocks_data?.data?.totalBlockRewardsPast24Hours,
+											9,
+											9
+										)}{' '}
+										PWR
+									</span>
+								</>
+							)}
+						/>
 					</div>
 				</div>
 				{/* All blocks */}
@@ -68,130 +135,148 @@ export default function Blocks() {
 					</div>
 
 					{/* Table */}
-					<div className="overflow-x-auto">
-						{/* hr */}
-						<div className="flex items-center gap-x-2 text-white text-sm font-bold h-[48px] px-3">
-							<div className="flex items-center xl:w-[231px]">
-								<h1 className="dark:text-white text-abrandc-dark-grey xl:px-2 px-8">
-									Block
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center xl:w-[144px] w-[200px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">Age</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[232px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">Txn</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[232px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Fee Recipient
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[232px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Reward
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-							<div className="flex items-center justify-center w-[220px] xl:px-0 px-16">
-								<h1 className="px-2 dark:text-white text-abrandc-dark-grey">
-									Burnt Fees (PWR)
-								</h1>
-								<Image
-									className="w-auto h-auto"
-									src="/icons/info-circle.svg"
-									width={20}
-									height={20}
-									alt=""
-								/>
-							</div>
-						</div>
+					<div className="w-full mt-5 overflow-x-auto">
+						<table className="table-auto bg-awhite w-full min-w-[900px]">
+							{/* table header */}
+							<thead className="sticky top-0">
+								<tr>
+									{headers.map((header, idx) => (
+										<th
+											className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+											key={idx}
+										>
+											{header.name.length > 0 && (
+												<div className="flex justify-center items-center gap-x-2">
+													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+														{header.name}
+													</div>
+													<div className="text-agrey-500 dark:text-agrey-600">
+														{/* info icon */}
+														<i className="fa-sm far fa-info-circle" />
+													</div>
+												</div>
+											)}
+										</th>
+									))}
+								</tr>
+							</thead>
 
-						{/* rows */}
-            {latestBlocks.map((block, index) => (
-							<div
-								className={`flex items-center gap-x-2 font-medium h-[90px] p-3 rounded-[8px] ${
-									index % 2 == 0
-										? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-										: 'bg-transparent'
-								}`}
-								key={index}
-							>
-								<Link
-									href="/blockchain/blocks/details"
-									className="w-[231px] xl:px-0 px-8"
-								>
-									<h1 className="dark:text-ablue-100 text-ablue-500 pl-2">{block.blockHeight}</h1>
-								</Link>
-								<div className="text-center w-[144px]">
-									<h1 className="font-normal dark:text-white text-abrandc-dark-grey xl:px-0 px-20">
-									{block.timeStamp}
-									</h1>
-								</div>
-								<div className="text-center w-[231px] xl:px-0 px-24">
-									<h1 className="dark:text-ablue-100 text-ablue-500">157</h1>
-								</div>
-								<div className="flex justify-center items-center gap-x-2 w-[231px] xl:px-0 px-12">
-									<h1 className="dark:text-ablue-100 text-ablue-500">
-										builder0x69
-									</h1>
-									<Image
-										className=""
-										src="/icons/copy.svg"
-										width={24}
-										height={24}
-										alt=""
-									/>
-								</div>
-								<div className="text-center w-[231px] xl:px-0 px-16">
-									<h1 className="font-norm
-                  
-                  al dark:text-white text-abrandc-dark-grey">
-										0.04759 PWR
-									</h1>
-								</div>
-								<div className="flex items-center justify-center gap-x-2 w-[220px] xl:px-1 px-20">
-									<h1 className="font-normal dark:text-white text-abrandc-dark-grey">
-										0.04759 PWR
-									</h1>
-									<h2 className="text-agrey-500 font-normal">(-91.78%)</h2>
-								</div>
-							</div>
-						))}
+							{/* table body */}
+							<tbody>
+								{blocks_loading ? (
+									<tr>
+										<td>Loading</td>
+									</tr>
+								) : (
+									blocks_data?.data?.blocks.map((block, idx) => (
+										<tr
+											key={idx}
+											className={` ${
+												idx % 2 == 0
+													? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+													: 'bg-transparent'
+											}`}
+										>
+											{/* Block */}
+											<td className="xl:px-8 px-2 py-8">
+												<Link
+													href={`${ROUTES.blocks}/${block.blockHeight}`}
+													className="dark:text-ablue-300 text-ablue-200 font-medium"
+												>
+													{block.blockHeight}
+												</Link>
+											</td>
+
+											{/* Age */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													{timeAgo(block.timeStamp)}
+												</div>
+											</td>
+
+											{/* txns */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													<Link
+														href={`${ROUTES.blocks}/${block.blockHeight}`}
+														className="dark:text-ablue-300 text-ablue-200 font-medium"
+													>
+														{block.txnsCount}
+													</Link>
+												</div>
+											</td>
+
+											{/* fee recipient */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="flex gap-x-2 justify-center">
+													<Link
+														href="/"
+														className="dark:text-ablue-100 text-ablue-500 font-medium"
+													>
+														{shortenAddress(
+															'0x0000000000000000000000000000000000000000',
+															4
+														)}
+													</Link>
+
+													<Tooltip
+														text="Copied to clipbloard"
+														position="up"
+														trigger="click"
+													>
+														<button
+															className="text-agrey-500 dark:text-agrey-600"
+															onClick={() =>
+																copyToClipboard(
+																	'0x0000000000000000000000000000000000000000'
+																)
+															}
+														>
+															<i className="far fa-clone" />
+														</button>
+													</Tooltip>
+												</div>
+											</td>
+
+											{/* Reward */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													{BnToDec(block.blockReward, 9, 5)} PWR
+												</div>
+											</td>
+
+											{/* Shared Rewards */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													<span>
+														{BnToDec(block.blockReward, 9, 5)} PWR
+													</span>{' '}
+													<span className="dark:text-agrey-600 text-agrey-500">
+														(50%)
+													</span>
+												</div>
+											</td>
+										</tr>
+									))
+								)}
+							</tbody>
+						</table>
+					</div>
+
+					<div>
+						<Pagination
+							metadata={{
+								currentPage: 1,
+								totalPages: 10,
+								totalItems: 100,
+								startIndex: 0,
+								endIndex: 9,
+								itemsPerPage: 10,
+								nextPage: 2,
+								previousPage: null,
+							}}
+							onPageChange={(page: number) => {}}
+						/>
 					</div>
 				</div>
 			</div>

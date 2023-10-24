@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import styles from "./tags.module.scss";
+import './tags.scss';
 
-const { tags, light, grey, active } = styles;
+// const { tags, light, grey, active } = styles;
 
 type Props = {
 	className?: string;
@@ -12,15 +12,19 @@ type Props = {
 	disabled?: boolean;
 };
 
-export default function Tags({ className, children, disabled } : Props) {
-    const [isActive , setActive] = useState(false)
+export default function Tags({ className, children, disabled }: Props) {
+	const [isActive, setActive] = useState(false);
 
-    function toggleTag() {
-        setActive(!isActive)
-    }
+	function toggleTag() {
+		setActive(!isActive);
+	}
 
 	return (
-		<button disabled={disabled} onClick={toggleTag} className={`${tags} ${className} ${isActive ? {active} : ''}`}>
+		<button
+			disabled={disabled}
+			onClick={toggleTag}
+			className={`tags ${className} ${isActive && 'active'}`}
+		>
 			{children}
 		</button>
 	);
