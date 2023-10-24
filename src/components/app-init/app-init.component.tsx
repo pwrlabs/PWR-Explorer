@@ -102,7 +102,8 @@ export default function AppInit({ children }: AppInitProps) {
 
 			// setAppLoaded(true);
 		})();
-		// try loading session
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// TODO: add loading screen

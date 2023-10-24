@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import 'src/components/internal/text-field/text-field.scss';
