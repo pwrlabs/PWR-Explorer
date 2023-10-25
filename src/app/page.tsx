@@ -300,26 +300,37 @@ export default function Home() {
 
 													{/* txn count and fee recipient */}
 													<div>
-														<h1 className="space-x-2">
-															<span className="dark:text-white text-abrandc-dark-grey">
+														<h1 className="">
+															<span className="dark:text-white text-abrandc-dark-grey hidden xl:inline-block mr-2">
 																Fee Recipient
 															</span>
-															<span className="dark:text-ablue-300 text-ablue-200 font-medium hidden xl:inline-block">
-																rsync-build
-															</span>
+															<Link
+																href={`${ROUTES.address}/${block.blockSubmitter}`}
+																className="dark:text-ablue-300 text-ablue-200 font-medium "
+															>
+																{shortenAddress(
+																	block.blockSubmitter,
+																	4
+																)}
+															</Link>
 														</h1>
 
 														<div className="flex justify-between">
-															<h1 className="font-medium dark:text-ablue-300 text-ablue-200">
+															<Link
+																href={`${ROUTES.blockTxns(
+																	block.blockHeight
+																)}`}
+																className="font-medium dark:text-ablue-300 text-ablue-200"
+															>
 																{block.txnsCount} txns
-															</h1>
+															</Link>
 														</div>
 													</div>
 
 													{/* block fee */}
-													<div className="w-[100px]">
+													<div className="w-[120px]">
 														<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center">
-															{block.blockReward} PWR
+															{BnToDec(block.blockReward, 9, 9)} PWR
 														</h1>
 													</div>
 												</div>
@@ -330,13 +341,9 @@ export default function Home() {
 									className="flex items-center justify-center gap-x-2 font-medium dark:text-white text-abrandc-dark-grey leading-[26px] mt-3.5"
 								>
 									<span>VIEW ALL BLOCKS</span>
-									<Image
-										className=""
-										src="/icons/arrow-down.svg"
-										width={24}
-										height={24}
-										alt=""
-									/>
+									<span>
+										<i className="fas fa-arrow-right"></i>
+									</span>
 								</Link>
 							</div>
 
@@ -380,12 +387,15 @@ export default function Home() {
 														/>
 														<div className="space-y-2">
 															{/* block number */}
-															<h1 className="font-medium pr-2 dark:text-ablue-300 text-ablue-200">
+															<Link
+																href={`${ROUTES.transactions}/${transaction.txnHash}`}
+																className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
+															>
 																{shortenAddress(
 																	transaction.txnHash,
 																	4
 																)}
-															</h1>
+															</Link>
 															<h1 className="text-sm dark:text-white text-abrandc-dark-grey pr-2">
 																{timeAgo(transaction.timeStamp)}
 															</h1>
@@ -393,17 +403,20 @@ export default function Home() {
 													</div>
 
 													{/* txn count and fee recipient */}
-													<div>
-														<h1 className="space-x-2">
-															<span className="dark:text-white text-abrandc-dark-grey">
+													<div className="fleax-grow">
+														<h1 className="flex gap-x-2">
+															<div className="dark:text-white text-abrandc-dark-grey">
 																From
-															</span>
-															<span className="font-medium dark:text-ablue-300 text-ablue-200 pl-1">
+															</div>
+															<Link
+																href={`${ROUTES.address}/${transaction.from}`}
+																className="font-medium dark:text-ablue-300 text-ablue-200 pl-1"
+															>
 																{shortenAddress(
 																	transaction.from,
 																	4
 																)}
-															</span>
+															</Link>
 														</h1>
 
 														<h1>
@@ -419,47 +432,8 @@ export default function Home() {
 													{/* block fee */}
 													<div className="w-[100px]">
 														<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center">
-															{BnToDec(transaction.value)} PWR
+															{BnToDec(transaction.value, 9, 9)} PWR
 														</h1>
-													</div>
-
-													<div className="flex flex-col xl:flex-row lg:justify-between xl:justify-start items-start xl:items-center gap-x-4 w-full dark:text-ablue-300 text-ablue-200 hidden">
-														<div className="flex flex-row xl:flex-col gap-y-2 gap-x-4 justify-center items-center ">
-															<h1 className="font-medium pr-2">
-																{transaction.txnHash.substring(
-																	0,
-																	7
-																)}
-																...
-															</h1>
-															<h1 className="font-medium text-xl dark:text-white text-abrandc-dark-grey pr-2">
-																{transaction.timeStamp}
-															</h1>
-														</div>
-														<div className="flex flex-col  ">
-															<h1 className="dark:text-white text-abrandc-dark-grey mr-2">
-																From
-																<span className="font-medium dark:text-ablue-300 text-ablue-200 pl-1">
-																	{transaction.from.substring(
-																		0,
-																		7
-																	)}
-																	...
-																</span>
-															</h1>
-															<h1 className="dark:text-white text-abrandc-dark-grey">
-																To
-																<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-1">
-																	{transaction.to.substring(0, 7)}
-																	...
-																</span>
-															</h1>
-														</div>
-														<div className="flex flex-col gap-y-2">
-															<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-[8px] dark:text-white text-abrandc-dark-grey text-xl py-1 px-2">
-																{transaction.value} PWR
-															</h1>
-														</div>
 													</div>
 												</div>
 										  ))}
@@ -470,13 +444,10 @@ export default function Home() {
 									className="flex items-center justify-center gap-x-2 font-medium dark:text-white text-abrandc-dark-grey leading-[26px] mt-3.5"
 								>
 									<span>VIEW ALL TRANSACTIONS</span>
-									<Image
-										className=""
-										src="/icons/arrow-down.svg"
-										width={24}
-										height={24}
-										alt=""
-									/>
+
+									<span>
+										<i className="fas fa-arrow-right"></i>
+									</span>
 								</Link>
 							</div>
 						</div>

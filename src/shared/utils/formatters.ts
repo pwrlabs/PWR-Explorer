@@ -36,5 +36,9 @@ export function shortenAddress(address: string, chars = 4): string {
 export function BnToDec(value: string, decimals = 9, precision = 2) {
 	const bn = new BigNumber(value).shiftedBy(-decimals);
 
-	return bn.toFixed(precision).toString();
+	const float = bn.toFixed(precision).toString();
+
+	const r = Number(float).toString();
+
+	return r;
 }
