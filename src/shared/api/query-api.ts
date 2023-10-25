@@ -20,8 +20,8 @@ interface Transaction {
 
 const QueryApi = {
 	blocks: {
-		latests: async (count: number): Promise<LatestBlocksResponse> => {
-			const url = api.blocks.latests(count);
+		latests: async (page: number, count: number): Promise<LatestBlocksResponse> => {
+			const url = api.blocks.latests(page, count);
 			const res = await axios({
 				method: 'get',
 				url,
@@ -42,8 +42,12 @@ const QueryApi = {
 
 			return res.data;
 		},
-		allTxn: async (blockNumber: number): Promise<BlockTransactionsResponse> => {
-			const url = api.blocks.allTxn(blockNumber);
+		allTxn: async (
+			blockNumber: number,
+			page: number,
+			count: number
+		): Promise<BlockTransactionsResponse> => {
+			const url = api.blocks.allTxn(blockNumber, page, count);
 
 			const res = await axios({
 				method: 'get',
@@ -69,7 +73,7 @@ const QueryApi = {
 			return res.data;
 		},
 	},
-	transcations: {
+	transactions: {
 		details: async (txnhash: string): Promise<TransactionDetailResponse> => {
 			const url = api.transactions.details(txnhash);
 			const res = await axios<TransactionDetailResponse>({
@@ -82,8 +86,13 @@ const QueryApi = {
 
 			return res.data;
 		},
-		latest: async (count: number): Promise<LatestTransactionsResponse> => {
-			const url = api.transactions.latest(count);
+		latest: async (page: number, count: number): Promise<LatestTransactionsResponse> => {
+			console.log({
+				page,
+				count,
+			});
+
+			const url = api.transactions.latest(page, count);
 
 			const res = await axios({
 				method: 'get',

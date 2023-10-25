@@ -1,6 +1,7 @@
 'use client';
 
 import Pagination from '@/components/internal/pagination/pagination.component';
+import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
 import QueryApi from '@/shared/api/query-api';
 import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
@@ -9,6 +10,7 @@ import QUERY_KEYS from '@/static/query.keys';
 import ROUTES from '@/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 type BlockTransactionsProps = {
@@ -58,11 +60,47 @@ const headers = [
 export default function BlockTransactions({ params }: BlockTransactionsProps) {
 	const blockNum = params.blocknumber;
 
+	const [page, setPage] = useState<number>(1);
+	const [count, setCount] = useState<number>(10);
+
+	const [paginationMetadata, setPaginationMetadata] = useState({
+		currentPage: 1,
+		totalPages: 1,
+		startIndex: 0,
+		endIndex: 0,
+		totalItems: 0,
+		itemsPerPage: 0,
+		nextPage: 0,
+		previousPage: 0,
+	});
+
 	const {
 		data: blocktxns_data,
 		isLoading: blocktxns_loading,
 		isError: blocktxns_error,
-	} = useQuery([QUERY_KEYS.block_txns, blockNum], () => QueryApi.blocks.allTxn(blockNum));
+	} = useQuery(
+		[QUERY_KEYS.block_txns, blockNum],
+		() => QueryApi.blocks.allTxn(blockNum, page, count),
+		{
+			staleTime: 1000 * 60 * 5,
+			cacheTime: 0,
+			onSuccess: (data) => {
+				if (data.status === 'failure') return;
+				setPaginationMetadata(data.data.metadata);
+			},
+		}
+	);
+
+	function handlePageChange(page: number) {
+		setPage(page);
+	}
+
+	console.log(blocktxns_data);
+
+	if (blocktxns_loading) return null;
+
+	if (blocktxns_error || !blocktxns_data || blocktxns_data.status === 'failure')
+		return <div>error</div>;
 
 	return (
 		<div className="container-2 mx-auto text-white">
@@ -77,19 +115,23 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 			<br />
 
 			{/* Transaction details */}
-			<div className="space-y-2">
-				<h2 className="dark:text-white text-abrandc-dark-grey font-medium">
-					<span className="mr-4">For Block</span>
-					<span className="text-ablue-800 dark:text-ablue-100 ">{blockNum}</span>
-				</h2>
+			<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center">
+				<div>
+					<h2 className="dark:text-white text-abrandc-dark-grey font-medium">
+						<span className="mr-4">For Block</span>
+						<span className="text-ablue-800 dark:text-ablue-100 ">{blockNum}</span>
+					</h2>
+					<h3 className="dark:text-white text-abrandc-dark-grey text-xs font-medium">
+						(A total of {blocktxns_data.data.transactions.length} transactions found)
+					</h3>
+				</div>
 
-				{/* <div className="flex gap-x-3 text-sm">
-						<h2>First</h2>
-						<h2>Last</h2>
-					</div> */}
-				<h3 className="dark:text-white text-abrandc-dark-grey text-xs font-medium">
-					(A total of {blocktxns_data?.data?.txns.length} transactions found)
-				</h3>
+				<div className="flex items-center justify-center gap-x-2 text-white">
+					<QuickPagination
+						metadata={paginationMetadata}
+						onPageChange={handlePageChange}
+					/>
+				</div>
 			</div>
 
 			{/* Table */}
@@ -126,7 +168,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 								<td>Loading</td>
 							</tr>
 						) : (
-							blocktxns_data?.data?.txns.map((txn, idx) => (
+							blocktxns_data.data.transactions.map((txn, idx) => (
 								<tr
 									key={txn.txnHash}
 									className={` ${
@@ -247,19 +289,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 			</div>
 
 			<div>
-				<Pagination
-					metadata={{
-						currentPage: 1,
-						totalPages: 10,
-						totalItems: 100,
-						startIndex: 0,
-						endIndex: 9,
-						itemsPerPage: 10,
-						nextPage: 2,
-						previousPage: null,
-					}}
-					onPageChange={(page: number) => {}}
-				/>
+				<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 			</div>
 		</div>
 	);

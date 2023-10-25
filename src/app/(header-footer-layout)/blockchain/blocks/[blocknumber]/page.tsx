@@ -1,8 +1,6 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 
-import Button from '@/components/internal/button/button.component';
 import Tags from '@/components/internal/tags/tags.component';
 import { useQuery } from 'react-query';
 import QUERY_KEYS from '@/static/query.keys';
@@ -10,6 +8,7 @@ import QueryApi from '@/shared/api/query-api';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
 import { BnToDec, timeAgo } from '@/shared/utils/formatters';
 import ROUTES from '@/static/router.data';
+import { copyToClipboard } from '@/shared/utils/functions';
 
 type BlockTransactionsProps = {
 	params: {
@@ -26,18 +25,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 		isError: block_error,
 	} = useQuery([QUERY_KEYS.block_details, blockNum], () => QueryApi.blocks.details(blockNum));
 
-	console.log(block_data);
+	if (block_loading) return null;
 
-	const section_2_data = [
-		{
-			label: 'Block Reward',
-			value: '0.047598858328293488 PWR (0 + 0.981970538585756278 - 0.93437168025746279',
-		},
-		{
-			label: 'Size',
-			value: '86,992 bytes',
-		},
-	];
+	if (block_error || !block_data || block_data.status === 'failure') return <div>error</div>;
 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
@@ -78,8 +68,8 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
 							<h2 className="leading-[24px] break-all text-sm">
-								{timeAgo(block_data?.data?.timeStamp)},{' '}
-								{new Date(block_data?.data?.timeStamp * 1000).toLocaleString()}
+								{timeAgo(block_data.data.timeStamp)},{' '}
+								{new Date(block_data.data.timeStamp * 1000).toLocaleString()}
 								{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 							</h2>
 						</div>
@@ -125,13 +115,14 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									href={ROUTES.blockTxns(blockNum)}
 									className="dark:text-ablue-100 text-ablue-500 font-medium"
 								>
-									{block_data?.data?.txnsCount} transactions
+									{block_data.data.txnsCount} transactions
 								</Link>{' '}
 								in this block
 							</h2>
 						</div>
 					</div>
 				</section>
+
 				<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
 				{/* Second section */}
 				<section className="space-y-6 lg:space-y-4">
@@ -150,10 +141,12 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								href={ROUTES.address}
 								className="dark:text-ablue-100 text-ablue-500 font-medium"
 							>
-								{block_data?.data?.blockSubmitter}
+								{block_data.data.blockSubmitter}
 							</Link>{' '}
-							<Tooltip text="text" position="up" trigger="click">
-								<button onClick={() => copy(data.data?.data?.txnHash)}>
+							<Tooltip text="copied to clipboard" position="up" trigger="click">
+								<button
+									onClick={() => copyToClipboard(block_data.data.blockSubmitter)}
+								>
 									<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 								</button>
 							</Tooltip>
@@ -172,7 +165,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							</Tooltip>
 						</div>
 						<h2 className="text-sm">
-							{BnToDec(block_data?.data?.blockReward, 9, 9)} PWR
+							{BnToDec(block_data.data.blockReward, 9, 9)} PWR
 						</h2>
 					</div>
 
@@ -214,7 +207,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							</Tooltip>
 						</div>
 						<h2 className="text-sm">
-							{BnToDec(block_data?.data?.blockReward, 9, 9)} PWR
+							{BnToDec(block_data.data.blockReward, 9, 9)} PWR
 						</h2>
 					</div>
 				</section>

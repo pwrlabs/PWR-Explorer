@@ -9,8 +9,8 @@ type PaginationProps = {
 		currentPage: number;
 		itemsPerPage: number;
 		totalItems: number;
-		nextPage: number | null;
-		previousPage: number | null;
+		nextPage: number; // -1 if no next page
+		previousPage: number; // -1 if no previous page
 		startIndex: number;
 		endIndex: number;
 	};
@@ -82,7 +82,11 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	if (firstPage > 1) {
 		// if first page is not 1, add ellipsis and first page button
 		if (firstPage > 2) {
-			pageButtons.unshift(<span key="ellipsis-start">...</span>);
+			pageButtons.unshift(
+				<span key="ellipsis-start" className="text-agrey-500 dark:text-agrey-600">
+					...
+				</span>
+			);
 		}
 
 		pageButtons.unshift(
@@ -94,7 +98,11 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 
 	if (endPage < totalPages) {
 		if (endPage < totalPages - 1) {
-			pageButtons.push(<span key="ellipsis-end">...</span>);
+			pageButtons.push(
+				<span key="ellipsis-end" className="text-agrey-500 dark:text-agrey-600">
+					...
+				</span>
+			);
 		}
 		pageButtons.push(
 			<button onClick={() => handlePageClick(totalPages)} className="pagination-btn">
@@ -108,8 +116,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 			{/* total results */}
 			<div className="hidden md:block">
 				<h1 className="text-agrey-900 dark:text-white text-sm font-medium">
-					Results: {metadata.startIndex + 1} - {metadata.endIndex + 1} of{' '}
-					{metadata.totalItems}
+					Results: {metadata.startIndex} - {metadata.endIndex} of {metadata.totalItems}
 				</h1>
 			</div>
 
@@ -142,7 +149,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 			<div className="flex items-center gap-x-2">
 				<label className=" text-agrey-900 dark:text-white text-sm font-medium">Go to</label>
 				<input
-					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey w-[100px] focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
+					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey  focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
 					type="number"
 					onChange={inputChange}
 					value={inputValue}

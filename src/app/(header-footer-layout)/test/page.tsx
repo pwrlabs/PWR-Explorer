@@ -5,7 +5,7 @@ import Image from 'next/image';
 import axios from 'axios';
 
 import QueryApi from '@/shared/api/query-api';
-import timeAgo, { BnToDec, shortenAddress } from '@/shared/utils/formatters';
+import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
 import QUERY_KEYS from '@/static/query.keys';
 import Link from 'next/link';
 import { useQuery } from 'react-query';
@@ -45,8 +45,8 @@ async function fetchTodos(page: number) {
 			currentPage: page,
 			itemsPerPage: 10,
 			totalItems: 200,
-			nextPage: page + 1 > 20 ? null : page + 1,
-			previousPage: page - 1 < 1 ? null : page - 1,
+			nextPage: page + 1 > 20 ? -1 : page + 1,
+			previousPage: page - 1 < 1 ? -1 : page - 1,
 			startIndex: (page - 1) * 10,
 			endIndex: (page - 1) * 10 + 9,
 		},
@@ -54,12 +54,6 @@ async function fetchTodos(page: number) {
 }
 
 export default function TestPage() {
-	const {
-		data: txnsData,
-		isLoading: txnsLoading,
-		isError: txnsError,
-	} = useQuery([QUERY_KEYS.latest_txns], () => QueryApi.transcations.latest(10));
-
 	const [currentPage, setCurrentPage] = useState(1);
 	const [limit] = useState(10);
 
@@ -82,7 +76,7 @@ export default function TestPage() {
 			) : (
 				<>
 					<div className="space-y-2">
-						{todos_data?.todos.map((todo, idx) => (
+						{todos_data?.todos.map((todo: any, idx: number) => (
 							<div
 								key={idx}
 								className={`p-2 flex gap-x-2 items-center ${
@@ -95,7 +89,21 @@ export default function TestPage() {
 						))}
 					</div>
 
-					<Pagination metadata={todos_data?.metadata} onPageChange={handlePageChange} />
+					<Pagination
+						metadata={
+							todos_data?.metadata || {
+								totalPages: 0,
+								currentPage: 0,
+								itemsPerPage: 0,
+								totalItems: 0,
+								nextPage: -1,
+								previousPage: -1,
+								startIndex: 0,
+								endIndex: 0,
+							}
+						}
+						onPageChange={handlePageChange}
+					/>
 				</>
 			)}
 			{/* {Object.entries(m).map(([key, value], idx) => (

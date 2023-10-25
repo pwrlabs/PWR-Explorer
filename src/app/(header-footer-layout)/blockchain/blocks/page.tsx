@@ -12,6 +12,7 @@ import Tooltip from '@/components/internal/tooltip/tooltip.component';
 import { copyToClipboard } from '@/shared/utils/functions';
 import ROUTES from '@/static/router.data';
 import Pagination from '@/components/internal/pagination/pagination.component';
+import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 
 const headers = [
 	{
@@ -47,28 +48,38 @@ const headers = [
 ];
 
 export default function Blocks() {
-	const [latestBlocks, setLatestBlocks] = useState([]);
+	const [page, setPage] = useState<number>(1);
+	const [count, setCount] = useState<number>(10);
+
+	const [paginationMetadata, setPaginationMetadata] = useState({
+		currentPage: 1,
+		totalPages: 1,
+		startIndex: 0,
+		endIndex: 0,
+		totalItems: 0,
+		itemsPerPage: 0,
+		nextPage: 0,
+		previousPage: 0,
+	});
 
 	const {
 		data: blocks_data,
 		isLoading: blocks_loading,
 		isError: blocks_error,
-	} = useQuery([QUERY_KEYS.latest_blocks], () => QueryApi.blocks.latests(10));
+	} = useQuery([QUERY_KEYS.latest_blocks, page], () => QueryApi.blocks.latests(page, count), {
+		staleTime: 1000 * 60 * 5,
+		cacheTime: 0,
+		onSuccess: (data) => {
+			if (data.status === 'failure') return;
+			// setPaginationMetadata(data.data.metadata);
+		},
+	});
 
-	// const info = [
-	// 	{
-	// 		label: 'NETWORK UTILIZATION (24h)',
-	// 		value: `${blocksQuery.data?.data.data.networkUtilizationPast24Hours}%`,
-	// 	},
-	// 	{
-	// 		label: 'BLOCK SIZE (24h)',
-	// 		value: `${blocksQuery.data?.data.data.averageBlockSizePast24Hours} bytes`,
-	// 	},
-	// 	{
-	// 		label: 'BLOCK REWARDS (24h)',
-	// 		value: `${blocksQuery.data?.data.data.totalBlockRewardsPast24Hours}%`,
-	// 	},
-	// ];
+	function handlePageChange(page: number) {
+		setPage(page);
+	}
+
+	if (blocks_error || !blocks_data || blocks_data.status === 'failure') return <div>Error</div>;
 
 	return (
 		<div className="container-2 mx-auto">
@@ -108,7 +119,7 @@ export default function Blocks() {
 								<>
 									<span>
 										{BnToDec(
-											blocks_data?.data?.totalBlockRewardsPast24Hours,
+											blocks_data.data.totalBlockRewardsPast24Hours,
 											9,
 											9
 										)}{' '}
@@ -129,8 +140,10 @@ export default function Blocks() {
 							</h2>
 						</div>
 						<div className="flex items-center gap-x-2">
-							<h2>First</h2>
-							<h2>Last</h2>
+							<QuickPagination
+								metadata={paginationMetadata}
+								onPageChange={handlePageChange}
+							/>
 						</div>
 					</div>
 
@@ -265,16 +278,7 @@ export default function Blocks() {
 
 					<div>
 						<Pagination
-							metadata={{
-								currentPage: 1,
-								totalPages: 10,
-								totalItems: 100,
-								startIndex: 0,
-								endIndex: 9,
-								itemsPerPage: 10,
-								nextPage: 2,
-								previousPage: null,
-							}}
+							metadata={paginationMetadata}
 							onPageChange={(page: number) => {}}
 						/>
 					</div>

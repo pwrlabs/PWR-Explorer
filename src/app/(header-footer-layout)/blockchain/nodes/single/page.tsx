@@ -195,7 +195,7 @@ export default function Single() {
 						endIndex: 9,
 						itemsPerPage: 10,
 						nextPage: 2,
-						previousPage: null,
+						previousPage: -1,
 					}}
 					onPageChange={(page: number) => {}}
 				/>

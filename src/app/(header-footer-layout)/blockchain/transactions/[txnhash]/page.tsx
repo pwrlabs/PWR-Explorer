@@ -14,40 +14,22 @@ import { BnToDec, timeAgo } from '@/shared/utils/formatters';
 import Link from 'next/link';
 import ROUTES from '@/static/router.data';
 
-export default function SingleTransaction({ params }) {
+type TransactionDetailsProps = {
+	params: {
+		txnhash: string;
+	};
+};
+
+export default function TransactionDetails({ params }: TransactionDetailsProps) {
 	const { txnhash } = params;
 
-	const data = useQuery(
-		[QUERY_KEYS.txn_details, txnhash],
-		() => QueryApi.transcations.details(txnhash),
-		{
-			enabled: !!txnhash,
-		}
-	);
-
-	const section_2_data = [
-		{
-			label: 'From',
-			value: '0x71E5eE8736dghf6578892wuhf6578jdgcni7F4C1681',
-		},
-		{
-			label: 'Interacted with (To)',
-			value: '0x71E5eE8736dghf6578892wuhf6578jdgcni7F4C1681',
-		},
-	];
-
-	const section_3_data = [
-		{
-			label: 'Value',
-			value: '291.005962459849006914 PWR',
-			amount: '($214.40)',
-		},
-		{
-			label: 'Transaction Fee',
-			value: '0.005962459849006914 PWR',
-			amount: '($214.40)',
-		},
-	];
+	const {
+		data: txnData,
+		isLoading: txnLoading,
+		isError: txnError,
+	} = useQuery([QUERY_KEYS.txn_details, txnhash], () => QueryApi.transactions.details(txnhash), {
+		enabled: !!txnhash,
+	});
 
 	const with_ad = false;
 
@@ -56,9 +38,9 @@ export default function SingleTransaction({ params }) {
 		navigator.clipboard.writeText(text);
 	}
 
-	if (data.isLoading) return <div>Loading...</div>;
+	if (txnLoading || !txnData) return <div>Loading...</div>;
 
-	if (data.isError) return <div>Error</div>;
+	if (txnError || txnData.status === 'failure') return <div>Error</div>;
 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
@@ -94,9 +76,9 @@ export default function SingleTransaction({ params }) {
 								</Tooltip>
 							</div>
 							<div className="flex gap-x-2">
-								<h2 className="text-sm break-all">{data.data?.data?.txnHash}</h2>
+								<h2 className="text-sm break-all">{txnData.data.txnHash}</h2>
 								<Tooltip text="text" position="up" trigger="click">
-									<button onClick={() => copy(data.data?.data?.txnHash)}>
+									<button onClick={() => copy(txnData.data.txnHash)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>
@@ -113,7 +95,7 @@ export default function SingleTransaction({ params }) {
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip>
 							</div>
-							<h2>{data.data?.data?.size}</h2>
+							<h2>{txnData.data.size}</h2>
 						</div>
 
 						{/* Block */}
@@ -131,7 +113,7 @@ export default function SingleTransaction({ params }) {
 									<i className="fas fa-check-circle text-ablue-500 dark:text-ablue-100 fa-lg" />
 
 									<h2 className="dark:text-ablue-100 text-ablue-500 font-medium text-sm">
-										{data.data?.data?.blockNumber}
+										{txnData.data.blockNumber}
 									</h2>
 								</div>
 								<Tags>1153 Block Confirmations</Tags>
@@ -152,8 +134,8 @@ export default function SingleTransaction({ params }) {
 								<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
 								<h2 className="leading-[24px] break-all text-sm">
-									{timeAgo(data.data?.data?.timeStamp)},{' '}
-									{new Date(data.data?.data?.timeStamp * 1000).toLocaleString()}
+									{timeAgo(txnData.data.timeStamp)},{' '}
+									{new Date(txnData.data.timeStamp * 1000).toLocaleString()}
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h2>
 							</div>
@@ -174,14 +156,13 @@ export default function SingleTransaction({ params }) {
 							</div>
 							<div className="flex items-center gap-x-2">
 								<Link
-									href={`${ROUTES.address}/${data.data?.data?.from}`}
+									href={`${ROUTES.address}/${txnData.data.from}`}
 									className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
 								>
-									{/* {item.value} */}
-									{data.data?.data?.from}
+									{txnData.data.from}
 								</Link>
 								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
-									<button onClick={() => copy(data.data?.data?.from)}>
+									<button onClick={() => copy(txnData.data.from)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>
@@ -200,14 +181,14 @@ export default function SingleTransaction({ params }) {
 							</div>
 							<div className="flex items-center gap-x-2">
 								<Link
-									href={`${ROUTES.address}/${data.data?.data?.to}`}
+									href={`${ROUTES.address}/${txnData.data.to}`}
 									className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
 								>
 									{/* {item.value} */}
-									{data.data?.data?.to}
+									{txnData.data.to}
 								</Link>
 								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
-									<button onClick={() => copy(data.data?.data?.to)}>
+									<button onClick={() => copy(txnData.data.to)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>
@@ -233,7 +214,7 @@ export default function SingleTransaction({ params }) {
 								<Image src="/icons/pwr.svg" width={20} height={20} alt="" />
 
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(data.data?.data?.value, 9, 9)} PWR
+									{BnToDec(txnData.data.value, 9, 9)} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
@@ -254,7 +235,7 @@ export default function SingleTransaction({ params }) {
 							</div>
 							<div className="flex items-center gap-x-2 ">
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(data.data?.data?.txnFee, 9, 9)} PWR
+									{BnToDec(txnData.data.value, 9, 9)} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
@@ -275,10 +256,10 @@ export default function SingleTransaction({ params }) {
 							</div>
 							<div className="flex items-center gap-x-2 flex-grow min-w-0">
 								<h1 className="leading-[24px] break-all text-sm">
-									{data.data?.data?.data}
+									{txnData.data.data}
 								</h1>
 								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
-									<button onClick={() => copy(data.data?.data?.data)}>
+									<button onClick={() => copy(txnData.data.data)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>

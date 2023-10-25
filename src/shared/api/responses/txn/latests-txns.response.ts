@@ -7,18 +7,37 @@ type Txn = {
 	timeStamp: number;
 	value: string;
 	blockNumber: number;
+	txnType: string;
 };
 
 type LatestTransactionsSuccessResponse = {
 	status: 'success';
 	data: {
-		transactionCountPercentageChangeComparedToPreviousDay: number;
-		totalTransactionFeesPast24Hours: number;
-		averageTransactionFeePercentageChangeComparedToPreviousDay: number;
-		totalTransactionFeesPercentageChangeComparedToPreviousDay: number;
 		averageTransactionFeePast24Hours: number;
+		averageTransactionFeePercentageChangeComparedToPreviousDay: number;
+
+		//
+		totalTransactionFeesPast24Hours: number;
+		totalTransactionFeesPercentageChangeComparedToPreviousDay: number;
+
+		//
 		transactionCountPast24Hours: number;
-		txns: Txn[];
+		transactionCountPercentageChangeComparedToPreviousDay: number;
+
+		//
+		transactions: Txn[];
+
+		//
+		metadata: {
+			previousPage: number;
+			currentPage: number;
+			nextPage: number;
+			totalPages: number;
+			totalItems: number;
+			itemsPerPage: number;
+			startIndex: number;
+			endIndex: number;
+		};
 	};
 };
 

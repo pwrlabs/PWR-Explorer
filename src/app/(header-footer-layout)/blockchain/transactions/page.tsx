@@ -13,6 +13,9 @@ import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/uti
 
 import ROUTES from '@/static/router.data';
 import Pagination from '@/components/internal/pagination/pagination.component';
+import { useState } from 'react';
+import { copyToClipboard } from '@/shared/utils/functions';
+import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 
 const headers = [
 	{
@@ -53,17 +56,44 @@ const headers = [
 ];
 
 export default function Transactions() {
+	const [page, setPage] = useState<number>(1);
+	const [count, setCount] = useState<number>(10);
+
+	const [paginationMetadata, setPaginationMetadata] = useState({
+		currentPage: 1,
+		totalPages: 1,
+		startIndex: 0,
+		endIndex: 0,
+		totalItems: 0,
+		itemsPerPage: 0,
+		nextPage: 0,
+		previousPage: 0,
+	});
+
 	const {
 		data: txnsData,
 		isLoading: txnsLoading,
 		isError: txnsError,
-	} = useQuery([QUERY_KEYS.latest_txns], () => QueryApi.transcations.latest(10), {
-		staleTime: 1000 * 60 * 5,
-	});
+	} = useQuery(
+		[QUERY_KEYS.latest_txns, page, count],
+		() => QueryApi.transactions.latest(page, count),
+		{
+			staleTime: 1000 * 60 * 5,
+			cacheTime: 0,
+			onSuccess: (data) => {
+				if (data.status === 'failure') return;
+				setPaginationMetadata(data.data.metadata);
+			},
+		}
+	);
 
-	function copyToClipboard(text: string) {
-		navigator.clipboard.writeText(text);
+	function handlePageChange(page: number) {
+		setPage(page);
 	}
+
+	if (txnsLoading) return null;
+
+	if (txnsError || !txnsData || txnsData.status === 'failure') return <div>Error</div>;
 
 	return (
 		<main className="container-2 mx-auto space-y-20">
@@ -80,18 +110,18 @@ export default function Transactions() {
 						title="TRANSACTIONS (24h)"
 						valueComp={() => (
 							<>
-								<span>{txnsData?.data?.transactionCountPast24Hours}</span>
+								<span>{txnsData.data.transactionCountPast24Hours}</span>
 								<span
 									className={`font-medium  pl-2 pr-2 ${
-										txnsData?.data?.transactionCountPast24Hours > 0
+										txnsData.data.transactionCountPast24Hours > 0
 											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
 											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
 									}`}
 								>
 									(
 									{
-										txnsData?.data
-											?.transactionCountPercentageChangeComparedToPreviousDay
+										txnsData.data
+											.transactionCountPercentageChangeComparedToPreviousDay
 									}
 									%)
 								</span>
@@ -107,15 +137,15 @@ export default function Transactions() {
 							<>
 								<span>
 									{numberWithCommas(
-										txnsData?.data?.totalTransactionFeesPast24Hours | 0
+										txnsData.data.totalTransactionFeesPast24Hours
 									)}{' '}
 									PWR
 								</span>
 								<span
 									className={`font-medium  pl-2 pr-2 ${
-										txnsData?.data &&
-										txnsData?.data
-											?.totalTransactionFeesPercentageChangeComparedToPreviousDay >
+										txnsData.data &&
+										txnsData.data
+											.totalTransactionFeesPercentageChangeComparedToPreviousDay >
 											0
 											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
 											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
@@ -123,8 +153,8 @@ export default function Transactions() {
 								>
 									(
 									{
-										txnsData?.data
-											?.totalTransactionFeesPercentageChangeComparedToPreviousDay
+										txnsData.data
+											.totalTransactionFeesPercentageChangeComparedToPreviousDay
 									}
 									%)
 								</span>
@@ -138,12 +168,12 @@ export default function Transactions() {
 						title="AVG. TRANSACTION FEE (24h)"
 						valueComp={() => (
 							<>
-								<span>{txnsData?.data?.averageTransactionFeePast24Hours} USD</span>
+								<span>{txnsData.data.averageTransactionFeePast24Hours} USD</span>
 								<span
 									className={`font-medium  pl-2 pr-2 ${
-										txnsData?.data &&
-										txnsData?.data
-											?.totalTransactionFeesPercentageChangeComparedToPreviousDay >
+										txnsData.data &&
+										txnsData.data
+											.totalTransactionFeesPercentageChangeComparedToPreviousDay >
 											0
 											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
 											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
@@ -151,8 +181,8 @@ export default function Transactions() {
 								>
 									(
 									{
-										txnsData?.data
-											?.averageTransactionFeePercentageChangeComparedToPreviousDay
+										txnsData.data
+											.averageTransactionFeePercentageChangeComparedToPreviousDay
 									}
 									%)
 								</span>
@@ -166,19 +196,20 @@ export default function Transactions() {
 			{/* Table */}
 			<section>
 				{/* Title */}
-				<div className="flex justify-between items-center">
+				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center">
 					<div>
 						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							More than {txnsData?.data?.transactionCountPast24Hours} transactions
-							found
+							More than {txnsData.data.transactionCountPast24Hours} transactions found
 						</h1>
 						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 							(Showing the last 500k records)
 						</h2>
 					</div>
-					<div className="flex items-center gap-x-2 text-white">
-						<h3 className="">First</h3>
-						<h3 className="">Last</h3>
+					<div className="flex items-center justify-center gap-x-2 text-white">
+						<QuickPagination
+							metadata={paginationMetadata}
+							onPageChange={handlePageChange}
+						/>
 					</div>
 				</div>
 
@@ -216,7 +247,7 @@ export default function Transactions() {
 									<td>Loading</td>
 								</tr>
 							) : (
-								txnsData?.data?.txns.map((txn, idx) => (
+								txnsData.data.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -337,19 +368,7 @@ export default function Transactions() {
 				</div>
 
 				<div>
-					<Pagination
-						metadata={{
-							currentPage: 1,
-							totalPages: 10,
-							totalItems: 100,
-							startIndex: 0,
-							endIndex: 9,
-							itemsPerPage: 10,
-							nextPage: 2,
-							previousPage: null,
-						}}
-						onPageChange={(page: number) => {}}
-					/>
+					<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 				</div>
 			</section>
 		</main>

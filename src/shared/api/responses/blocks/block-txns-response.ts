@@ -11,7 +11,17 @@ type Txn = {
 type BlockTransactionsSuccessResponse = {
 	status: 'success';
 	data: {
-		txns: Txn[];
+		transactions: Txn[];
+		metadata: {
+			totalItems: number;
+			startIndex: number;
+			previousPage: number;
+			itemsPerPage: number;
+			endIndex: number;
+			nextPage: number;
+			totalPages: number;
+			currentPage: number;
+		};
 	};
 };
 

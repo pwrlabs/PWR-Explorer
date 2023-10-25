@@ -1,4 +1,6 @@
 const ROUTES = {
+	root: '/',
+
 	transactions: '/blockchain/transactions',
 
 	blocks: '/blockchain/blocks',

@@ -7,7 +7,7 @@ type Txn = {
 	to: string;
 	txnFee: string;
 	txnHash: string;
-	value: number;
+	value: string;
 };
 
 type TransactionDetailsSuccessResponse = {
