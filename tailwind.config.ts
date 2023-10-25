@@ -10,6 +10,9 @@ const config: Config = {
 	darkMode: 'class',
 	theme: {
 		extend: {
+			spacing: {
+				header: '80px',
+			},
 			colors: {
 				ablue: {
 					50: '#EDE7FF',

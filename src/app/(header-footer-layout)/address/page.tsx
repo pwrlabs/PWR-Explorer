@@ -17,8 +17,6 @@ import { useState } from 'react';
 import { copyToClipboard } from '@/shared/utils/functions';
 import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 
-import { BsArrowRightShort } from 'react-icons/bs';
-
 const headers = [
 	{
 		id: 0,

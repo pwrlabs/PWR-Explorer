@@ -105,7 +105,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 			);
 		}
 		pageButtons.push(
-			<button onClick={() => handlePageClick(totalPages)} className="pagination-btn">
+			<button onClick={() => handlePageClick(totalPages)} className="pagination-btn !w-auto">
 				{totalPages}
 			</button>
 		);

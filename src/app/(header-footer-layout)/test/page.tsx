@@ -79,8 +79,8 @@ export default function TestPage() {
 						{todos_data?.todos.map((todo: any, idx: number) => (
 							<div
 								key={idx}
-								className={`p-2 flex gap-x-2 items-center ${
-									todo.completed ? 'bg-green-200' : 'bg-blue-100'
+								className={`p-2 flex gap-x-2 items-center bg-opacity-20 dark:text-white rounded-md ${
+									todo.completed ? 'bg-blue-800 ' : 'bg-blue-100'
 								}`}
 							>
 								<div>{todo.id}</div>
