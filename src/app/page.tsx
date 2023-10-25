@@ -13,6 +13,7 @@ import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/u
 import { useQuery } from 'react-query';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
+import ROUTES from '@/static/router.data';
 
 function BlockBoxSkeleton() {
 	return (
@@ -285,9 +286,12 @@ export default function Home() {
 														/>
 														<div className="space-y-2">
 															{/* block number */}
-															<h1 className="font-medium pr-2 dark:text-ablue-300 text-ablue-200">
+															<Link
+																href={`${ROUTES.blocks}/${block.blockHeight}`}
+																className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
+															>
 																{block.blockHeight}
-															</h1>
+															</Link>
 															<h1 className="text-sm dark:text-white text-abrandc-dark-grey pr-2">
 																{timeAgo(block.timeStamp)}
 															</h1>

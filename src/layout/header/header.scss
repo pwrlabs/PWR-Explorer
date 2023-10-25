@@ -1,4 +1,16 @@
 .shadows {
-  background: var(--color-surfaces-bg-primary, #0000);
-  box-shadow: 8px 8px 56px 0px rgba(174, 174, 192, 0.16);
+	background: var(--color-surfaces-bg-primary, #0000);
+	box-shadow: 8px 8px 56px 0px rgba(174, 174, 192, 0.16);
+}
+
+.navbar-dropdown {
+	.nav-dropdown-menu {
+		display: none;
+	}
+
+	&:hover {
+		.nav-dropdown-menu {
+			display: block;
+		}
+	}
 }

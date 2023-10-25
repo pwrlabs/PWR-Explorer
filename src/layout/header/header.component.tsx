@@ -20,6 +20,24 @@ import ROUTES from '@/static/router.data';
 export default function HeaderComponent() {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+	const blockchainLinks = [
+		{
+			id: 0,
+			label: 'Transactions',
+			href: ROUTES.transactions,
+		},
+		{
+			id: 1,
+			label: 'Blocks',
+			href: ROUTES.blocks,
+		},
+		{
+			id: 2,
+			label: 'Nodes',
+			href: ROUTES.nodes,
+		},
+	];
+
 	const navigation = [
 		{
 			label: 'Explore',
@@ -54,7 +72,7 @@ export default function HeaderComponent() {
 	}
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white overflow-hidden shadow ">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -84,27 +102,31 @@ export default function HeaderComponent() {
 						</Link>
 					</div>
 
-					<div>
+					<div className="navbar-dropdown relative">
 						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2">
 							<div>Blockchain</div>
 							<i className="fa-lg far fa-angle-down"></i>
 						</button>
-						<div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-							<ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-							<li>
-								<a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-							</li>
-							<li>
-								<a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-							</li>
-							<li>
-								<a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-							</li>
-							<li>
-								<a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-							</li>
+						<div
+							id="dropdown"
+							className="nav-dropdown-menu absolute top-full translate-y-[0px] left-0 z-10  bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-abrandc-dark-grey"
+						>
+							<ul
+								className="py-2 text-sm text-gray-700 dark:text-gray-200"
+								aria-labelledby="dropdownDefaultButton"
+							>
+								{blockchainLinks.map((a, idx) => (
+									<li key={idx}>
+										<Link
+											href={a.href}
+											className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-agrey-800 dark:hover:text-white"
+										>
+											{a.label}
+										</Link>
+									</li>
+								))}
 							</ul>
-						</div>									
+						</div>
 					</div>
 
 					{/* {navigation.map((item, index) => (
