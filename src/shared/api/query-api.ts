@@ -104,6 +104,26 @@ const QueryApi = {
 			return res.data;
 		},
 	},
+	user: {
+		txnHistory: {
+			getTxnHistory: async (
+				address: string,
+				count: number,
+				page: number
+			): Promise<Transaction[]> => {
+				const url = api.user.txnHistory.getTxnHistory(address, count, page);
+				const res = await axios({
+					method: 'get',
+					url,
+				});
+
+				if (res.data.status === 'failure')
+					throw new Error('Failed to fetch transaction history');
+
+				return res.data;
+			},
+		},
+	},
 };
 
 export default QueryApi;

@@ -27,39 +27,45 @@ const headers = [
 	},
 	{
 		id: 1,
-		name: 'Block',
+		name: 'Status',
 		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 2,
-		name: 'Timestamp',
+		name: 'Block',
 		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 3,
+		name: 'Timestamp',
+		thClass: 'xl:px-8 px-2',
+	},
+	{
+		id: 4,
 		name: 'From',
 		thClass: 'xl:pl-8 pl-2 pr-2',
 	},
 	{
-		id: 4,
+		id: 5,
 		name: '', // Direction
 		thClass: ' px-2',
 	},
 	{
-		id: 5,
+		id: 6,
 		name: 'To',
 		thClass: 'xl:pr-8 pr-2 pl-2',
 	},
 	{
-		id: 6,
+		id: 7,
 		name: 'Value',
 		thClass: 'xl:px-8 px-2',
 	},
 ];
 
 export default function AddressPage() {
-	const [page, setPage] = useState<number>(1);
+	const [page, setPage] = useState<number>(10);
 	const [count, setCount] = useState<number>(10);
+	const [address, setAddress] = useState<string>('0x2c86e018e43fe1effa7f43b7c128ee29a0e86853');
 
 	const [paginationMetadata, setPaginationMetadata] = useState({
 		currentPage: 1,
@@ -72,19 +78,21 @@ export default function AddressPage() {
 		previousPage: 0,
 	});
 
+	// txnHistory
+
 	const {
-		data: txnsData,
-		isLoading: txnsLoading,
-		isError: txnsError,
+		data: txnHistoryData,
+		isLoading: txnHistoryLoading,
+		isError: txnHistoryError,
 	} = useQuery(
-		[QUERY_KEYS.latest_txns, page, count],
-		() => QueryApi.transactions.latest(page, count),
+		[QUERY_KEYS.txn_history, address, page, count],
+		() => QueryApi.user.txnHistory.getTxnHistory(address, page, count),
 		{
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
-				if (data.status === 'failure') return;
-				setPaginationMetadata(data.data.metadata);
+				if (txnHistoryData?.status === 'failure') return;
+				// setPaginationMetadata(txnHistoryData?.data?.metadata);
 			},
 		}
 	);
@@ -93,9 +101,10 @@ export default function AddressPage() {
 		setPage(page);
 	}
 
-	if (txnsLoading) return null;
+	if (txnHistoryLoading) return null;
 
-	if (txnsError || !txnsData || txnsData.status === 'failure') return <div>Error</div>;
+	if (txnHistoryError || !txnHistoryData || txnHistoryData.status === 'failure')
+		return <div>Error</div>;
 
 	return (
 		<main className="container-2 mx-auto">
@@ -123,7 +132,7 @@ export default function AddressPage() {
 					<StatBox
 						title=""
 						valueComp={() => (
-							<div className="space-y-4">
+							<div className="space-y-4  text-sm font-medium">
 								<h1 className="text-xl font-bold">Overview</h1>
 
 								{/* First Transaction Info */}
@@ -143,7 +152,7 @@ export default function AddressPage() {
 								{/* Second Transaction Info (similar structure) */}
 								<div className="space-y-1">
 									<span className="text-agrey-500 dark:text-agrey-600">
-										PWR BALANCE
+										PWR VALUE
 									</span>
 									<div className="flex items-center space-x-4">
 										<h1 className="dark:text-white text-black">$22</h1>
@@ -160,7 +169,7 @@ export default function AddressPage() {
 					<StatBox
 						title=""
 						valueComp={() => (
-							<div className="space-y-4">
+							<div className="space-y-4  text-sm font-medium">
 								<h1 className="text-xl font-bold">More Info</h1>
 
 								{/* First Transaction Info */}
@@ -216,9 +225,7 @@ export default function AddressPage() {
 			<section className="overflow-x-auto mt-12">
 				<div className="flex justify-between items-center">
 					<div className="dark:text-white text-abrandc-dark-grey font-medium">
-						<h1 className="leading-[26px] px-2 py-1">
-            Total 213 transactions found
-						</h1>
+						<h1 className="leading-[26px] px-2 py-1">Total 213 transactions found</h1>
 						<h2 className="text-xs px-2 py-1">(Showing the last 15 records)</h2>
 					</div>
 					<div className="flex items-center gap-x-2 text-white">
@@ -255,12 +262,12 @@ export default function AddressPage() {
 
 						{/* table body */}
 						<tbody>
-							{txnsLoading ? (
+							{txnHistoryLoading ? (
 								<tr>
 									<td>Loading</td>
 								</tr>
 							) : (
-								txnsData.data.transactions.map((txn, idx) => (
+								txnHistoryData?.data?.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -291,13 +298,23 @@ export default function AddressPage() {
 											</div>
 										</td>
 
+										{/* status */}
+										<td className="px-2 py-8">
+											<Link
+												href={`${ROUTES.blocks}/${txn.blockNumber}`}
+												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+											>
+												{txn.txnType}
+											</Link>
+										</td>
+
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
 											<Link
 												href={`${ROUTES.blocks}/${txn.blockNumber}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
-												{txn.blockNumber}
+												17214042{txn.blockNumber}
 											</Link>
 										</td>
 
@@ -343,7 +360,7 @@ export default function AddressPage() {
 										</td>
 
 										{/* To */}
-										<td className="xl:pr-8 pr-2 pl-2 py-8">
+										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
 													href="/"
@@ -383,7 +400,6 @@ export default function AddressPage() {
 				<div>
 					<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 				</div>
-
 			</section>
 		</main>
 	);
