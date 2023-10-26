@@ -7,6 +7,7 @@ import { TransactionDetailResponse } from './responses/txn/txn-details.response'
 import { LatestBlocksResponse } from './responses/blocks/latest-blocks.response';
 import { BlockTransactionsResponse } from './responses/blocks/block-txns-response';
 import { BlockDetailsResponse } from './responses/blocks/block-details.response';
+import { AddressTxnHistoryResponse } from './responses/addresss/txn-history.response';
 
 interface Transaction {
 	txnHash: string;
@@ -102,6 +103,26 @@ const QueryApi = {
 			if (res.data.status === 'failure') throw new Error('Failed to fetch explorer info');
 
 			return res.data;
+		},
+	},
+	user: {
+		txnHistory: {
+			getTxnHistory: async (
+				address: string,
+				count: number,
+				page: number
+			): Promise<AddressTxnHistoryResponse> => {
+				const url = api.user.txnHistory.getTxnHistory(address, count, page);
+				const res = await axios({
+					method: 'get',
+					url,
+				});
+
+				if (res.data.status === 'failure')
+					throw new Error('Failed to fetch transaction history');
+
+				return res.data;
+			},
 		},
 	},
 };

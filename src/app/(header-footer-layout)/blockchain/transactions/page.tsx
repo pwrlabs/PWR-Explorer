@@ -3,20 +3,19 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
-import QueryApi from '@/shared/api/query-api';
-import QUERY_KEYS from '@/static/query.keys';
+import QueryApi from 'src/shared/api/query-api';
+import QUERY_KEYS from 'src/static/query.keys';
 
-import Tooltip from '@/components/internal/tooltip/tooltip.component';
+import Tooltip from 'src/components/internal/tooltip/tooltip.component';
 
-import StatBox from '@/components/internal/stat-box/stat-box.component';
-import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/utils/formatters';
+import StatBox from 'src/components/internal/stat-box/stat-box.component';
+import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
 
-import ROUTES from '@/static/router.data';
-import Pagination from '@/components/internal/pagination/pagination.component';
+import ROUTES from 'src/static/router.data';
+import Pagination from 'src/components/internal/pagination/pagination.component';
 import { useState } from 'react';
 import { copyToClipboard } from '@/shared/utils/functions';
 import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
-import TransactionTooltipDetails from '@/components/internal/transaction-tooltip-details/transaction-tooltip-details';
 
 const headers = [
 	{

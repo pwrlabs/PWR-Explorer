@@ -138,7 +138,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 						</div>
 						<div className="flex gap-x-2">
 							<Link
-								href={ROUTES.address}
+								href={`${ROUTES.address}/${block_data.data.blockSubmitter}`}
 								className="dark:text-ablue-100 text-ablue-500 font-medium"
 							>
 								{block_data.data.blockSubmitter}
@@ -150,7 +150,6 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 								</button>
 							</Tooltip>
-							<div>in 12 secs</div>
 						</div>
 					</div>
 
@@ -178,37 +177,6 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							</Tooltip>
 						</div>
 						<h2 className="text-sm">{block_data?.data?.blockSize} Bytes</h2>
-					</div>
-
-					{/* Block confirmations */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Number of Block Confirmations
-							</h1>
-							<Tooltip text="text" large position="right">
-								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
-						</div>
-						<h2 className="text-sm">{block_data?.data?.blockConfirmations}</h2>
-					</div>
-				</section>
-				<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
-				{/* Third section */}
-				<section className="space-y-6 lg:space-y-4">
-					{/* Burnt fees */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Burnt Fees
-							</h1>
-							<Tooltip text="text" large position="right">
-								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
-						</div>
-						<h2 className="text-sm">
-							{BnToDec(block_data.data.blockReward, 9, 9)} PWR
-						</h2>
 					</div>
 				</section>
 

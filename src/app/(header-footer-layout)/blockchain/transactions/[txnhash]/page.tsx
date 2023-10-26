@@ -64,7 +64,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 			<div className="">
 				<div className={`space-y-4 ${with_ad ? 'max-w-[850px]' : ''}`}>
 					{/* First section */}
-					<section className="space-y-6">
+					<section className="space-y-6 lg:space-y-4">
 						{/* Txn Hash */}
 						<div className="lg:flex space-y-2">
 							<div className="flex items-center gap-x-2 w-[300px]">
@@ -116,7 +116,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										{txnData.data.blockNumber}
 									</h2>
 								</div>
-								<Tags>1153 Block Confirmations</Tags>
+								{/* <Tags>1153 Block Confirmations</Tags> */}
 							</div>
 						</div>
 
@@ -145,7 +145,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 					<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
 
 					{/* Second section */}
-					<section className="space-y-6">
+					<section className="space-y-6 lg:space-y-4">
 						{/* From */}
 						<div className="lg:flex space-y-2">
 							<div className="flex items-center gap-x-2 w-[300px]">
@@ -199,7 +199,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 					<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
 
 					{/* Third section */}
-					<section className="space-y-6">
+					<section className="space-y-6 lg:space-y-4">
 						{/* value */}
 						<div className="lg:flex space-y-2">
 							<div className="flex items-center gap-x-2 w-[300px]">

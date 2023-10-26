@@ -1,6 +1,6 @@
 export type Block = {
 	blockHeight: number;
-	blockReward: number;
+	blockReward: string;
 	blockSubmitter: string;
 	timeStamp: number;
 	txnsCount: number;

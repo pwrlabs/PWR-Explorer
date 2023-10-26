@@ -14,3 +14,40 @@
 		}
 	}
 }
+
+.burger {
+	width: 2rem;
+	height: 2rem;
+	position: relative;
+	display: flex;
+	justify-content: space-around;
+	flex-flow: column nowrap;
+
+	@apply p-1;
+}
+
+.burger.active {
+	.h-line1 {
+		transform: rotate(45deg);
+	}
+
+	.h-line2 {
+		opacity: 0;
+	}
+
+	.h-line3 {
+		transform: rotate(-45deg);
+	}
+}
+
+.h-line {
+	@apply w-full;
+	@apply h-[2px];
+	@apply rounded-md;
+	@apply dark:bg-white;
+	@apply bg-black;
+	@apply transition-transform;
+	@apply duration-200;
+
+	transform-origin: 0;
+}

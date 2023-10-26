@@ -67,10 +67,14 @@ export default function FooterComponent() {
 							/>
 						</svg>
 						<div className="grid grid-cols-2 gap-y-4 md:flex md:flex-row items-center gap-x-8">
-							{navigation.map((item, index) => (
-								<div key={index}>
-									<TextButton className="">{item.label}</TextButton>
-								</div>
+							{navigation.map((item, idx) => (
+								<Link
+									href="/"
+									className="font-medium hover:text-ablue-800 dark:text-white dark:hover:text-ablue-200"
+									key={idx}
+								>
+									{item.label}
+								</Link>
 							))}
 						</div>
 					</div>
