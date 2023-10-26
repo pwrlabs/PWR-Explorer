@@ -7,6 +7,7 @@ import { TransactionDetailResponse } from './responses/txn/txn-details.response'
 import { LatestBlocksResponse } from './responses/blocks/latest-blocks.response';
 import { BlockTransactionsResponse } from './responses/blocks/block-txns-response';
 import { BlockDetailsResponse } from './responses/blocks/block-details.response';
+import { AddressTxnHistoryResponse } from './responses/addresss/txn-history.response';
 
 interface Transaction {
 	txnHash: string;
@@ -110,7 +111,7 @@ const QueryApi = {
 				address: string,
 				count: number,
 				page: number
-			): Promise<Transaction[]> => {
+			): Promise<AddressTxnHistoryResponse> => {
 				const url = api.user.txnHistory.getTxnHistory(address, count, page);
 				const res = await axios({
 					method: 'get',

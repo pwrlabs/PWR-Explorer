@@ -9,7 +9,7 @@ import QUERY_KEYS from '@/static/query.keys';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
 
 import StatBox from '@/components/internal/stat-box/stat-box.component';
-import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/utils/formatters';
+import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
 
 import ROUTES from '@/static/router.data';
 import Pagination from '@/components/internal/pagination/pagination.component';
@@ -60,10 +60,17 @@ const headers = [
 	},
 ];
 
-export default function AddressPage() {
+type AddressPageProps = {
+	params: {
+		address: string;
+	};
+};
+
+export default function AddressPage({ params }: AddressPageProps) {
+	const address = params.address;
+
 	const [page, setPage] = useState<number>(10);
 	const [count, setCount] = useState<number>(10);
-	const [address, setAddress] = useState<string>('0x2c86e018e43fe1effa7f43b7c128ee29a0e86853');
 
 	const [paginationMetadata, setPaginationMetadata] = useState({
 		currentPage: 1,
@@ -89,8 +96,9 @@ export default function AddressPage() {
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
-				if (txnHistoryData?.status === 'failure') return;
-				// setPaginationMetadata(txnHistoryData?.data?.metadata);
+				if (data.status === 'failure') return;
+
+				setPaginationMetadata(data.data.metadata);
 			},
 		}
 	);
@@ -108,15 +116,16 @@ export default function AddressPage() {
 		<main className="container-2 mx-auto">
 			<section className="space-y-4">
 				{/* Title */}
-				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
+				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey">
 					Account
 				</h1>
 
-				<div className="flex items-center space-x-4 dark:text-white text-abrandc-dark-grey">
-					<h2>Address</h2>
-					<span className="dark:text-ablue-100 text-ablue-500">
-						0x71E5eE643b7d96d164396d1643964C1681
-					</span>
+				<div className="flex items-center space-x-4 ">
+					<h1>
+						<span className="dark:text-white text-abrandc-dark-grey mr-2">Address</span>
+						<span className="dark:text-ablue-100 text-ablue-500">{address}</span>
+					</h1>
+
 					<Tooltip text="Copied to clipbloard" position="up" trigger="click">
 						<button className="text-agrey-500 dark:text-agrey-600">
 							<i className="far fa-clone" />
@@ -124,98 +133,99 @@ export default function AddressPage() {
 					</Tooltip>
 				</div>
 
-				{/* stats */}
-				<div className="grid xl:grid-cols-2 grid-cols1 gap-4">
-					{/* Transactions */}
-					<StatBox
-						title=""
-						valueComp={() => (
-							<div className="space-y-4  text-sm font-medium">
-								<h1 className="text-xl font-bold">Overview</h1>
+				{/* Overview */}
+				<div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
+					{/* Overview box */}
+					<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
+						<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
+							Overview
+						</h1>
 
-								{/* First Transaction Info */}
-								<div className="space-y-1">
-									<span className="text-agrey-500 dark:text-agrey-600">
-										PWR BALANCE
-									</span>
-									<div className="flex items-center space-x-4">
-										<span className="dark:text-white text-black">22 PWR</span>
+						{/* First Transaction Info */}
+						<div className="space-y-1">
+							<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+								PWR BALANCE
+							</div>
+							<div className="space-x-2">
+								<span className="dark:text-white text-black font-bold">22 PWR</span>
+								<span className="text-agrey-500 dark:text-agrey-600">
+									<Tooltip text="lorem" position="up" trigger="hover">
+										<i className="far fa-info-circle" />
+									</Tooltip>
+								</span>
+							</div>
+						</div>
 
-										<button className="text-agrey-500 dark:text-agrey-600">
-											<i className="fas fa-info-circle" />
-										</button>
-									</div>
-								</div>
+						{/* Pwr value */}
+						<div className="space-y-1">
+							<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+								PWR VALUE
+							</span>
+							<div className="space-x-2">
+								<span className="dark:text-white text-black font-bold">$22</span>
+								<span className="text-agrey-500 dark:text-agrey-600">
+									(@ $1.00/PWR)
+								</span>
+							</div>
+						</div>
+					</div>
 
-								{/* Second Transaction Info (similar structure) */}
-								<div className="space-y-1">
-									<span className="text-agrey-500 dark:text-agrey-600">
-										PWR VALUE
-									</span>
-									<div className="flex items-center space-x-4">
-										<h1 className="dark:text-white text-black">$22</h1>
-										<span className="text-agrey-500 dark:text-agrey-600">
-											(@ $1.00/PWR)
-										</span>
-									</div>
+					{/* Overview box */}
+					<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
+						<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
+							More Info
+						</h1>
+
+						{/* Last Transaction Info */}
+						<div className="space-y-1">
+							<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+								LAST TXN SENT
+							</div>
+							<div className="flex gap-x-2">
+								<Link
+									href={`${ROUTES.transactions}/0x71E5eE...4C1681`}
+									className="text-medium text-ablue-800 dark:text-ablue-100"
+								>
+									0x71E5eE...4C1681
+								</Link>
+
+								<Tooltip position="up" trigger="click" text="copied to clipboard">
+									<button className="text-agrey-500 dark:text-agrey-600">
+										<i className="far fa-clone "></i>
+									</button>
+								</Tooltip>
+
+								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+									8h 33m ago
 								</div>
 							</div>
-						)}
-					/>
+						</div>
 
-					{/* Transactions fee */}
-					<StatBox
-						title=""
-						valueComp={() => (
-							<div className="space-y-4  text-sm font-medium">
-								<h1 className="text-xl font-bold">More Info</h1>
+						{/* Last txn info */}
+						<div className="space-y-1">
+							<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+								FIRST TXN SENT
+							</span>
+							<div className="flex gap-x-2">
+								<Link
+									href={`${ROUTES.transactions}/0x71E5eE...4C1681`}
+									className="text-medium text-ablue-800 dark:text-ablue-100"
+								>
+									0x71E5eE...4C1681
+								</Link>
 
-								{/* First Transaction Info */}
-								<div className="space-y-1">
-									<span className="text-agrey-500 dark:text-agrey-600">
-										LAST TXN SENT
-									</span>
-									<div className="flex items-center space-x-4">
-										<span className="dark:text-ablue-100 text-ablue-500">
-											0x71E5eE...4C1681
-										</span>
-										<Tooltip
-											text="Copied to clipboard"
-											position="up"
-											trigger="click"
-										>
-											<button className="text-agrey-500 dark:text-agrey-600">
-												<i className="far fa-clone" />
-											</button>
-										</Tooltip>
-										<span>8h 33m ago</span>
-									</div>
-								</div>
+								<Tooltip position="up" trigger="click" text="copied to clipboard">
+									<button className="text-agrey-500 dark:text-agrey-600">
+										<i className="far fa-clone "></i>
+									</button>
+								</Tooltip>
 
-								{/* Second Transaction Info (similar structure) */}
-								<div className="space-y-1">
-									<span className="text-agrey-500 dark:text-agrey-600">
-										LAST TXN SENT
-									</span>
-									<div className="flex items-center space-x-4">
-										<span className="dark:text-ablue-100 text-ablue-500">
-											0x71E5eE...4C1681
-										</span>
-										<Tooltip
-											text="Copied to clipboard"
-											position="up"
-											trigger="click"
-										>
-											<button className="text-agrey-500 dark:text-agrey-600">
-												<i className="far fa-clone" />
-											</button>
-										</Tooltip>
-										<span>8h 33m ago</span>
-									</div>
+								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+									8h 33m ago
 								</div>
 							</div>
-						)}
-					/>
+						</div>
+					</div>
 				</div>
 			</section>
 
@@ -265,7 +275,7 @@ export default function AddressPage() {
 									<td>Loading</td>
 								</tr>
 							) : (
-								txnHistoryData?.data?.transactions.map((txn, idx) => (
+								txnHistoryData.data.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
