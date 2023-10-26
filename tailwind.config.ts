@@ -81,6 +81,11 @@ const config: Config = {
 			fontFamily: {
 				space_grotesk: ['var(--font-grotesk)'],
 			},
+			boxShadow: {
+				'3xl': '8px 8px 56px 0px rgba(174, 174, 192, 0.16)', // Custom boxShadow
+				
+			  },
+			  
 		},
 	},
 	plugins: [
