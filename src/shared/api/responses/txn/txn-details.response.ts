@@ -6,8 +6,10 @@ type Txn = {
 	timeStamp: number;
 	to: string;
 	txnFee: string;
+	txnFeeInUsd: string;
 	txnHash: string;
 	value: string;
+	valueInUsd: string;
 };
 
 type TransactionDetailsSuccessResponse = {

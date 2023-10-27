@@ -16,6 +16,7 @@ import ThemeService from 'src/shared/services/theme/theme.service';
 import ThemeSvcContext from 'src/shared/services/theme/theme.context';
 import { Theme } from 'src/shared/services/theme/theme.type';
 import ROUTES from '@/static/router.data';
+import { usePathname } from 'next/navigation';
 
 function PwrLogo() {
 	return (
@@ -37,6 +38,8 @@ function PwrLogo() {
 }
 
 export default function HeaderComponent() {
+	const pathname = usePathname();
+
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
 	const blockchainLinks = [
@@ -117,7 +120,7 @@ export default function HeaderComponent() {
 					<div className="h-full grid place-items-center">
 						<Link
 							href={ROUTES.root}
-							className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2"
+							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
 						>
 							Explore
 						</Link>
@@ -166,11 +169,20 @@ export default function HeaderComponent() {
 						className="theme_btn text-agrey-500 dark:text-white"
 						onClick={toggleTheme}
 					>
-						<i
+						{currentTheme === 'light' ? (
+							<div>
+								<img src="/icons/sun.svg" />
+							</div>
+						) : (
+							<div className="dark:text-white">
+								<i className="fa-lf fas fa-moon" />
+							</div>
+						)}
+						{/* <i
 							className={`fa-lg fas ${
 								currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
 							}`}
-						></i>
+						></i> */}
 					</button>
 				</div>
 

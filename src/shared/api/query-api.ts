@@ -8,6 +8,7 @@ import { LatestBlocksResponse } from './responses/blocks/latest-blocks.response'
 import { BlockTransactionsResponse } from './responses/blocks/block-txns-response';
 import { BlockDetailsResponse } from './responses/blocks/block-details.response';
 import { AddressTxnHistoryResponse } from './responses/addresss/txn-history.response';
+import { BalanceResponse } from './responses/addresss/balance.response';
 
 interface Transaction {
 	txnHash: string;
@@ -106,23 +107,34 @@ const QueryApi = {
 		},
 	},
 	user: {
-		txnHistory: {
-			getTxnHistory: async (
-				address: string,
-				count: number,
-				page: number
-			): Promise<AddressTxnHistoryResponse> => {
-				const url = api.user.txnHistory.getTxnHistory(address, count, page);
-				const res = await axios({
-					method: 'get',
-					url,
-				});
+		txnHistory: async (
+			address: string,
+			count: number,
+			page: number
+		): Promise<AddressTxnHistoryResponse> => {
+			const url = api.user.txnHistory(address, count, page);
+			const res = await axios({
+				method: 'get',
+				url,
+			});
 
-				if (res.data.status === 'failure')
-					throw new Error('Failed to fetch transaction history');
+			if (res.data.status === 'failure')
+				throw new Error('Failed to fetch transaction history');
 
-				return res.data;
-			},
+			return res.data;
+		},
+
+		balance: async (address: string): Promise<BalanceResponse> => {
+			const url = api.user.balance(address);
+			const res = await axios({
+				method: 'get',
+				url,
+			});
+
+			if (res.data.status === 'failure')
+				throw new Error('Failed to fetch transaction history');
+
+			return res.data;
 		},
 	},
 };

@@ -21,11 +21,12 @@ const api = {
 		latest: (page: number, count: number) =>
 			`${_baseUrl}/latestTransactions/?page=${page}&count=${count}`,
 	},
-	user:{
-		txnHistory:{
-			getTxnHistory: (address: string, page: number, count: number) => `${_baseUrl}/transactionHistory/?address=${address}&count=${count}&page=${page}`,
-		}
-	}
+	user: {
+		txnHistory: (address: string, page: number, count: number) =>
+			`${_baseUrl}/transactionHistory/?address=${address}&count=${count}&page=${page}`,
+
+		balance: (address: string) => `${_baseUrl}/balanceOf/?userAddress=${address}`,
+	},
 };
 
 export default api;

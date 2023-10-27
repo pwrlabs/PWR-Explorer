@@ -12,6 +12,7 @@ const QUERY_KEYS = {
 
 	//USER
 	txn_history: 'txn_history',
+	balance: 'balance',
 };
 
 export default QUERY_KEYS;

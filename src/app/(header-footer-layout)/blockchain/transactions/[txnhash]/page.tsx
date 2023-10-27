@@ -47,7 +47,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 			{/* Title */}
 			<div className="flex xl:flex-row flex-col justify-between items-center">
 				<div className="flex flex-1 items-center xl:gap-x-2 gap-x-8 ">
-					<h1 className="px-2 py-1 xl:text-[36px] text-[24px] font-bold leading-[44px]">
+					<h1 className=" xl:text-[36px] text-[24px] font-bold leading-[44px]">
 						Transaction Details
 					</h1>
 					<Tags>Transfer</Tags>
@@ -218,7 +218,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
-									($0.00)
+									(${txnData.data.valueInUsd})
 								</h1>
 							</div>
 						</div>
@@ -235,11 +235,11 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 							</div>
 							<div className="flex items-center gap-x-2 ">
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(txnData.data.value, 9, 9)} PWR
+									{BnToDec(txnData.data.txnFee, 9, 9)} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
-									($0.00)
+									(${txnData.data.txnFeeInUsd})
 								</h1>
 							</div>
 						</div>

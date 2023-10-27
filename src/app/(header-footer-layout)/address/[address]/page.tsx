@@ -9,7 +9,7 @@ import QUERY_KEYS from '@/static/query.keys';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
 
 import StatBox from '@/components/internal/stat-box/stat-box.component';
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
+import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/utils/formatters';
 
 import ROUTES from '@/static/router.data';
 import Pagination from '@/components/internal/pagination/pagination.component';
@@ -69,6 +69,18 @@ type AddressPageProps = {
 export default function AddressPage({ params }: AddressPageProps) {
 	const address = params.address;
 
+	// *~~*~~*~~ account balance ~~*~~*~~* //
+	const {
+		data: balanceData,
+		isLoading: balanceLoading,
+		isError: balanceError,
+	} = useQuery([QUERY_KEYS.balance, address], () => QueryApi.user.balance(address), {
+		staleTime: 1000 * 60 * 5,
+		cacheTime: 0,
+	});
+
+	// *~~*~~*~~ Txn history ~~*~~*~~* //
+
 	const [page, setPage] = useState<number>(10);
 	const [count, setCount] = useState<number>(10);
 
@@ -91,7 +103,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 		isError: txnHistoryError,
 	} = useQuery(
 		[QUERY_KEYS.txn_history, address, page, count],
-		() => QueryApi.user.txnHistory.getTxnHistory(address, page, count),
+		() => QueryApi.user.txnHistory(address, page, count),
 		{
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
@@ -107,9 +119,16 @@ export default function AddressPage({ params }: AddressPageProps) {
 		setPage(page);
 	}
 
-	if (txnHistoryLoading) return null;
+	if (txnHistoryLoading || balanceLoading) return null;
 
-	if (txnHistoryError || !txnHistoryData || txnHistoryData.status === 'failure')
+	if (
+		txnHistoryError ||
+		!txnHistoryData ||
+		txnHistoryData.status === 'failure' ||
+		balanceError ||
+		!balanceData ||
+		balanceData.status === 'failure'
+	)
 		return <div>Error</div>;
 
 	return (
@@ -147,7 +166,9 @@ export default function AddressPage({ params }: AddressPageProps) {
 								PWR BALANCE
 							</div>
 							<div className="space-x-2">
-								<span className="dark:text-white text-black font-bold">22 PWR</span>
+								<span className="dark:text-white text-black font-bold">
+									{numberWithCommas(+BnToDec(balanceData.data.balance, 9, 9))} PWR
+								</span>
 								<span className="text-agrey-500 dark:text-agrey-600">
 									<Tooltip text="lorem" position="up" trigger="hover">
 										<i className="far fa-info-circle" />
@@ -162,7 +183,9 @@ export default function AddressPage({ params }: AddressPageProps) {
 								PWR VALUE
 							</span>
 							<div className="space-x-2">
-								<span className="dark:text-white text-black font-bold">$22</span>
+								<span className="dark:text-white text-black font-bold">
+									${numberWithCommas(balanceData.data.balanceUsdValue)}
+								</span>
 								<span className="text-agrey-500 dark:text-agrey-600">
 									(@ $1.00/PWR)
 								</span>
