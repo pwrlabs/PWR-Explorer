@@ -377,7 +377,7 @@ export default function Home() {
 													}`}
 												>
 													{/* icon and txn hash, timestamp */}
-													<div className="flex gap-x-4 ">
+													<div className="flex gap-x-4 flex-1">
 														<Image
 															className=" xl:block hidden"
 															src="/icons/list.svg"
@@ -403,7 +403,7 @@ export default function Home() {
 													</div>
 
 													{/* txn count and fee recipient */}
-													<div className="fleax-grow">
+													<div className="flex-1">
 														<h1 className="flex gap-x-2">
 															<div className="dark:text-white text-abrandc-dark-grey">
 																From
