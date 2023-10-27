@@ -377,7 +377,7 @@ export default function Home() {
 													}`}
 												>
 													{/* icon and txn hash, timestamp */}
-													<div className="flex gap-x-4 ">
+													<div className="flex gap-x-4 flex-1">
 														<Image
 															className=" xl:block hidden"
 															src="/icons/list.svg"
@@ -403,7 +403,7 @@ export default function Home() {
 													</div>
 
 													{/* txn count and fee recipient */}
-													<div className="fleax-grow">
+													<div className="flex-1">
 														<h1 className="flex gap-x-2">
 															<div className="dark:text-white text-abrandc-dark-grey">
 																From
@@ -423,8 +423,12 @@ export default function Home() {
 															<span className="dark:text-white text-abrandc-dark-grey">
 																To
 															</span>
-															<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-1">
-																{shortenAddress(transaction.to, 4)}
+															<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-8">
+																	{transaction.to.length > 15
+																		? shortenAddress(
+																				transaction.to
+																		  )
+																		: transaction.to}
 															</span>
 														</h1>
 													</div>

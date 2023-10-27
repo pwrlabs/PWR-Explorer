@@ -14,8 +14,8 @@ import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/u
 import ROUTES from 'src/static/router.data';
 import Pagination from 'src/components/internal/pagination/pagination.component';
 import { useState } from 'react';
-import { copyToClipboard } from 'src/shared/utils/functions';
-import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
+import { copyToClipboard } from '@/shared/utils/functions';
+import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 
 const headers = [
 	{
@@ -86,7 +86,7 @@ export default function Transactions() {
 			},
 		}
 	);
-
+		
 	function handlePageChange(page: number) {
 		setPage(page);
 	}
@@ -94,6 +94,9 @@ export default function Transactions() {
 	if (txnsLoading) return null;
 
 	if (txnsError || !txnsData || txnsData.status === 'failure') return <div>Error</div>;
+
+
+	
 
 	return (
 		<main className="container-2 mx-auto space-y-20">
@@ -259,7 +262,7 @@ export default function Transactions() {
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
-												<div>
+												<div className="relative"  >
 													<Image
 														className="w-auto h-auto"
 														src="/icons/eye.svg"
@@ -267,6 +270,8 @@ export default function Transactions() {
 														height={20}
 														alt=""
 													/>
+													<TransactionTooltipDetails/>
+													
 												</div>
 
 												<Link
@@ -371,6 +376,7 @@ export default function Transactions() {
 					<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 				</div>
 			</section>
+			
 		</main>
 	);
 }

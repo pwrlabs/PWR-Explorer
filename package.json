@@ -9,6 +9,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@popperjs/core": "^2.11.8",
 		"axios": "^1.5.1",
 		"bignumber.js": "^9.1.2",
 		"next": "^13.5.6",
