@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import 'src/components/internal/text-field/text-field.scss';
@@ -226,18 +227,6 @@ export default function Home() {
 									<div className="flex-grow flex flex-col justify-end">
 										<div className="w-full ">
 											<img src="/graph.svg" alt="" className="xl:w-full" />
-											{/* <Image
-											className="xl:w-[300px] h-[85px] w-full"
-											src="/graph.svg"
-											width={10}
-											height={10}
-											alt=""
-										/> */}
-											{/* <div className="flex justify-between items-center mx-1 text-sm text-agrey-600">
-											<span>Apr 23</span>
-											<span>Apr 30</span>
-											<span>May 7</span>
-										</div> */}
 										</div>
 									</div>
 								</div>
@@ -424,11 +413,9 @@ export default function Home() {
 																To
 															</span>
 															<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-8">
-																	{transaction.to.length > 15
-																		? shortenAddress(
-																				transaction.to
-																		  )
-																		: transaction.to}
+																{transaction.to.length > 15
+																	? shortenAddress(transaction.to)
+																	: transaction.to}
 															</span>
 														</h1>
 													</div>

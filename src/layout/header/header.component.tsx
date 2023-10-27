@@ -170,8 +170,8 @@ export default function HeaderComponent() {
 						onClick={toggleTheme}
 					>
 						{currentTheme === 'light' ? (
-							<div>
-								<img src="/icons/sun.svg" />
+							<div className="select-none">
+								<Image src="/icons/sun.svg" width={16} height={16} alt="" />
 							</div>
 						) : (
 							<div className="dark:text-white">
