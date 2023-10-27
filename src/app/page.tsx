@@ -423,8 +423,12 @@ export default function Home() {
 															<span className="dark:text-white text-abrandc-dark-grey">
 																To
 															</span>
-															<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-1">
-																{shortenAddress(transaction.to, 4)}
+															<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-8">
+																	{transaction.to.length > 15
+																		? shortenAddress(
+																				transaction.to
+																		  )
+																		: transaction.to}
 															</span>
 														</h1>
 													</div>
