@@ -17,7 +17,8 @@
 		"react-dom": "latest",
 		"react-icons": "^4.11.0",
 		"react-query": "^3.39.3",
-		"sass": "^1.68.0"
+		"sass": "^1.68.0",
+		"victory": "^36.6.11"
 	},
 	"devDependencies": {
 		"@types/node": "latest",

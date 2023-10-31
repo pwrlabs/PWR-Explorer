@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
+import { VictoryArea, VictoryChart, VictoryAxis, VictoryTooltip } from 'victory';
 
 import 'src/components/internal/text-field/text-field.scss';
 
@@ -15,7 +16,21 @@ import { useQuery } from 'react-query';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from '@/static/router.data';
+function formatNumber(value: number) {
+	if (value >= 1e6) {
+		return (value / 1e6).toFixed(1) + 'M';
+	} else if (value >= 1e3) {
+		return (value / 1e3).toFixed(1) + 'k';
+	}
+	return value.toString();
+}
+const data = [
+	{ date: 'Apr 23', value: 840000, displayValue: formatNumber(840000) },
 
+	{ date: 'Apr 30', value: 980000 },
+
+	{ date: 'May 7', value: 900000 },
+];
 function BlockBoxSkeleton() {
 	return (
 		<div className="flex items-center gap-x-8 skeleton-container h-full w-full">
@@ -82,7 +97,7 @@ export default function Home() {
 					<div className="space-y-20">
 						{/* Title */}
 						<div className="flex flex-col items-center space-y-4">
-							<h1 className="text-[56px] font-bold dark:text-white text-abrandc-dark-grey text leading-[68px] p-2 text-center">
+							<h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold dark:text-white text-abrandc-dark-grey leading-tight p-2 text-center">
 								The PWR Chain Explorer
 							</h1>
 							{/* Search */}
@@ -219,15 +234,68 @@ export default function Home() {
 
 							{/* Graph */}
 							<div className="xl:col-span-3">
-								<div className="flex flex-col p-4 w-full h-[192px] bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl">
-									<h1 className="text-agrey-600 text-sm font-medium">
+								<div className="flex flex-col  w-full h-[192px] bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl">
+									<h1 className="text-agrey-600 text-sm font-medium mt-3 ml-3">
 										TRANSACTION HISTORY IN 14 DAYS
 									</h1>
 
-									<div className="flex-grow flex flex-col justify-end">
-										<div className="w-full ">
-											<img src="/graph.svg" alt="" className="xl:w-full" />
-										</div>
+									<div className="flex flex-col p-4 w-full h-[180px] rounded-xl">
+										<VictoryChart>
+											<defs>
+												<linearGradient
+													id="gradient"
+													x1="0%"
+													x2="0%"
+													y1="0%"
+													y2="100%"
+												>
+													<stop offset="0%" stopColor="#CCCCFE" />
+													<stop offset="100%" stopColor="#CCCCFE00" />
+												</linearGradient>
+											</defs>
+											<VictoryAxis
+												tickValues={['Apr 23', 'Apr 30', 'May 7']}
+												style={{
+													axis: { stroke: 'transparent' },
+													ticks: { stroke: 'transparent' },
+													tickLabels: {
+														fontSize: '27px', // Adjust the font size as needed
+														fill: '#6B7280', // Text color
+														fontWeight: 'normal', // You can use 'bold' for bold text
+													},
+												}}
+											/>
+											<VictoryAxis
+												dependentAxis
+												tickValues={[840000]}
+												tickFormat={(tickValue: number) =>
+													`${tickValue / 1000}k`
+												} // Format the tick labels as desired
+												style={{
+													axis: { stroke: 'transparent' },
+													ticks: { stroke: 'transparent' },
+													tickLabels: {
+														fontSize: '27px',
+														fill: '#6B7280',
+														fontWeight: 'normal',
+													},
+												}}
+												domain={[0, 1000000]} // Set the domain range for the y-axis, adjust these values as needed
+											/>
+											<VictoryArea
+												data={data}
+												x="date"
+												y="value"
+												interpolation="basis" // Use 'basis' interpolation for a curved graph
+												style={{
+													data: {
+														fill: 'url(#gradient)',
+														stroke: '#0054FF',
+														strokeWidth: 2,
+													},
+												}}
+											/>
+										</VictoryChart>
 									</div>
 								</div>
 							</div>
