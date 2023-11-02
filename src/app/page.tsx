@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
+import dynamic from 'next/dynamic';
 import React, { useEffect } from 'react';
-import ApexCharts from 'apexcharts';
 import axios from 'axios';
 import 'src/components/internal/text-field/text-field.scss';
 
@@ -17,6 +17,11 @@ import { useQuery } from 'react-query';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from '@/static/router.data';
+import { ApexOptions } from 'apexcharts';
+
+const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+
+// const ApexCharts = dynamic(() => import('apexcharts'), { ssr: false });
 
 function BlockBoxSkeleton() {
 	return (
@@ -68,102 +73,100 @@ function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; ic
 	);
 }
 
+function Chart() {
+	const options: ApexOptions = {
+		chart: {
+			type: 'area',
+			toolbar: {
+				show: false,
+			},
+		},
+
+		colors: ['#007BFF'],
+		stroke: {
+			width: 2,
+			curve: 'smooth', // Makes the line have curved edges
+		},
+		fill: {
+			type: 'gradient',
+			gradient: {
+				shadeIntensity: 1,
+				opacityFrom: 0.7,
+				opacityTo: 0.3,
+				stops: [0, 100],
+			},
+			colors: ['#007BFF'],
+		},
+		xaxis: {
+			categories: ['Apr 23', 'Apr 24', '', '', '', 'Apr 30', '', '', '', 'May 7'],
+			tickPlacement: 'on',
+			labels: {
+				rotate: 0,
+				style: {
+					colors: '#A9A9A9',
+					fontSize: '10px', // Adjust font size as desired
+				},
+			},
+			axisTicks: {
+				show: false, // This line will hide the tick marks
+			},
+			axisBorder: {
+				show: false, // Ensure the axis border is also hidden
+			},
+		},
+		yaxis: {
+			labels: {
+				formatter: function (val: any) {
+					if (val === 1000) {
+						return val / 1000 + 'k';
+					}
+					return '';
+				},
+				style: {
+					colors: '#A9A9A9',
+					fontSize: '10px', // Adjust font size as desired
+				},
+			},
+		},
+		grid: {
+			show: true,
+			borderColor: '#F7F7F7',
+			strokeDashArray: 0,
+			position: 'back',
+			xaxis: {
+				lines: {
+					show: false,
+				},
+			},
+		},
+		dataLabels: {
+			enabled: false,
+		},
+	};
+
+	const series = [
+		{
+			name: 'Series 1',
+			data: [840000, 870000, 860000, 850000, 860000, 870000, 880000, 910000, 920000, 930000],
+		},
+	];
+
+	return (
+		<>
+			<ApexChart type="area" options={options} series={series} height={200} width={300} />
+		</>
+	);
+}
+
 export default function Home() {
 	const {
 		isLoading: infoLoading,
 		data: infoData,
 		isError: infoError,
 	} = useQuery([QUERY_KEYS.explorer_info], QueryApi.explorer.info);
-	useEffect(() => {
-		const options = {
-			chart: {
-				type: 'area',
-				height: 170,
-				width: 280,
-				toolbar: {
-					show: false, 
-				},
-			},
-			series: [
-				{
-					name: 'Series 1',
-					data: [
-						840000, 870000, 860000, 850000, 860000, 870000, 880000, 910000, 920000,
-						930000,
-					],
-				},
-			],
-			colors: ['#007BFF'],
-			stroke: {
-				width: 2,
-				curve: 'smooth'  // Makes the line have curved edges
 
-			},
-			fill: {
-				type: 'gradient',
-				gradient: {
-					shadeIntensity: 1,
-					opacityFrom: 0.7,
-					opacityTo: 0.3,
-					stops: [0, 100],
-				},
-				colors: ['#007BFF'],
-			},
-			xaxis: {
-				categories: ['Apr 23', 'Apr 24', '', '', '', 'Apr 30', '', '', '', 'May 7'],
-				tickPlacement: 'on',
-				labels: {
-					rotate: 0,
-					style: {
-						colors: '#A9A9A9',
-						fontSize: '17px',  // Adjust font size as desired
+	if (infoError) return <div>error</div>;
 
-					},
-				},
-				axisTicks: {
-					show: false, // This line will hide the tick marks
-				},
-				axisBorder: {
-					show: false, // Ensure the axis border is also hidden
-				},
-			},
-			yaxis: {
-				labels: {
-					formatter: function (val: any) {
-						if (val === 840000) {
-							return val / 1000 + 'k'; 
-						}
-						return ''; 
-					},
-					style: {
-						colors: '#A9A9A9', 
-						fontSize: '18px',  // Adjust font size as desired
-
-					},
-				},
-			},
-			grid: {
-				show: true,
-				borderColor: '#F7F7F7',
-				strokeDashArray: 0, 
-				position: 'back', 
-				xaxis: {
-					lines: {
-						show: false, 
-					},
-				},
-			},
-			dataLabels: {
-				enabled: false,
-			},
-		};
-
-		const chart = new ApexCharts(document.querySelector('#chart'), options);
-		chart.render();
-		return () => {
-			chart.destroy();
-		};
-	}, []);
 	return (
 		<>
 			<HeaderComponent />
@@ -208,42 +211,38 @@ export default function Home() {
 										<StatBoxSkeleton />
 									</>
 								) : (
-									<>
-										{/* Price */}
-										<StatBox
-											title="PWR PRICE"
-											valueComp={() => (
-												<>
-													<span>${infoData?.data?.price}</span>
-													<span
-														className={`font-medium  pl-2 pr-2 ${
-															infoData?.data &&
-															infoData?.data?.priceChange > 0
-																? 'text-green-500'
-																: 'text-ared-400'
-														}`}
-													>
-														{infoData?.data?.priceChange}%
-													</span>
-												</>
-											)}
-											icon="/icons/pwr.svg"
-										/>
+									infoData && (
+										<>
+											{/* Price */}
+											<StatBox
+												title="PWR PRICE"
+												valueComp={() => (
+													<>
+														<span>${infoData.price}</span>
+														<span
+															className={`font-medium  pl-2 pr-2 ${
+																infoData.priceChange > 0
+																	? 'text-green-500'
+																	: 'text-ared-400'
+															}`}
+														>
+															{infoData.priceChange}%
+														</span>
+													</>
+												)}
+												icon="/icons/pwr.svg"
+											/>
 
-										{/* Market Cap */}
-										<StatBox
-											title="PWR MARKET CAP"
-											valueComp={() => (
-												<>
-													$
-													{numberWithCommas(
-														infoData?.data?.marketCap || 0
-													)}
-												</>
-											)}
-											icon="/icons/globe.svg"
-										/>
-									</>
+											{/* Market Cap */}
+											<StatBox
+												title="PWR MARKET CAP"
+												valueComp={() => (
+													<>${numberWithCommas(infoData.marketCap)}</>
+												)}
+												icon="/icons/globe.svg"
+											/>
+										</>
+									)
 								)}
 							</div>
 
@@ -258,53 +257,55 @@ export default function Home() {
 										</div>
 									</>
 								) : (
-									<>
-										{/* Transactions */}
-										<div className="flex items-center justify-between bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
-											<div className="flex items-center gap-x-4">
-												<Image
-													src="/icons/arrows.svg"
-													width={28}
-													height={28}
-													alt="PWR Icon"
-												/>
+									infoData && (
+										<>
+											{/* Transactions */}
+											<div className="flex items-center justify-between bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
+												<div className="flex items-center gap-x-4">
+													<Image
+														src="/icons/arrows.svg"
+														width={28}
+														height={28}
+														alt="PWR Icon"
+													/>
+													<div className="flex flex-col gap-y-2">
+														<h1 className="text-agrey-600 text-sm font-medium leading-[24px] ">
+															TRANSACTIONS
+														</h1>
+														<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
+															{infoData.totalTransactionsCount}
+														</h2>
+													</div>
+												</div>
+
 												<div className="flex flex-col gap-y-2">
-													<h1 className="text-agrey-600 text-sm font-medium leading-[24px] ">
-														TRANSACTIONS
+													<h1 className="text-agrey-600 text-sm font-medium leading-[24px] text-right">
+														TPS
 													</h1>
 													<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
-														{infoData?.data?.totalTransactionsCount}
+														{infoData.tps}
 													</h2>
 												</div>
 											</div>
 
-											<div className="flex flex-col gap-y-2">
-												<h1 className="text-agrey-600 text-sm font-medium leading-[24px] text-right">
-													TPS
-												</h1>
-												<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
-													{infoData?.data?.tps}
-												</h2>
+											{/* Blocks, nodes */}
+											<div className="flex flex-col xl:flex-row gap-4 ">
+												{/* Blocks */}
+												<StatBox
+													icon="/icons/clock.svg"
+													title="BLOCKS"
+													valueComp={() => <>{infoData.blocksCount}</>}
+												/>
+
+												{/* nodes */}
+												<StatBox
+													icon="/icons/nodes.svg"
+													title="VALIDATOR NODES"
+													valueComp={() => <>{infoData.validators}</>}
+												/>
 											</div>
-										</div>
-
-										{/* Blocks, nodes */}
-										<div className="flex flex-col xl:flex-row gap-4 ">
-											{/* Blocks */}
-											<StatBox
-												icon="/icons/clock.svg"
-												title="BLOCKS"
-												valueComp={() => <>{infoData?.data?.blocksCount}</>}
-											/>
-
-											{/* nodes */}
-											<StatBox
-												icon="/icons/nodes.svg"
-												title="VALIDATOR NODES"
-												valueComp={() => <>{infoData?.data?.validators}</>}
-											/>
-										</div>
-									</>
+										</>
+									)
 								)}
 							</div>
 
@@ -316,7 +317,7 @@ export default function Home() {
 									</h1>
 
 									<div className="flex flex-col p-4 w-full h-[100%] rounded-xl">
-										<div id="chart"></div>
+										<Chart />
 									</div>
 								</div>
 							</div>
@@ -344,7 +345,7 @@ export default function Home() {
 													<BlockBoxSkeleton key={idx} />
 												</div>
 										  ))
-										: infoData?.data?.blocks.map((block, index) => (
+										: infoData?.blocks.map((block, index) => (
 												<div
 													key={index}
 													className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
@@ -445,7 +446,7 @@ export default function Home() {
 													<BlockBoxSkeleton key={idx} />
 												</div>
 										  ))
-										: infoData?.data?.txns.map((transaction, index) => (
+										: infoData?.txns.map((transaction, index) => (
 												<div
 													key={index}
 													className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${

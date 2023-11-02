@@ -8,26 +8,22 @@ type Txn = {
 	value: string;
 };
 
-type BlockTransactionsSuccessResponse = {
-	status: 'success';
-	data: {
-		transactions: Txn[];
-		metadata: {
-			totalItems: number;
-			startIndex: number;
-			previousPage: number;
-			itemsPerPage: number;
-			endIndex: number;
-			nextPage: number;
-			totalPages: number;
-			currentPage: number;
-		};
+export type BlockTransactionsSuccessResponse = {
+	transactions: Txn[];
+	metadata: {
+		totalItems: number;
+		startIndex: number;
+		previousPage: number;
+		itemsPerPage: number;
+		endIndex: number;
+		nextPage: number;
+		totalPages: number;
+		currentPage: number;
 	};
 };
 
 type BlockTransactionsFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type BlockTransactionsResponse =

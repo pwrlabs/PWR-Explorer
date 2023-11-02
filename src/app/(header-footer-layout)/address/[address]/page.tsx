@@ -81,7 +81,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 	// *~~*~~*~~ Txn history ~~*~~*~~* //
 
-	const [page, setPage] = useState<number>(10);
+	const [page, setPage] = useState<number>(1);
 	const [count, setCount] = useState<number>(10);
 
 	const [paginationMetadata, setPaginationMetadata] = useState({
@@ -108,9 +108,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
-				if (data.status === 'failure') return;
-
-				setPaginationMetadata(data.data.metadata);
+				setPaginationMetadata(data.metadata);
 			},
 		}
 	);
@@ -119,17 +117,9 @@ export default function AddressPage({ params }: AddressPageProps) {
 		setPage(page);
 	}
 
-	if (txnHistoryLoading || balanceLoading) return null;
+	if (txnHistoryLoading || balanceLoading || !txnHistoryData || !balanceData) return null;
 
-	if (
-		txnHistoryError ||
-		!txnHistoryData ||
-		txnHistoryData.status === 'failure' ||
-		balanceError ||
-		!balanceData ||
-		balanceData.status === 'failure'
-	)
-		return <div>Error</div>;
+	if (txnHistoryError || balanceError) return <div>Error</div>;
 
 	return (
 		<main className="container-2 mx-auto">
@@ -146,7 +136,10 @@ export default function AddressPage({ params }: AddressPageProps) {
 					</h1>
 
 					<Tooltip text="Copied to clipbloard" position="up" trigger="click">
-						<button className="text-agrey-500 dark:text-agrey-600">
+						<button
+							className="text-agrey-500 dark:text-agrey-600"
+							onClick={() => copyToClipboard(address)}
+						>
 							<i className="far fa-clone" />
 						</button>
 					</Tooltip>
@@ -160,14 +153,14 @@ export default function AddressPage({ params }: AddressPageProps) {
 							Overview
 						</h1>
 
-						{/* First Transaction Info */}
+						{/* balane */}
 						<div className="space-y-1">
 							<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 								PWR BALANCE
 							</div>
 							<div className="space-x-2">
 								<span className="dark:text-white text-black font-bold">
-									{numberWithCommas(+BnToDec(balanceData.data.balance, 9, 9))} PWR
+									{numberWithCommas(+BnToDec(balanceData.balance, 9, 9))} PWR
 								</span>
 								<span className="text-agrey-500 dark:text-agrey-600">
 									<Tooltip text="lorem" position="up" trigger="hover">
@@ -184,7 +177,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 							</span>
 							<div className="space-x-2">
 								<span className="dark:text-white text-black font-bold">
-									${numberWithCommas(balanceData.data.balanceUsdValue)}
+									${numberWithCommas(balanceData.balanceUsdValue)}
 								</span>
 								<span className="text-agrey-500 dark:text-agrey-600">
 									(@ $1.00/PWR)
@@ -206,20 +199,25 @@ export default function AddressPage({ params }: AddressPageProps) {
 							</div>
 							<div className="flex gap-x-2">
 								<Link
-									href={`${ROUTES.transactions}/0x71E5eE...4C1681`}
+									href={`${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`}
 									className="text-medium text-ablue-800 dark:text-ablue-100"
 								>
-									0x71E5eE...4C1681
+									{shortenAddress(txnHistoryData.hashOfLastTxnSent)}
 								</Link>
 
 								<Tooltip position="up" trigger="click" text="copied to clipboard">
-									<button className="text-agrey-500 dark:text-agrey-600">
+									<button
+										className="text-agrey-500 dark:text-agrey-600"
+										onClick={() =>
+											copyToClipboard(txnHistoryData.hashOfLastTxnSent)
+										}
+									>
 										<i className="far fa-clone "></i>
 									</button>
 								</Tooltip>
 
 								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-									8h 33m ago
+									{timeAgo(txnHistoryData.timeOfLastTxnSent)}
 								</div>
 							</div>
 						</div>
@@ -231,20 +229,25 @@ export default function AddressPage({ params }: AddressPageProps) {
 							</span>
 							<div className="flex gap-x-2">
 								<Link
-									href={`${ROUTES.transactions}/0x71E5eE...4C1681`}
+									href={`${ROUTES.transactions}/${txnHistoryData.hashOfFirstTxnSent}`}
 									className="text-medium text-ablue-800 dark:text-ablue-100"
 								>
-									0x71E5eE...4C1681
+									{shortenAddress(txnHistoryData.hashOfFirstTxnSent)}
 								</Link>
 
 								<Tooltip position="up" trigger="click" text="copied to clipboard">
-									<button className="text-agrey-500 dark:text-agrey-600">
+									<button
+										className="text-agrey-500 dark:text-agrey-600"
+										onClick={() =>
+											copyToClipboard(txnHistoryData.hashOfFirstTxnSent)
+										}
+									>
 										<i className="far fa-clone "></i>
 									</button>
 								</Tooltip>
 
 								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-									8h 33m ago
+									{timeAgo(txnHistoryData.timeOfFirstTxnSent)}
 								</div>
 							</div>
 						</div>
@@ -265,7 +268,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 					</div>
 				</div>
 				{/* Table */}
-				<div className="w-full mt-5 overflow-x-auto">
+				<div className="w-full mt-5 overflow-x-auto scroll-sm">
 					<table className="table-auto bg-awhite w-full min-w-[900px]">
 						{/* table header */}
 						<thead className="sticky top-0">
@@ -298,7 +301,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 									<td>Loading</td>
 								</tr>
 							) : (
-								txnHistoryData.data.transactions.map((txn, idx) => (
+								txnHistoryData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -332,7 +335,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 										{/* status */}
 										<td className="px-2 py-8">
 											<Link
-												href={`${ROUTES.blocks}/${txn.blockNumber}`}
+												href={`${ROUTES.blocks}/${txn.nonceOrValidationHash}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
 												{txn.txnType}
@@ -342,10 +345,10 @@ export default function AddressPage({ params }: AddressPageProps) {
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
 											<Link
-												href={`${ROUTES.blocks}/${txn.blockNumber}`}
+												href={`${ROUTES.blocks}/${txn.nonceOrValidationHash}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
-												17214042{txn.blockNumber}
+												{txn.nonceOrValidationHash}
 											</Link>
 										</td>
 

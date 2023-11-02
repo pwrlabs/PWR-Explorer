@@ -1,46 +1,50 @@
 import axios, { type AxiosResponse } from 'axios';
 
 import api from './api';
-import { ExplorerInfoResponse } from './responses/explorer-info.response';
-import { LatestTransactionsResponse } from './responses/txn/latests-txns.response';
-import { TransactionDetailResponse } from './responses/txn/txn-details.response';
-import { LatestBlocksResponse } from './responses/blocks/latest-blocks.response';
-import { BlockTransactionsResponse } from './responses/blocks/block-txns-response';
-import { BlockDetailsResponse } from './responses/blocks/block-details.response';
-import { AddressTxnHistoryResponse } from './responses/addresss/txn-history.response';
-import { BalanceResponse } from './responses/addresss/balance.response';
-
-interface Transaction {
-	txnHash: string;
-	timeStamp: string;
-	txnFee: number;
-	txnFeeInUsd: number;
-	txnType: string;
-	value: number;
-	valueInUsd: number;
-}
+import { ExplorerInfoResponse, ExplorerSuccessResponse } from './responses/explorer-info.response';
+import {
+	LatestTransactionsResponse,
+	LatestTransactionsSuccessResponse,
+} from './responses/txn/latests-txns.response';
+import {
+	TransactionDetailResponse,
+	TransactionDetailsSuccessResponse,
+} from './responses/txn/txn-details.response';
+import {
+	LatestBlocksResponse,
+	LatestBlocksSuccessResponse,
+} from './responses/blocks/latest-blocks.response';
+import {
+	BlockTransactionsResponse,
+	BlockTransactionsSuccessResponse,
+} from './responses/blocks/block-txns-response';
+import {
+	BlockDetailsResponse,
+	BlockDetailsSuccessResponse,
+} from './responses/blocks/block-details.response';
+import {
+	AddressTxnHistoryResponse,
+	AddressTxnHistorySuccessResponse,
+} from './responses/addresss/txn-history.response';
+import { BalanceResponse, BalanceSuccessResponse } from './responses/addresss/balance.response';
 
 const QueryApi = {
 	blocks: {
-		latests: async (page: number, count: number): Promise<LatestBlocksResponse> => {
+		latests: async (page: number, count: number): Promise<LatestBlocksSuccessResponse> => {
 			const url = api.blocks.latests(page, count);
-			const res = await axios({
+			const res = await axios<LatestBlocksSuccessResponse>({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure') throw new Error('Failed to fetch latest blocks');
 
 			return res.data;
 		},
-		details: async (blockNumber: number): Promise<BlockDetailsResponse> => {
+		details: async (blockNumber: number): Promise<BlockDetailsSuccessResponse> => {
 			const url = api.blocks.details(blockNumber);
-			const res = await axios({
+			const res = await axios<BlockDetailsSuccessResponse>({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure') throw new Error('Failed to fetch block details');
 
 			return res.data;
 		},
@@ -48,60 +52,46 @@ const QueryApi = {
 			blockNumber: number,
 			page: number,
 			count: number
-		): Promise<BlockTransactionsResponse> => {
+		): Promise<BlockTransactionsSuccessResponse> => {
 			const url = api.blocks.allTxn(blockNumber, page, count);
 
-			const res = await axios({
+			const res = await axios<BlockTransactionsSuccessResponse>({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure') throw new Error('Failed to fetch all transactions');
 
 			return res.data;
 		},
 	},
 	explorer: {
-		info: async (): Promise<ExplorerInfoResponse> => {
+		info: async (): Promise<ExplorerSuccessResponse> => {
 			const url = api.explorer.info;
 
-			const res = await axios<ExplorerInfoResponse>({
+			const res = await axios<ExplorerSuccessResponse>({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure') throw new Error('Failed to fetch explorer info');
 
 			return res.data;
 		},
 	},
 	transactions: {
-		details: async (txnhash: string): Promise<TransactionDetailResponse> => {
+		details: async (txnhash: string): Promise<TransactionDetailsSuccessResponse> => {
 			const url = api.transactions.details(txnhash);
-			const res = await axios<TransactionDetailResponse>({
+			const res = await axios<TransactionDetailsSuccessResponse>({
 				method: 'get',
 				url,
 			});
 
-			if (res.data.status === 'failure')
-				throw new Error('Failed to fetch transaction details');
-
 			return res.data;
 		},
-		latest: async (page: number, count: number): Promise<LatestTransactionsResponse> => {
-			console.log({
-				page,
-				count,
-			});
-
+		latest: async (page: number, count: number): Promise<LatestTransactionsSuccessResponse> => {
 			const url = api.transactions.latest(page, count);
 
 			const res = await axios({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure') throw new Error('Failed to fetch explorer info');
 
 			return res.data;
 		},
@@ -111,28 +101,22 @@ const QueryApi = {
 			address: string,
 			count: number,
 			page: number
-		): Promise<AddressTxnHistoryResponse> => {
+		): Promise<AddressTxnHistorySuccessResponse> => {
 			const url = api.user.txnHistory(address, count, page);
-			const res = await axios({
+			const res = await axios<AddressTxnHistorySuccessResponse>({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure')
-				throw new Error('Failed to fetch transaction history');
 
 			return res.data;
 		},
 
-		balance: async (address: string): Promise<BalanceResponse> => {
+		balance: async (address: string): Promise<BalanceSuccessResponse> => {
 			const url = api.user.balance(address);
-			const res = await axios({
+			const res = await axios<BalanceSuccessResponse>({
 				method: 'get',
 				url,
 			});
-
-			if (res.data.status === 'failure')
-				throw new Error('Failed to fetch transaction history');
 
 			return res.data;
 		},

@@ -53,11 +53,11 @@ export default function HeaderComponent() {
 			label: 'Blocks',
 			href: ROUTES.blocks,
 		},
-		{
-			id: 2,
-			label: 'Nodes',
-			href: ROUTES.nodes,
-		},
+		// {
+		// 	id: 2,
+		// 	label: 'Nodes',
+		// 	href: ROUTES.nodes,
+		// },
 	];
 
 	const navigation = [

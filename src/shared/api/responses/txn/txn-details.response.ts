@@ -1,4 +1,6 @@
-type Txn = {
+// type Txn = {};
+
+export type TransactionDetailsSuccessResponse = {
 	blockNumber: number;
 	data: string;
 	from: string;
@@ -12,14 +14,8 @@ type Txn = {
 	valueInUsd: string;
 };
 
-type TransactionDetailsSuccessResponse = {
-	status: 'success';
-	data: Txn;
-};
-
 type TransactionDetailFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type TransactionDetailResponse =
