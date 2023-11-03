@@ -1,38 +1,42 @@
-import { Block } from '@/shared/models/block.model';
-
 type Transaction = {
 	txnHash: string;
+	timeStamp: number;
+	valueInUsd: number;
+	nonceOrValidationHash: string;
+	txnType: string;
 	from: string;
 	to: string;
-	timeStamp: number;
+	txnFeeInUsd: number;
+	txnFee: string;
 	value: string;
-	blockNumber: number;
-	txnType: string;
 };
 
-type AddressTxnHistorySuccessResponse = {
-	status: 'success';
-	data: {
-		//
-		transactions: Transaction[];
+export type AddressTxnHistorySuccessResponse = {
+	//
+	transactions: Transaction[];
 
-		//
-		metadata: {
-			previousPage: number;
-			currentPage: number;
-			nextPage: number;
-			totalPages: number;
-			totalItems: number;
-			itemsPerPage: number;
-			startIndex: number;
-			endIndex: number;
-		};
+	//
+	metadata: {
+		previousPage: number;
+		currentPage: number;
+		nextPage: number;
+		totalPages: number;
+		totalItems: number;
+		itemsPerPage: number;
+		startIndex: number;
+		endIndex: number;
 	};
+
+	//
+	hashOfFirstTxnSent: string;
+	hashOfLastTxnSent: string;
+
+	timeOfFirstTxnSent: number;
+	timeOfLastTxnSent: number;
 };
 
 type AddressTxnHistoryFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type AddressTxnHistoryResponse =

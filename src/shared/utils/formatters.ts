@@ -1,7 +1,9 @@
 import BigNumber from 'bignumber.js';
 
 export function numberWithCommas(num: number): string {
-	return num.toLocaleString('en-US');
+	
+	const numInDecimal = (num / 1e9).toFixed(7); // Divide by 10^9 and format with 2 decimal places
+  return numInDecimal.toLocaleString() ;
 }
 
 export function timeAgo(timestamp: number): string {

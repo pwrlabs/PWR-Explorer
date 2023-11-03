@@ -2,48 +2,48 @@ import { Block } from '@/shared/models/block.model';
 
 type Txn = {
 	txnHash: string;
+	timeStamp: number;
+	valueInUsd: number;
+	nonceOrValidationHash: string;
+	txnType: string;
 	from: string;
 	to: string;
-	timeStamp: number;
+	txnFeeInUsd: number;
+	txnFee: string;
 	value: string;
-	blockNumber: number;
-	txnType: string;
+	positionInBlock: number;
 };
 
-type LatestTransactionsSuccessResponse = {
-	status: 'success';
-	data: {
-		averageTransactionFeePast24Hours: number;
-		averageTransactionFeePercentageChangeComparedToPreviousDay: number;
+export type LatestTransactionsSuccessResponse = {
+	averageTransactionFeePast24Hours: number;
+	averageTransactionFeePercentageChangeComparedToPreviousDay: number;
 
-		//
-		totalTransactionFeesPast24Hours: number;
-		totalTransactionFeesPercentageChangeComparedToPreviousDay: number;
+	//
+	totalTransactionFeesPast24Hours: number;
+	totalTransactionFeesPercentageChangeComparedToPreviousDay: number;
 
-		//
-		transactionCountPast24Hours: number;
-		transactionCountPercentageChangeComparedToPreviousDay: number;
+	//
+	transactionCountPast24Hours: number;
+	transactionCountPercentageChangeComparedToPreviousDay: number;
 
-		//
-		transactions: Txn[];
+	//
+	transactions: Txn[];
 
-		//
-		metadata: {
-			previousPage: number;
-			currentPage: number;
-			nextPage: number;
-			totalPages: number;
-			totalItems: number;
-			itemsPerPage: number;
-			startIndex: number;
-			endIndex: number;
-		};
+	//
+	metadata: {
+		previousPage: number;
+		currentPage: number;
+		nextPage: number;
+		totalPages: number;
+		totalItems: number;
+		itemsPerPage: number;
+		startIndex: number;
+		endIndex: number;
 	};
 };
 
 type LatestTransactionsFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type LatestTransactionsResponse =

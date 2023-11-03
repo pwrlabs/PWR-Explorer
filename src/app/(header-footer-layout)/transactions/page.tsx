@@ -1,8 +1,11 @@
 'use client';
 
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
+import { useFloating, autoUpdate, useHover, useInteractions } from '@floating-ui/react';
+
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 
@@ -13,10 +16,14 @@ import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/u
 
 import ROUTES from 'src/static/router.data';
 import Pagination from 'src/components/internal/pagination/pagination.component';
-import { useState } from 'react';
 import { copyToClipboard } from '@/shared/utils/functions';
 import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
-// import TransactionTooltipDetails from '@/components/internal/transaction-tooltip-details/transaction-tooltip-details';
+
+import TransactionTooltipDetails from '@/components/internal/transaction-tooltip-details/transaction-tooltip-details';
+
+import styles from './transactions.module.scss';
+
+const { eye_tooltip_cont, tooltip } = styles;
 
 const headers = [
 	{
@@ -82,8 +89,7 @@ export default function Transactions() {
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
-				if (data.status === 'failure') return;
-				setPaginationMetadata(data.data.metadata);
+				setPaginationMetadata(data.metadata);
 			},
 		}
 	);
@@ -92,9 +98,9 @@ export default function Transactions() {
 		setPage(page);
 	}
 
-	if (txnsLoading) return null;
+	if (txnsLoading || !txnsData) return null;
 
-	if (txnsError || !txnsData || txnsData.status === 'failure') return <div>Error</div>;
+	if (txnsError) return <div>Error</div>;
 
 	return (
 		<main className="container-2 mx-auto space-y-20">
@@ -111,21 +117,18 @@ export default function Transactions() {
 						title="TRANSACTIONS (24h)"
 						valueComp={() => (
 							<>
-								<span>{txnsData.data.transactionCountPast24Hours}</span>
-								<span
+								<span>{txnsData.transactionCountPast24Hours}</span>
+								{/* <span
 									className={`font-medium  pl-2 pr-2 ${
-										txnsData.data.transactionCountPast24Hours > 0
+										txnsData.transactionCountPast24Hours > 0
 											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
 											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
 									}`}
 								>
 									(
-									{
-										txnsData.data
-											.transactionCountPercentageChangeComparedToPreviousDay
-									}
+									{txnsData.transactionCountPercentageChangeComparedToPreviousDay}
 									%)
-								</span>
+								</span> */}
 							</>
 						)}
 						icon="/icons/arrows.svg"
@@ -137,28 +140,22 @@ export default function Transactions() {
 						valueComp={() => (
 							<>
 								<span>
-									{numberWithCommas(
-										txnsData.data.totalTransactionFeesPast24Hours
-									)}{' '}
-									PWR
+									{numberWithCommas(txnsData.totalTransactionFeesPast24Hours)} PWR
 								</span>
-								<span
+								{/* <span
 									className={`font-medium  pl-2 pr-2 ${
-										txnsData.data &&
-										txnsData.data
-											.totalTransactionFeesPercentageChangeComparedToPreviousDay >
-											0
+										txnsData.totalTransactionFeesPercentageChangeComparedToPreviousDay >
+										0
 											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
 											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
 									}`}
 								>
 									(
 									{
-										txnsData.data
-											.totalTransactionFeesPercentageChangeComparedToPreviousDay
+										txnsData.totalTransactionFeesPercentageChangeComparedToPreviousDay
 									}
 									%)
-								</span>
+								</span> */}
 							</>
 						)}
 						icon="/icons/pwr.svg"
@@ -169,24 +166,21 @@ export default function Transactions() {
 						title="AVG. TRANSACTION FEE (24h)"
 						valueComp={() => (
 							<>
-								<span>{txnsData.data.averageTransactionFeePast24Hours} USD</span>
-								<span
+								<span>{txnsData.averageTransactionFeePast24Hours} USD</span>
+								{/* <span
 									className={`font-medium  pl-2 pr-2 ${
-										txnsData.data &&
-										txnsData.data
-											.totalTransactionFeesPercentageChangeComparedToPreviousDay >
-											0
+										txnsData.totalTransactionFeesPercentageChangeComparedToPreviousDay >
+										0
 											? 'dark:text-abrandc-dark-green text-abrandc-light-green'
 											: 'text-abrandc-light-red dark:text-abrandc-dark-red'
 									}`}
 								>
 									(
 									{
-										txnsData.data
-											.averageTransactionFeePercentageChangeComparedToPreviousDay
+										txnsData.averageTransactionFeePercentageChangeComparedToPreviousDay
 									}
 									%)
-								</span>
+								</span> */}
 							</>
 						)}
 						icon="/icons/arrows.svg"
@@ -200,7 +194,7 @@ export default function Transactions() {
 				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center">
 					<div>
 						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							More than {txnsData.data.transactionCountPast24Hours} transactions found
+							More than {txnsData.transactionCountPast24Hours} transactions found
 						</h1>
 						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 							(Showing the last 500k records)
@@ -215,8 +209,8 @@ export default function Transactions() {
 				</div>
 
 				{/* Table */}
-				<div className="w-full mt-5 overflow-x-auto">
-					<table className="table-auto bg-awhite w-full min-w-[900px]">
+				<div className="w-full mt-5 overflow-x-auto scroll-sm">
+					<table className="table-auto bg-awhite w-full min-w-[900px] ">
 						{/* table header */}
 						<thead className="sticky top-0">
 							<tr>
@@ -248,7 +242,7 @@ export default function Transactions() {
 									<td>Loading</td>
 								</tr>
 							) : (
-								txnsData.data.transactions.map((txn, idx) => (
+								txnsData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -260,7 +254,7 @@ export default function Transactions() {
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
-												<div className="relative">
+												<div className={eye_tooltip_cont}>
 													<Image
 														className="w-auto h-auto"
 														src="/icons/eye.svg"
@@ -268,7 +262,14 @@ export default function Transactions() {
 														height={20}
 														alt=""
 													/>
-													{/* <TransactionTooltipDetails /> */}
+
+													<div className={tooltip}>
+														<TransactionTooltipDetails
+															usdFee={txn.txnFeeInUsd}
+															fee={txn.txnFee}
+															nonce={txn.nonceOrValidationHash}
+														/>
+													</div>
 												</div>
 
 												<Link
@@ -283,10 +284,10 @@ export default function Transactions() {
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
 											<Link
-												href={`${ROUTES.blocks}/${txn.blockNumber}`}
+												href={`${ROUTES.blocks}/${txn.positionInBlock}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
-												{txn.blockNumber}
+												{txn.positionInBlock}
 											</Link>
 										</td>
 
@@ -359,7 +360,7 @@ export default function Transactions() {
 										{/* value */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{BnToDec(txn.value, 9)} PWR
+												{BnToDec(txn.value, 9, 9)} PWR
 											</div>
 										</td>
 									</tr>

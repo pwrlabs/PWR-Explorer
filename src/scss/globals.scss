@@ -1,4 +1,5 @@
 @use '../components/internal/skeleton/skeleton.scss';
+@use './scroll.scss';
 
 @tailwind base;
 @tailwind components;
@@ -23,7 +24,6 @@
 }
 
 #chart {
-    margin-left: -30px; 
-	margin-top: -30px;  
-
+	margin-left: -30px;
+	margin-top: -30px;
 }

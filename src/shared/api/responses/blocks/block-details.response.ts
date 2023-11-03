@@ -1,29 +1,15 @@
-type Txn = {
-	txnHash: string;
+export type BlockDetailsSuccessResponse = {
 	timeStamp: number;
-	blockNumber: number;
-	txnType: string;
-	from: string;
-	to: string;
-	value: string;
-};
-
-type BlockDetailsSuccessResponse = {
-	status: 'success';
-	data: {
-		timeStamp: number;
-		blockConfirmations: number;
-		blockHeight: number;
-		txnsCount: number;
-		blockReward: string;
-		blockSize: number;
-		blockSubmitter: string;
-	};
+	blockConfirmations: number;
+	blockHeight: number;
+	txnsCount: number;
+	blockReward: string;
+	blockSize: number;
+	blockSubmitter: string;
 };
 
 type BlockDetailsFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type BlockDetailsResponse = BlockDetailsSuccessResponse | BlockDetailsFailureResponse;

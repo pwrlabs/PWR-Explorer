@@ -70,8 +70,7 @@ export default function Blocks() {
 		staleTime: 1000 * 60 * 5,
 		cacheTime: 0,
 		onSuccess: (data) => {
-			if (data.status === 'failure') return;
-			// setPaginationMetadata(data.data.metadata);
+			setPaginationMetadata(data.metadata);
 		},
 	});
 
@@ -79,7 +78,9 @@ export default function Blocks() {
 		setPage(page);
 	}
 
-	if (blocks_error || !blocks_data || blocks_data.status === 'failure') return <div>Error</div>;
+	if (blocks_loading) return <div>Loading</div>;
+
+	if (blocks_error || !blocks_data) return <div>Error</div>;
 
 	return (
 		<div className="container-2 mx-auto">
@@ -92,23 +93,20 @@ export default function Blocks() {
 					</h1>
 					{/* stats */}
 					<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
-						{/* Transactions */}
-						<StatBox
+						{/* <StatBox
 							title="NETWORK UTILIZATION (24h)"
 							valueComp={() => (
 								<>
-									<span>{blocks_data?.data?.networkUtilizationPast24Hours}$</span>
+									<span>{blocks_data.networkUtilizationPast24Hours}$</span>
 								</>
 							)}
-						/>
+						/> */}
 
 						<StatBox
 							title="BLOCK SIZE (24h)"
 							valueComp={() => (
 								<>
-									<span>
-										{blocks_data?.data?.averageBlockSizePast24Hours} Bytes
-									</span>
+									<span>{blocks_data.averageBlockSizePast24Hours} Bytes</span>
 								</>
 							)}
 						/>
@@ -118,11 +116,7 @@ export default function Blocks() {
 							valueComp={() => (
 								<>
 									<span>
-										{BnToDec(
-											blocks_data.data.totalBlockRewardsPast24Hours,
-											9,
-											9
-										)}{' '}
+										{BnToDec(blocks_data.totalBlockRewardsPast24Hours, 9, 9)}{' '}
 										PWR
 									</span>
 								</>
@@ -148,7 +142,7 @@ export default function Blocks() {
 					</div>
 
 					{/* Table */}
-					<div className="w-full mt-5 overflow-x-auto">
+					<div className="w-full mt-5 overflow-x-auto scroll-sm">
 						<table className="table-auto bg-awhite w-full min-w-[900px]">
 							{/* table header */}
 							<thead className="sticky top-0">
@@ -176,102 +170,89 @@ export default function Blocks() {
 
 							{/* table body */}
 							<tbody>
-								{blocks_loading ? (
-									<tr>
-										<td>Loading</td>
-									</tr>
-								) : (
-									blocks_data?.data?.blocks.map((block, idx) => (
-										<tr
-											key={idx}
-											className={` ${
-												idx % 2 == 0
-													? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: 'bg-transparent'
-											}`}
-										>
-											{/* Block */}
-											<td className="xl:px-8 px-2 py-8">
+								{blocks_data.blocks.map((block, idx) => (
+									<tr
+										key={idx}
+										className={` ${
+											idx % 2 == 0
+												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+												: 'bg-transparent'
+										}`}
+									>
+										{/* Block */}
+										<td className="xl:px-8 px-2 py-8">
+											<Link
+												href={`${ROUTES.blocks}/${block.blockHeight}`}
+												className="dark:text-ablue-300 text-ablue-200 font-medium"
+											>
+												{block.blockHeight}
+											</Link>
+										</td>
+
+										{/* Age */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+												{timeAgo(block.timeStamp)}
+											</div>
+										</td>
+
+										{/* txns */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 												<Link
 													href={`${ROUTES.blocks}/${block.blockHeight}`}
 													className="dark:text-ablue-300 text-ablue-200 font-medium"
 												>
-													{block.blockHeight}
+													{block.txnsCount}
 												</Link>
-											</td>
+											</div>
+										</td>
 
-											{/* Age */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													{timeAgo(block.timeStamp)}
-												</div>
-											</td>
+										{/* fee recipient */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="flex gap-x-2 justify-center">
+												<Link
+													href="/"
+													className="dark:text-ablue-100 text-ablue-500 font-medium"
+												>
+													{shortenAddress(block.blockSubmitter, 4)}
+												</Link>
 
-											{/* txns */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													<Link
-														href={`${ROUTES.blocks}/${block.blockHeight}`}
-														className="dark:text-ablue-300 text-ablue-200 font-medium"
+												<Tooltip
+													text="Copied to clipbloard"
+													position="up"
+													trigger="click"
+												>
+													<button
+														className="text-agrey-500 dark:text-agrey-600"
+														onClick={() =>
+															copyToClipboard(block.blockSubmitter)
+														}
 													>
-														{block.txnsCount}
-													</Link>
-												</div>
-											</td>
+														<i className="far fa-clone" />
+													</button>
+												</Tooltip>
+											</div>
+										</td>
 
-											{/* fee recipient */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="flex gap-x-2 justify-center">
-													<Link
-														href="/"
-														className="dark:text-ablue-100 text-ablue-500 font-medium"
-													>
-														{shortenAddress(
-															'0x0000000000000000000000000000000000000000',
-															4
-														)}
-													</Link>
+										{/* Reward */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+												{BnToDec(block.blockReward, 9, 5)} PWR
+											</div>
+										</td>
 
-													<Tooltip
-														text="Copied to clipbloard"
-														position="up"
-														trigger="click"
-													>
-														<button
-															className="text-agrey-500 dark:text-agrey-600"
-															onClick={() =>
-																copyToClipboard(
-																	'0x0000000000000000000000000000000000000000'
-																)
-															}
-														>
-															<i className="far fa-clone" />
-														</button>
-													</Tooltip>
-												</div>
-											</td>
-
-											{/* Reward */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													{BnToDec(block.blockReward, 9, 5)} PWR
-												</div>
-											</td>
-
-											{/* Shared Rewards */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													<span>
-														{BnToDec(block.blockReward, 9, 5)} PWR
-													</span>{' '}
-													<span className="dark:text-agrey-600 text-agrey-500">
-														(50%)
-													</span>
-												</div>
-											</td>
-										</tr>
-									))
-								)}
+										{/* Shared Rewards */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+											<span>{(parseFloat(BnToDec(block.blockReward, 9, 5)) / 2)} PWR</span>{' '}
+												<span className="dark:text-agrey-600 text-agrey-500">
+													(50%)
+												</span>
+											</div>
+										</td>
+									</tr>
+								))}
 							</tbody>
 						</table>
 					</div>

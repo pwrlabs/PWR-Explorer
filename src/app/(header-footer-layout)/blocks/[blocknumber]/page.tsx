@@ -25,9 +25,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 		isError: block_error,
 	} = useQuery([QUERY_KEYS.block_details, blockNum], () => QueryApi.blocks.details(blockNum));
 
-	if (block_loading) return null;
+	if (block_loading || !block_data) return null;
 
-	if (block_error || !block_data || block_data.status === 'failure') return <div>error</div>;
+	if (block_error) return <div>error</div>;
 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
@@ -68,15 +68,15 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
 							<h2 className="leading-[24px] break-all text-sm">
-								{timeAgo(block_data.data.timeStamp)},{' '}
-								{new Date(block_data.data.timeStamp * 1000).toLocaleString()}
+								{timeAgo(block_data.timeStamp)},{' '}
+								{new Date(block_data.timeStamp * 1000).toLocaleString()}
 								{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 							</h2>
 						</div>
 					</div>
 
 					{/* Proposed on */}
-					<div className="lg:flex space-y-2">
+					{/* <div className="lg:flex space-y-2">
 						<div className="flex items-center gap-x-2 w-[300px]">
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Proposed on
@@ -97,7 +97,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								</span>
 							</h2>
 						</div>
-					</div>
+					</div> */}
 
 					{/* Transactions */}
 					<div className="lg:flex space-y-2">
@@ -115,7 +115,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									href={ROUTES.blockTxns(blockNum)}
 									className="dark:text-ablue-100 text-ablue-500 font-medium"
 								>
-									{block_data.data.txnsCount} transactions
+									{block_data.txnsCount} transactions
 								</Link>{' '}
 								in this block
 							</h2>
@@ -138,15 +138,13 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 						</div>
 						<div className="flex gap-x-2">
 							<Link
-								href={`${ROUTES.address}/${block_data.data.blockSubmitter}`}
+								href={`${ROUTES.address}/${block_data.blockSubmitter}`}
 								className="dark:text-ablue-100 text-ablue-500 font-medium"
 							>
-								{block_data.data.blockSubmitter}
+								{block_data.blockSubmitter}
 							</Link>{' '}
 							<Tooltip text="copied to clipboard" position="up" trigger="click">
-								<button
-									onClick={() => copyToClipboard(block_data.data.blockSubmitter)}
-								>
+								<button onClick={() => copyToClipboard(block_data.blockSubmitter)}>
 									<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 								</button>
 							</Tooltip>
@@ -163,9 +161,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip>
 						</div>
-						<h2 className="text-sm">
-							{BnToDec(block_data.data.blockReward, 9, 9)} PWR
-						</h2>
+						<h2 className="text-sm">{BnToDec(block_data.blockReward, 9, 9)} PWR</h2>
 					</div>
 
 					{/* Size */}
@@ -176,7 +172,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip>
 						</div>
-						<h2 className="text-sm">{block_data?.data?.blockSize} Bytes</h2>
+						<h2 className="text-sm">{block_data.blockSize} Bytes</h2>
 					</div>
 				</section>
 

@@ -13,6 +13,7 @@ import Tooltip from '@/components/internal/tooltip/tooltip.component';
 import { BnToDec, timeAgo } from '@/shared/utils/formatters';
 import Link from 'next/link';
 import ROUTES from '@/static/router.data';
+import { isAddress } from '@/shared/utils/functions';
 
 type TransactionDetailsProps = {
 	params: {
@@ -40,7 +41,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 
 	if (txnLoading || !txnData) return <div>Loading...</div>;
 
-	if (txnError || txnData.status === 'failure') return <div>Error</div>;
+	if (txnError) return <div>Error</div>;
 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
@@ -76,9 +77,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</Tooltip>
 							</div>
 							<div className="flex gap-x-2">
-								<h2 className="text-sm break-all">{txnData.data.txnHash}</h2>
-								<Tooltip text="text" position="up" trigger="click">
-									<button onClick={() => copy(txnData.data.txnHash)}>
+								<h2 className="text-sm break-all">{txnData.txnHash}</h2>
+								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
+									<button onClick={() => copy(txnData.txnHash)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>
@@ -95,7 +96,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip>
 							</div>
-							<h2>{txnData.data.size}</h2>
+							<h2>{txnData.size}</h2>
 						</div>
 
 						{/* Block */}
@@ -113,7 +114,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									<i className="fas fa-check-circle text-ablue-500 dark:text-ablue-100 fa-lg" />
 
 									<h2 className="dark:text-ablue-100 text-ablue-500 font-medium text-sm">
-										{txnData.data.blockNumber}
+										{txnData.blockNumber}
 									</h2>
 								</div>
 								{/* <Tags>1153 Block Confirmations</Tags> */}
@@ -134,8 +135,8 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
 								<h2 className="leading-[24px] break-all text-sm">
-									{timeAgo(txnData.data.timeStamp)},{' '}
-									{new Date(txnData.data.timeStamp * 1000).toLocaleString()}
+									{timeAgo(txnData.timeStamp)},{' '}
+									{new Date(txnData.timeStamp * 1000).toLocaleString()}
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h2>
 							</div>
@@ -156,13 +157,13 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 							</div>
 							<div className="flex items-center gap-x-2">
 								<Link
-									href={`${ROUTES.address}/${txnData.data.from}`}
+									href={`${ROUTES.address}/${txnData.from}`}
 									className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
 								>
-									{txnData.data.from}
+									{txnData.from}
 								</Link>
 								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
-									<button onClick={() => copy(txnData.data.from)}>
+									<button onClick={() => copy(txnData.from)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>
@@ -180,18 +181,28 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</Tooltip>
 							</div>
 							<div className="flex items-center gap-x-2">
-								<Link
-									href={`${ROUTES.address}/${txnData.data.to}`}
-									className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
-								>
-									{/* {item.value} */}
-									{txnData.data.to}
-								</Link>
-								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
-									<button onClick={() => copy(txnData.data.to)}>
-										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
-									</button>
-								</Tooltip>
+								{isAddress(txnData.to) ? (
+									<>
+										<Link
+											href={`${ROUTES.address}/${txnData.to}`}
+											className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+										>
+											{/* {item.value} */}
+											{txnData.to}
+										</Link>
+										<Tooltip
+											text="Copied to clipboard!"
+											position="up"
+											trigger="click"
+										>
+											<button onClick={() => copy(txnData.to)}>
+												<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											</button>
+										</Tooltip>
+									</>
+								) : (
+									<div className=" font-medium text-sm">{txnData.to}</div>
+								)}
 							</div>
 						</div>
 					</section>
@@ -214,11 +225,11 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<Image src="/icons/pwr.svg" width={20} height={20} alt="" />
 
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(txnData.data.value, 9, 9)} PWR
+									{BnToDec(txnData.value, 9, 9)} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
-									(${txnData.data.valueInUsd})
+									(${txnData.valueInUsd})
 								</h1>
 							</div>
 						</div>
@@ -235,11 +246,11 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 							</div>
 							<div className="flex items-center gap-x-2 ">
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(txnData.data.txnFee, 9, 9)} PWR
+									{BnToDec(txnData.txnFee, 9, 9)} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
-									(${txnData.data.txnFeeInUsd})
+									(${txnData.txnFeeInUsd})
 								</h1>
 							</div>
 						</div>
@@ -255,11 +266,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</Tooltip>
 							</div>
 							<div className="flex items-center gap-x-2 flex-grow min-w-0">
-								<h1 className="leading-[24px] break-all text-sm">
-									{txnData.data.data}
-								</h1>
+								<h1 className="leading-[24px] break-all text-sm">{txnData.data}</h1>
 								<Tooltip text="Copied to clipboard!" position="up" trigger="click">
-									<button onClick={() => copy(txnData.data.data)}>
+									<button onClick={() => copy(txnData.data)}>
 										<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 									</button>
 								</Tooltip>

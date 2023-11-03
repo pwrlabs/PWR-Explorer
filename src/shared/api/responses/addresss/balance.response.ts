@@ -1,14 +1,10 @@
-type BalanceSuccessResponse = {
-	status: 'success';
-	data: {
-		balance: string;
-		balanceUsdValue: number;
-	};
+export type BalanceSuccessResponse = {
+	balance: string;
+	balanceUsdValue: number;
 };
 
 type BalanceFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type BalanceResponse = BalanceSuccessResponse | BalanceFailureResponse;

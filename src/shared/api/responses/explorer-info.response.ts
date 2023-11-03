@@ -8,26 +8,22 @@ type Txn = {
 	value: string;
 };
 
-type ExplorerSuccessResponse = {
-	status: 'success';
-	data: {
-		blocksCount: number;
-		marketCap: number;
-		price: number;
-		priceChange: number;
-		totalTransactionsCount: number;
-		tps: number;
-		validators: number;
+export type ExplorerSuccessResponse = {
+	blocksCount: number;
+	marketCap: number;
+	price: number;
+	priceChange: number;
+	totalTransactionsCount: number;
+	tps: number;
+	validators: number;
 
-		blocks: Block[];
+	blocks: Block[];
 
-		txns: Txn[];
-	};
+	txns: Txn[];
 };
 
 type ExplorerFailureResponse = {
-	status: 'failure';
-	data: null;
+	message: string;
 };
 
 export type ExplorerInfoResponse = ExplorerSuccessResponse | ExplorerFailureResponse;

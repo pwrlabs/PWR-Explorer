@@ -1,10 +1,10 @@
 const ROUTES = {
 	root: '/',
 
-	transactions: '/blockchain/transactions',
+	transactions: '/transactions',
 
-	blocks: '/blockchain/blocks',
-	blockTxns: (blockNumber: number) => `/blockchain/blocks/${blockNumber}/transactions`,
+	blocks: '/blocks',
+	blockTxns: (blockNumber: number) => `/blocks/${blockNumber}/transactions`,
 
 	nodes: '/blockchain/nodes',
 	address: '/address',

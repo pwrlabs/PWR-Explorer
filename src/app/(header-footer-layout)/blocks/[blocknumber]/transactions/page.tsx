@@ -85,8 +85,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
-				if (data.status === 'failure') return;
-				setPaginationMetadata(data.data.metadata);
+				setPaginationMetadata(data.metadata);
 			},
 		}
 	);
@@ -97,10 +96,9 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 
 	console.log(blocktxns_data);
 
-	if (blocktxns_loading) return null;
+	if (blocktxns_loading || !blocktxns_data) return null;
 
-	if (blocktxns_error || !blocktxns_data || blocktxns_data.status === 'failure')
-		return <div>error</div>;
+	if (blocktxns_error) return <div>error</div>;
 
 	return (
 		<div className="container-2 mx-auto text-white">
@@ -122,7 +120,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 						<span className="text-ablue-800 dark:text-ablue-100 ">{blockNum}</span>
 					</h2>
 					<h3 className="dark:text-white text-abrandc-dark-grey text-xs font-medium">
-						(A total of {blocktxns_data.data.transactions.length} transactions found)
+						(A total of {blocktxns_data.transactions.length} transactions found)
 					</h3>
 				</div>
 
@@ -135,7 +133,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 			</div>
 
 			{/* Table */}
-			<div className="w-full mt-5 overflow-x-auto">
+			<div className="w-full mt-5 overflow-x-auto scroll-sm">
 				<table className="table-auto bg-awhite w-full min-w-[900px]">
 					{/* table header */}
 					<thead className="sticky top-0">
@@ -168,7 +166,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 								<td>Loading</td>
 							</tr>
 						) : (
-							blocktxns_data.data.transactions.map((txn, idx) => (
+							blocktxns_data.transactions.map((txn, idx) => (
 								<tr
 									key={txn.txnHash}
 									className={` ${
