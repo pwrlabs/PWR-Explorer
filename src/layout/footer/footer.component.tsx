@@ -24,23 +24,23 @@ export default function FooterComponent() {
 		// },
 		{
 			label: 'PWR Wallet',
-			href: '#',
+			href: ROUTES.external.wallet,
 		},
 	];
 
 	const socials = [
 		{
-			icon: <FaTwitter size={25} />,
+			icon: <i className="fab fa-twitter" />,
 			label: 'Join our Twitter',
 			href: '#',
 		},
 		{
-			icon: <FaTelegramPlane size={25} />,
+			icon: <i className="fab fa-telegram-plane" />,
 			label: 'Join our Telegram',
 			href: '#',
 		},
 		{
-			icon: <FaDiscord size={25} />,
+			icon: <i className="fab fa-discord" />,
 			label: 'Join our Discord',
 			href: '#',
 		},
@@ -69,7 +69,7 @@ export default function FooterComponent() {
 						<div className="grid grid-cols-2 gap-y-4 md:flex md:flex-row items-center gap-x-8">
 							{navigation.map((item, idx) => (
 								<Link
-									href="/"
+									href={item.href}
 									className="font-medium hover:text-ablue-800 dark:text-white dark:hover:text-ablue-200"
 									key={idx}
 								>
@@ -98,11 +98,11 @@ export default function FooterComponent() {
 				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4 px-2 mt-4 w-full">
 					{socials.map((item, index) => (
 						<Link
-							className="flex items-center gap-x-[26px] dark:bg-white bg-abrandc-dark-grey rounded-[16px] py-3 px-4 h-[60px] w-[134px]"
+							className="flex items-center  gap-x-4 dark:bg-white bg-abrandc-dark-grey rounded-2xl py-3 px-4 h-[60px] w-[134px]"
 							key={index}
 							href={item.href}
 						>
-							<i className=" text-white dark:text-black">{item.icon}</i>
+							<i className=" text-white dark:text-black text-2xl">{item.icon}</i>
 							<h2 className="dark:text-black text-white text-xs font-medium leading-[18px]">
 								{item.label}
 							</h2>

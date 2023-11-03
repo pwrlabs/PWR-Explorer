@@ -1,5 +1,6 @@
 @use '../components/internal/skeleton/skeleton.scss';
 @use './scroll.scss';
+@use '../components/internal/search-bar/search-bar.scss';
 
 @tailwind base;
 @tailwind components;
@@ -26,4 +27,12 @@
 #chart {
 	margin-left: -30px;
 	margin-top: -30px;
+}
+
+// deactivate google auto fill styles
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
 }

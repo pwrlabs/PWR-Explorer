@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import dynamic from 'next/dynamic';
-import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useRef } from 'react';
 import axios from 'axios';
-import 'src/components/internal/text-field/text-field.scss';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,11 +19,9 @@ import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from '@/static/router.data';
 import { ApexOptions } from 'apexcharts';
-import { isAddress } from '@/shared/utils/functions';
+import { isAddress, isHash } from '@/shared/utils/functions';
 
 // const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
-
-// const ApexCharts = dynamic(() => import('apexcharts'), { ssr: false });
 
 function BlockBoxSkeleton() {
 	return (
@@ -160,24 +159,43 @@ function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; ic
 // }
 
 export default function Home() {
-	const [searchTerm, setSearchTerm] = useState('');
+	// *~~*~~*~~ search bar *~~*~~*~~* //
+	const { push } = useRouter();
 
-	function onChange(e: any) {
-		setSearchTerm(e.target.value);
-	}
+	const formik = useFormik({
+		initialValues: {
+			search: '',
+		},
+		validationSchema: yup.object({
+			search: yup
+				.string()
+				.test(
+					'is-address-hash-or-number',
+					'Search term must be an address, a hash, or a number',
+					(value) =>
+						isAddress(value || '') || isHash(value || '') || !isNaN(Number(value))
+				),
+		}),
+		onSubmit: (values) => {
+			const { search } = values;
+			const address = isAddress(search);
+			const hash = isHash(search);
+			const number = !isNaN(Number(search));
 
-	function onEnter() {
-		const address = isAddress(searchTerm);
+			if (address) {
+				// Navigate to the address page for 42-character input
+				push(`${ROUTES.address}/${search}`);
+			} else if (hash) {
+				// Navigate to the transaction page for 66-character input
+				push(`${ROUTES.transactions}/${search}`);
+			} else if (number) {
+				// Navigate to the block page for number input
+				push(`${ROUTES.blocks}/${search}`);
+			}
+		},
+	});
 
-		if (address) {
-			// Navigate to the address page for 42-character input
-			window.location.href = `${ROUTES.address}/${searchTerm}`;
-		  } else if (searchTerm.length === 66) {
-			// Navigate to the transaction page for 66-character input
-			window.location.href = `${ROUTES.transactions}/${searchTerm}`;
-		  }
-		
-	}
+	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	// *~~*~~*~~ fetch data ~~*~~*~~* //
 	const {
@@ -199,9 +217,16 @@ export default function Home() {
 								The PWR Chain Explorer
 							</h1>
 							{/* Search */}
-							<div className="field lg:w-[800px] w-full relative">
-								{/* Filter */}
-								{/* <div className="">
+							<form onSubmit={handleSubmit}>
+								<div className="field ">
+									{/* input contianer */}
+									<div
+										className={`search-bar-container lg:w-[800px] ${
+											errors.search ? ' !border-ared-500' : ''
+										}`}
+									>
+										{/* Filter */}
+										{/* <div className="">
 									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
 										<span>All Filters</span>
 										<Image
@@ -213,16 +238,34 @@ export default function Home() {
 										/>
 									</button>
 								</div> */}
-								<input
-									className="text-field !h-[64px] !rounded-2xl "
-									placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
-									value={searchTerm}
-									onChange={onChange}
-									onKeyPress={(e) => {
-										if (e.key === 'Enter') onEnter();
-									}}
-								/>
-							</div>
+										<input
+											className="search-bar-input"
+											placeholder="Search by Address | Txn Hash | Block "
+											// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+											name="search"
+											value={values.search}
+											onChange={handleChange}
+											onBlur={handleBlur}
+										/>
+
+										<button
+											className="flex items-center gap-x-2"
+											disabled={!dirty || !touched || !formik.isValid}
+											type="submit"
+										>
+											<Image
+												src="/media/icons/enter-arrow.svg"
+												width={24}
+												height={24}
+												alt=""
+											/>
+											<div className="text-agrey-500 font-bold text-sm">
+												Enter
+											</div>
+										</button>
+									</div>
+								</div>
+							</form>
 						</div>
 
 						{/* Stats */}
