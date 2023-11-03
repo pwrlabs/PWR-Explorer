@@ -199,7 +199,7 @@ export default function Transactions() {
 							More than {txnsData.metadata.totalItems} transactions found
 						</h1>
 						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							(Showing the last {txnsData.transactionCountPast24Hours} records)
+							(Showing the latest records)
 						</h2>
 					</div>
 					<div className="flex items-center justify-center gap-x-2 text-white">
