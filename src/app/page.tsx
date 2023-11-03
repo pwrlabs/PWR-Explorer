@@ -18,6 +18,7 @@ import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from '@/static/router.data';
 import { ApexOptions } from 'apexcharts';
+import { isAddress } from '@/shared/utils/functions';
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -159,6 +160,19 @@ function Chart() {
 }
 
 export default function Home() {
+	const [searchTerm, setSearchTerm] = useState('');
+
+	function onChange(e: any) {
+		setSearchTerm(e.target.value);
+	}
+
+	function onEnter() {
+		const address = isAddress(searchTerm);
+
+		if (address) window.location.href = `${ROUTES.address}/${searchTerm}`;
+	}
+
+	// *~~*~~*~~ fetch data ~~*~~*~~* //
 	const {
 		isLoading: infoLoading,
 		data: infoData,
@@ -197,6 +211,11 @@ export default function Home() {
 								<input
 									className="text-field !h-[64px] !rounded-2xl "
 									placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+									value={searchTerm}
+									onChange={onChange}
+									onKeyPress={(e) => {
+										if (e.key === 'Enter') onEnter();
+									}}
 								/>
 							</div>
 						</div>
