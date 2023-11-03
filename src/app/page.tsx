@@ -116,15 +116,15 @@ export default function Home() {
 					rotate: 0,
 					style: {
 						colors: '#A9A9A9',
-						fontSize: '17px',  // Adjust font size as desired
+						fontSize: '17px',  
 
 					},
 				},
 				axisTicks: {
-					show: false, // This line will hide the tick marks
+					show: false, 
 				},
 				axisBorder: {
-					show: false, // Ensure the axis border is also hidden
+					show: false, 
 				},
 			},
 			yaxis: {
@@ -137,8 +137,7 @@ export default function Home() {
 					},
 					style: {
 						colors: '#A9A9A9', 
-						fontSize: '18px',  // Adjust font size as desired
-
+						fontSize: '18px',  
 					},
 				},
 			},
