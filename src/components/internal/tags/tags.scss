@@ -5,6 +5,9 @@
 	@apply w-fit;
 	@apply h-[32px];
 
+	@apply flex;
+	@apply items-center;
+
 	@apply dark:bg-abrandc-dark-grey;
 	@apply rounded-[8px];
 	@apply bg-abrandc-light-grey;
@@ -20,10 +23,6 @@
 	&.grey {
 		background-color: #c9cfdb;
 		color: white;
-	}
-
-	&.active {
-		border: 1px solid #112ff8;
 	}
 
 	/* &:hover {

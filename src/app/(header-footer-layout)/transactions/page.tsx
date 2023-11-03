@@ -196,10 +196,10 @@ export default function Transactions() {
 				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center">
 					<div>
 						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							More than {txnsData.transactionCountPast24Hours} transactions found
+							More than {txnsData.metadata.totalItems} transactions found
 						</h1>
 						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							(Showing the last 500k records)
+							(Showing the last {txnsData.transactionCountPast24Hours} records)
 						</h2>
 					</div>
 					<div className="flex items-center justify-center gap-x-2 text-white">

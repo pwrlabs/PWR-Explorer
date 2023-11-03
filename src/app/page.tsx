@@ -378,20 +378,16 @@ export default function Home() {
 
 							{/* Graph */}
 							<div className="xl:col-span-3">
-								<div className="flex flex-col w-9/10 mx-auto h-[192px] bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl">
-									<h1 className="text-agrey-600 text-sm font-medium mt-3 ml-3">
+								<div className="w-9/10 h-[192px] bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 space-y-2">
+									<h1 className="text-agrey-600 text-sm font-medium ">
 										TRANSACTION HISTORY IN 14 DAYS
 									</h1>
 
-									<div className="flex flex-col p-4 w-full h-[100%] rounded-xl">
+									<div className="p-4 w-full h-full  rounded-xl  flex items-center justify-center">
 										{/* <Chart /> */}
-										<Image
-											className="xl:w-[262px] h-auto w-[1000px]"
-											src="/graph.svg"
-											width={20}
-											height={20}
-											alt=""
-										/>
+										<img src="/graph.svg" alt="" />
+
+										{/* <Image className="" src="/graph.svg" alt="" layout="fill" /> */}
 									</div>
 								</div>
 							</div>
@@ -429,7 +425,7 @@ export default function Home() {
 													}`}
 												>
 													{/* icon and block number, timestamp */}
-													<div className="flex gap-x-4 ">
+													<div className="flex gap-x-4">
 														<Image
 															className=" xl:block hidden"
 															src="/icons/block.svg"
@@ -452,10 +448,10 @@ export default function Home() {
 													</div>
 
 													{/* txn count and fee recipient */}
-													<div>
+													<div className="">
 														<h1 className="">
-															<span className="dark:text-white text-abrandc-dark-grey hidden xl:inline-block mr-2">
-																Fee Recipient
+															<span className="dark:text-white text-abrandc-dark-grey inline-block lg:hidden 2xl:inline-block mr-2">
+																Recipient
 															</span>
 															<Link
 																href={`${ROUTES.address}/${block.blockSubmitter}`}
@@ -481,8 +477,8 @@ export default function Home() {
 													</div>
 
 													{/* block fee */}
-													<div className="w-[120px]">
-														<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center">
+													<div>
+														<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[130px]">
 															{BnToDec(block.blockReward, 9, 9)} PWR
 														</h1>
 													</div>

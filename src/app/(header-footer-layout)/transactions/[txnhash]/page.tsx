@@ -46,14 +46,14 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
 			{/* Title */}
-			<div className="flex xl:flex-row flex-col justify-between items-center">
+			<div className="flex xl:flex-row flex-col justify-between xl:items-center">
 				<div className="flex flex-1 items-center xl:gap-x-2 gap-x-8 ">
-					<h1 className=" xl:text-[36px] text-[24px] font-bold leading-[44px]">
+					<h1 className=" xl:text-4xl text-2xl font-bold leading-[44px]">
 						Transaction Details
 					</h1>
 					<Tags className="capitalize">{txnData.txnType}</Tags>
 				</div>
-				<div className="flex flex-1 items-center gap-x-2 w-full xl:justify-end justify-center">
+				<div className="flex-1 items-center gap-x-2 w-full xl:justify-end justify-center hidden lg:flex">
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Buy</Button>
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Exchange</Button>
 				</div>
