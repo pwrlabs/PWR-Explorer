@@ -10,7 +10,7 @@ import Tags from '@/components/internal/tags/tags.component';
 import QUERY_KEYS from '@/static/query.keys';
 import QueryApi from '@/shared/api/query-api';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import { BnToDec, timeAgo } from '@/shared/utils/formatters';
+import dateToText, { BnToDec, timeAgo } from '@/shared/utils/formatters';
 import Link from 'next/link';
 import ROUTES from '@/static/router.data';
 import { isAddress } from '@/shared/utils/functions';
@@ -51,7 +51,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 					<h1 className=" xl:text-[36px] text-[24px] font-bold leading-[44px]">
 						Transaction Details
 					</h1>
-					<Tags>Transfer</Tags>
+					<Tags className="capitalize">{txnData.txnType}</Tags>
 				</div>
 				<div className="flex flex-1 items-center gap-x-2 w-full xl:justify-end justify-center">
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Buy</Button>
@@ -135,8 +135,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
 								<h2 className="leading-[24px] break-all text-sm">
-									{timeAgo(txnData.timeStamp)},{' '}
-									{new Date(txnData.timeStamp * 1000).toLocaleString()}
+									{timeAgo(txnData.timeStamp)} ({dateToText(txnData.timeStamp)})
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h2>
 							</div>

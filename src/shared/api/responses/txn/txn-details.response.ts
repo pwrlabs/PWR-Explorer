@@ -1,17 +1,18 @@
 // type Txn = {};
 
 export type TransactionDetailsSuccessResponse = {
-	blockNumber: number;
-	data: string;
-	from: string;
-	size: number;
-	timeStamp: number;
-	to: string;
-	txnFee: string;
-	txnFeeInUsd: string;
 	txnHash: string;
-	value: string;
+	timeStamp: number;
 	valueInUsd: string;
+	size: number;
+	data: string;
+	blockNumber: number;
+	txnType: string;
+	from: string;
+	to: string;
+	txnFeeInUsd: string;
+	txnFee: string;
+	value: string;
 };
 
 type TransactionDetailFailureResponse = {

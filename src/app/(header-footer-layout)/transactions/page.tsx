@@ -98,6 +98,8 @@ export default function Transactions() {
 		setPage(page);
 	}
 
+	const containerRef = useRef(null);
+
 	if (txnsLoading || !txnsData) return null;
 
 	if (txnsError) return <div>Error</div>;

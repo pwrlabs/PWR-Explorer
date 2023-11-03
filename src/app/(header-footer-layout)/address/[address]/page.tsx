@@ -431,6 +431,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 					</table>
 				</div>
 
+				<br />
+
 				<div>
 					<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 				</div>

@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js';
+import { format } from 'date-fns';
 
 export function numberWithCommas(num: number): string {
-	
 	const numInDecimal = (num / 1e9).toFixed(7); // Divide by 10^9 and format with 2 decimal places
-  return numInDecimal.toLocaleString() ;
+	return numInDecimal.toLocaleString();
 }
 
 export function timeAgo(timestamp: number): string {
@@ -29,6 +29,11 @@ export function timeAgo(timestamp: number): string {
 	}
 
 	return 'just now';
+}
+
+export default function dateToText(timestamp: number) {
+	const formattedTimestamp = format(timestamp * 1000, 'MMM dd yyyy, hh:mm:ss a');
+	return formattedTimestamp;
 }
 
 export function shortenAddress(address: string, chars = 4): string {

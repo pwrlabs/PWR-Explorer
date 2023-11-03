@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import QUERY_KEYS from '@/static/query.keys';
 import QueryApi from '@/shared/api/query-api';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import { BnToDec, timeAgo } from '@/shared/utils/formatters';
+import dateToText, { BnToDec, timeAgo } from '@/shared/utils/formatters';
 import ROUTES from '@/static/router.data';
 import { copyToClipboard } from '@/shared/utils/functions';
 
@@ -68,8 +68,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
 							<h2 className="leading-[24px] break-all text-sm">
-								{timeAgo(block_data.timeStamp)},{' '}
-								{new Date(block_data.timeStamp * 1000).toLocaleString()}
+								{timeAgo(block_data.timeStamp)} ({dateToText(block_data.timeStamp)})
 								{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 							</h2>
 						</div>
