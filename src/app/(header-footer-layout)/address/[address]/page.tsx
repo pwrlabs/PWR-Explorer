@@ -14,7 +14,7 @@ import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/uti
 import ROUTES from '@/static/router.data';
 import Pagination from '@/components/internal/pagination/pagination.component';
 import { useState } from 'react';
-import { copyToClipboard } from '@/shared/utils/functions';
+import { copyToClipboard, isAddress } from '@/shared/utils/functions';
 import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 
 const headers = [
@@ -25,7 +25,7 @@ const headers = [
 	},
 	{
 		id: 1,
-		name: 'Status',
+		name: 'Type',
 		thClass: 'xl:px-8 px-2',
 	},
 	{
@@ -160,7 +160,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 							</div>
 							<div className="space-x-2">
 								<span className="dark:text-white text-black font-bold">
-									{numberWithCommas(+BnToDec(balanceData.balance, 9, 9))} PWR
+									{+BnToDec(balanceData.balance, 9, 9)} PWR
 								</span>
 								<span className="text-agrey-500 dark:text-agrey-600">
 									<Tooltip text="lorem" position="up" trigger="hover">
@@ -177,7 +177,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 							</span>
 							<div className="space-x-2">
 								<span className="dark:text-white text-black font-bold">
-									${numberWithCommas(balanceData.balanceUsdValue)}
+									${balanceData.balanceUsdValue}
 								</span>
 								<span className="text-agrey-500 dark:text-agrey-600">
 									(@ $1.00/PWR)
@@ -332,7 +332,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 											</div>
 										</td>
 
-										{/* status */}
+										{/* type */}
 										<td className="px-2 py-8">
 											<Link
 												href={`${ROUTES.blocks}/${txn.nonceOrValidationHash}`}
@@ -345,10 +345,10 @@ export default function AddressPage({ params }: AddressPageProps) {
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
 											<Link
-												href={`${ROUTES.blocks}/${txn.nonceOrValidationHash}`}
+												href={`${ROUTES.blocks}/${txn.block}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
-												{txn.nonceOrValidationHash}
+												{txn.block}
 											</Link>
 										</td>
 
@@ -396,12 +396,18 @@ export default function AddressPage({ params }: AddressPageProps) {
 										{/* To */}
 										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
-												<Link
-													href="/"
-													className="dark:text-ablue-100 text-ablue-500 font-medium"
-												>
-													{shortenAddress(txn.to, 4)}
-												</Link>
+												{isAddress(txn.to) ? (
+													<Link
+														href={`${ROUTES.address}/${txn.to}`}
+														className="dark:text-ablue-100 text-ablue-500 font-medium"
+													>
+														{shortenAddress(txn.to, 4)}
+													</Link>
+												) : (
+													<span className="dark:text-ablue-100 text-ablue-500 font-medium">
+														{txn.to}
+													</span>
+												)}
 
 												<Tooltip
 													text="Copied to clipbloard"

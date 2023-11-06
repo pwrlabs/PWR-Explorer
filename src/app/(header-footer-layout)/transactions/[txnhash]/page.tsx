@@ -10,7 +10,7 @@ import Tags from '@/components/internal/tags/tags.component';
 import QUERY_KEYS from '@/static/query.keys';
 import QueryApi from '@/shared/api/query-api';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import dateToText, { BnToDec, timeAgo } from '@/shared/utils/formatters';
+import dateToText, { BnToDec, scNotToDec, timeAgo } from '@/shared/utils/formatters';
 import Link from 'next/link';
 import ROUTES from '@/static/router.data';
 import { isAddress } from '@/shared/utils/functions';
@@ -249,7 +249,8 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
-									(${txnData.txnFeeInUsd})
+									($
+									{scNotToDec(+txnData.txnFeeInUsd, 10)})
 								</h1>
 							</div>
 						</div>

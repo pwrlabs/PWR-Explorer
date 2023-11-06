@@ -49,3 +49,10 @@ export function BnToDec(value: string, decimals = 9, precision = 2) {
 
 	return r;
 }
+
+export function scNotToDec(number: number, decimalPlaces: number) {
+	const formattedNumber = number.toFixed(decimalPlaces);
+	// Use a regular expression to remove trailing zeros
+	const trimmedNumber = formattedNumber.replace(/\.?0+$/, '');
+	return trimmedNumber;
+}

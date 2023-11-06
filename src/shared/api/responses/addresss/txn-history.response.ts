@@ -1,8 +1,9 @@
 type Transaction = {
 	txnHash: string;
 	timeStamp: number;
-	valueInUsd: number;
+	valueInUsd: string;
 	nonceOrValidationHash: string;
+	block: number;
 	txnType: string;
 	from: string;
 	to: string;
