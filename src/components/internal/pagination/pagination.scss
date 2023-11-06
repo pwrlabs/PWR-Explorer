@@ -26,7 +26,9 @@
 		@apply px-2;
 		@apply py-2;
 	}
-
+	.border-red-500 {
+		border: 2px solid red;
+	  }
 	.pagination-btn {
 		// shape
 		@apply p-2;

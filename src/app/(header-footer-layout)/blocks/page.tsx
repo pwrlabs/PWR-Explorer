@@ -70,8 +70,8 @@ export default function Blocks() {
 		staleTime: 1000 * 60 * 5,
 		cacheTime: 0,
 		onSuccess: (data) => {
-			setPaginationMetadata(data.metadata); 
-		  },
+			setPaginationMetadata(data.metadata);
+		},
 	});
 
 	function handlePageChange(page: number) {
@@ -81,6 +81,7 @@ export default function Blocks() {
 	if (blocks_loading) return <div>Loading</div>;
 
 	if (blocks_error || !blocks_data) return <div>Error</div>;
+	const totalBlocks = blocks_data.blocks.reduce((total, block) => total + block.blockHeight, 0);
 
 	return (
 		<div className="container-2 mx-auto">
@@ -126,20 +127,24 @@ export default function Blocks() {
 				</div>
 				{/* All blocks */}
 				<div className="space-y-2">
-					<div className="flex items-center justify-between">
-						<div className="flex flex-col font-medium dark:text-white text-abrandc-dark-grey">
-							<h1 className="px-2 py-1 leading-[26px]">Total of 17,242,438 blocks</h1>
-							<h2 className="text-xs px-2 py-1 font-normal">
-								(Showing the last 500k blocks)
-							</h2>
-						</div>
-						<div className="flex items-center gap-x-2">
-							<QuickPagination
-								metadata={paginationMetadata}
-								onPageChange={handlePageChange}
-							/>
-						</div>
-					</div>
+				<div className="flex items-center justify-between flex-col sm:flex-row">
+  <div className="flex sm:items-start"> {/* Make this div start from the left */}
+    <div className="flex flex-col font-medium dark:text-white text-abrandc-dark-grey">
+      <h1 className="px-2 py-1 leading-[26px]">
+        Total of {paginationMetadata.totalItems} blocks
+      </h1>
+      <h2 className="text-xs px-2 py-1 font-normal">
+        (Showing the last 500k blocks)
+      </h2>
+    </div>
+  </div>
+  <div className="flex items-center gap-x-2">
+    <QuickPagination
+      metadata={paginationMetadata}
+      onPageChange={handlePageChange}
+    />
+  </div>
+</div>
 
 					{/* Table */}
 					<div className="w-full mt-5 overflow-x-auto scroll-sm">
@@ -262,10 +267,10 @@ export default function Blocks() {
 					</div>
 
 					<div>
-					<Pagination
-            metadata={paginationMetadata} // Pass updated metadata
-            onPageChange={(page: number) => setPage(page)}
-          />
+						<Pagination
+							metadata={paginationMetadata} // Pass updated metadata
+							onPageChange={(page: number) => setPage(page)}
+						/>
 					</div>
 				</div>
 			</div>
