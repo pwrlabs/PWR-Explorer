@@ -70,8 +70,8 @@ export default function Blocks() {
 		staleTime: 1000 * 60 * 5,
 		cacheTime: 0,
 		onSuccess: (data) => {
-			setPaginationMetadata(data.metadata);
-		},
+			setPaginationMetadata(data.metadata); 
+		  },
 	});
 
 	function handlePageChange(page: number) {
@@ -245,7 +245,11 @@ export default function Blocks() {
 										{/* Shared Rewards */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-											<span>{(parseFloat(BnToDec(block.blockReward, 9, 5)) / 2)} PWR</span>{' '}
+												<span>
+													{parseFloat(BnToDec(block.blockReward, 9, 5)) /
+														2}{' '}
+													PWR
+												</span>{' '}
 												<span className="dark:text-agrey-600 text-agrey-500">
 													(50%)
 												</span>
@@ -258,10 +262,10 @@ export default function Blocks() {
 					</div>
 
 					<div>
-						<Pagination
-							metadata={paginationMetadata}
-							onPageChange={(page: number) => {}}
-						/>
+					<Pagination
+            metadata={paginationMetadata} // Pass updated metadata
+            onPageChange={(page: number) => setPage(page)}
+          />
 					</div>
 				</div>
 			</div>

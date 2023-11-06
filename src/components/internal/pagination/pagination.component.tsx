@@ -40,16 +40,21 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	// *~~*~~*~~ handle clicks ~~*~~*~~* //
 	function loadPrevPage() {
 		if (metadata.previousPage) {
+			console.log("PREVIOUS PAGE BUTTON CLICKED: \nthis is the next page: ",metadata.nextPage,"\n this is the previous page: ",metadata.previousPage,"\n this is the current page: ",metadata.currentPage)
+
 			onPageChange(metadata.previousPage);
 		}
 	}
 	function loadNextPage() {
 		if (metadata.nextPage) {
+			console.log("NEXT PAGE BUTTON CLICKED: \nthis is the next page: ",metadata.nextPage,"\n this is the previous page: ",metadata.previousPage,"\n this is the current page: ",metadata.currentPage)
+
 			onPageChange(metadata.nextPage);
 		}
 	}
 	function handlePageClick(pageNumber: number) {
 		onPageChange(pageNumber);
+		console.log("HANDLE PAGE CLICKS IS WORKING")
 	}
 
 	const [inputValue, setInputValue] = useState<number>(metadata.currentPage);
@@ -67,6 +72,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	// create buttons
 	const pageButtons = [];
 	for (let i = firstPage; i <= endPage; i++) {
+		console.log("This is the total page",totalPages,"THIS is the LAST page:",endPage)
 		pageButtons.push(
 			<button
 				key={i}
@@ -74,6 +80,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 				className={`pagination-btn ${metadata.currentPage === i && 'active'}`}
 			>
 				{i}
+				
 			</button>
 		);
 	}
@@ -147,12 +154,13 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 
 			{/* go to page */}
 			<div className="flex items-center gap-x-2">
-				<label className=" text-agrey-900 dark:text-white text-sm font-medium">Go to</label>
+			<label className="text-agrey-900 dark:text-white text-sm font-medium hidden md:block">Go to page</label>
+
 				<input
 					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey  focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
 					type="number"
 					onChange={inputChange}
-					value={inputValue}
+					
 				/>
 			</div>
 		</div>

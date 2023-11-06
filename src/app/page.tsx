@@ -304,7 +304,8 @@ export default function Home() {
 											<StatBox
 												title="PWR MARKET CAP"
 												valueComp={() => (
-													<>${numberWithCommas(infoData.marketCap)}</>
+													// <>${numberWithCommas(infoData.marketCap)}</>
+													<>$1,000,000,000</>
 												)}
 												icon="/icons/globe.svg"
 											/>
