@@ -180,7 +180,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 				<input
   style={{
     border: inputValue > metadata.totalPages ? '2px solid red' : '2px solid transparent',
-    transition: 'border 0.3s ease', // Add a transition for the border
+    transition: 'border 0.7s ease', // Add a transition for the border
   }}
   className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
   type="number"
