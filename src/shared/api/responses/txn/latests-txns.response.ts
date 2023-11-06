@@ -12,6 +12,7 @@ type Txn = {
 	txnFee: string;
 	value: string;
 	positionInBlock: number;
+	block: number;
 };
 
 export type LatestTransactionsSuccessResponse = {

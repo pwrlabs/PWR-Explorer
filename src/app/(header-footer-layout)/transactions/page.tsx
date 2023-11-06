@@ -286,10 +286,10 @@ export default function Transactions() {
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
 											<Link
-												href={`${ROUTES.blocks}/${txn.positionInBlock}`}
+												href={`${ROUTES.blocks}/${txn.block}`}
 												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
-												{txn.positionInBlock}
+												{txn.block}
 											</Link>
 										</td>
 

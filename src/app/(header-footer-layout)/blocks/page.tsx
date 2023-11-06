@@ -70,8 +70,8 @@ export default function Blocks() {
 		staleTime: 1000 * 60 * 5,
 		cacheTime: 0,
 		onSuccess: (data) => {
-			setPaginationMetadata(data.metadata); 
-		  },
+			setPaginationMetadata(data.metadata);
+		},
 	});
 
 	function handlePageChange(page: number) {
@@ -183,7 +183,7 @@ export default function Blocks() {
 										<td className="xl:px-8 px-2 py-8">
 											<Link
 												href={`${ROUTES.blocks}/${block.blockHeight}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium"
+												className="dark:text-ablue-300 text-ablue-200 font-medium text-center"
 											>
 												{block.blockHeight}
 											</Link>
@@ -238,7 +238,7 @@ export default function Blocks() {
 										{/* Reward */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{BnToDec(block.blockReward, 9, 5)} PWR
+												{BnToDec(block.blockReward, 9, 9)} PWR
 											</div>
 										</td>
 
@@ -246,7 +246,7 @@ export default function Blocks() {
 										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 												<span>
-													{parseFloat(BnToDec(block.blockReward, 9, 5)) /
+													{parseFloat(BnToDec(block.blockReward, 9, 9)) /
 														2}{' '}
 													PWR
 												</span>{' '}
@@ -262,10 +262,10 @@ export default function Blocks() {
 					</div>
 
 					<div>
-					<Pagination
-            metadata={paginationMetadata} // Pass updated metadata
-            onPageChange={(page: number) => setPage(page)}
-          />
+						<Pagination
+							metadata={paginationMetadata} // Pass updated metadata
+							onPageChange={(page: number) => setPage(page)}
+						/>
 					</div>
 				</div>
 			</div>
