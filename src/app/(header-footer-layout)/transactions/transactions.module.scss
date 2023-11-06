@@ -31,7 +31,11 @@
 			@apply -translate-y-1/2;
 			@apply right-full;
 
-			border-right-color: dodgerblue; // match the background color of the tooltip
+			@apply border-r-white;
+			@apply dark:border-r-abrandc-dark-blackish;
+
+			// border-right-color: ; // match the background color of the tooltip
+			// box-shadow: px 0 2px 5px rgba(0, 0, 0, 0.1);
 		}
 	}
 }

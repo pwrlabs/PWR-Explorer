@@ -20,8 +20,8 @@ export type LatestTransactionsSuccessResponse = {
 	averageTransactionFeePercentageChangeComparedToPreviousDay: number;
 
 	//
-	totalTransactionFeesPast24Hours: number;
-	totalTransactionFeesPercentageChangeComparedToPreviousDay: number;
+	totalTransactionFeesPast24Hours: string;
+	totalTransactionFeesPercentageChangeComparedToPreviousDay: string;
 
 	//
 	transactionCountPast24Hours: number;

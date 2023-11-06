@@ -72,9 +72,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Transaction Hash
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex gap-x-2">
 								<h2 className="text-sm break-all">{txnData.txnHash}</h2>
@@ -92,9 +92,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Transaction Size (Bytes)
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<h2>{txnData.size}</h2>
 						</div>
@@ -105,9 +105,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Block
 								</h1>
-								<Tooltip text="" large position="right">
+								{/* <Tooltip text="" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex gap-x-2">
 								<div className="flex items-center gap-x-2 ">
@@ -127,9 +127,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Timestamp
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex items-center gap-x-2 ">
 								<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
@@ -150,9 +150,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 						<div className="lg:flex space-y-2">
 							<div className="flex items-center gap-x-2 w-[300px]">
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">From</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex items-center gap-x-2">
 								<Link
@@ -175,9 +175,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Interacted with (To)
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex items-center gap-x-2">
 								{isAddress(txnData.to) ? (
@@ -216,9 +216,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Value
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex items-center gap-x-2 ">
 								<Image src="/icons/pwr.svg" width={20} height={20} alt="" />
@@ -239,9 +239,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Transaction Fee
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex items-center gap-x-2 ">
 								<h1 className="leading-[24px] break-all text-sm">
@@ -261,9 +261,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 									Data (Hex)
 								</h1>
-								<Tooltip text="text" large position="right">
+								{/* <Tooltip text="text" large position="right">
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-								</Tooltip>
+								</Tooltip> */}
 							</div>
 							<div className="flex items-center gap-x-2 flex-grow min-w-0">
 								<h1 className="leading-[24px] break-all text-sm">{txnData.data}</h1>

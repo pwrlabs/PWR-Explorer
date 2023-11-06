@@ -16,7 +16,7 @@ import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/u
 
 import ROUTES from 'src/static/router.data';
 import Pagination from 'src/components/internal/pagination/pagination.component';
-import { copyToClipboard } from '@/shared/utils/functions';
+import { copyToClipboard, isAddress } from '@/shared/utils/functions';
 import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
 
 import TransactionTooltipDetails from '@/components/internal/transaction-tooltip-details/transaction-tooltip-details';
@@ -142,7 +142,7 @@ export default function Transactions() {
 						valueComp={() => (
 							<>
 								<span>
-									{numberWithCommas(txnsData.totalTransactionFeesPast24Hours)} PWR
+									{BnToDec(txnsData.totalTransactionFeesPast24Hours, 9, 9)} PWR
 								</span>
 								{/* <span
 									className={`font-medium  pl-2 pr-2 ${
@@ -193,7 +193,7 @@ export default function Transactions() {
 			{/* Table */}
 			<section>
 				{/* Title */}
-				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center">
+				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
 					<div>
 						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 							More than {txnsData.metadata.totalItems} transactions found
@@ -226,10 +226,9 @@ export default function Transactions() {
 												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 													{header.name}
 												</div>
-												<div className="text-agrey-500 dark:text-agrey-600">
-													{/* info icon */}
+												{/* <div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fa-sm far fa-info-circle" />
-												</div>
+												</div> */}
 											</div>
 										)}
 									</th>
@@ -337,12 +336,18 @@ export default function Transactions() {
 										{/* To */}
 										<td className="xl:pr-8 pr-2 pl-2 py-8">
 											<div className="flex gap-x-2 justify-center">
-												<Link
-													href="/"
-													className="dark:text-ablue-100 text-ablue-500 font-medium"
-												>
-													{shortenAddress(txn.to, 4)}
-												</Link>
+												{isAddress(txn.to) ? (
+													<Link
+														href="/"
+														className="dark:text-ablue-100 text-ablue-500 font-medium"
+													>
+														{shortenAddress(txn.to, 4)}
+													</Link>
+												) : (
+													<span className="dark:text-ablue-100 text-ablue-500 font-medium">
+														{txn.to}
+													</span>
+												)}
 
 												<Tooltip
 													text="Copied to clipbloard"
