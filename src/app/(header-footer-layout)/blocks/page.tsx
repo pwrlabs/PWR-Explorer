@@ -159,10 +159,9 @@ export default function Blocks() {
 													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 														{header.name}
 													</div>
-													<div className="text-agrey-500 dark:text-agrey-600">
-														{/* info icon */}
+													{/* <div className="text-agrey-500 dark:text-agrey-600">
 														<i className="fa-sm far fa-info-circle" />
-													</div>
+													</div> */}
 												</div>
 											)}
 										</th>
