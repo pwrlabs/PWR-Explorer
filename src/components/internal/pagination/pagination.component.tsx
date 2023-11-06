@@ -178,24 +178,30 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 				</label>
 
 				<input
-  style={{ border: inputValue > metadata.totalPages ? '2px solid red' : '2px solid transparent' }}
-  className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
-  type="number"
-  onFocus={(e) => e.target.select()} // Select the entire text on input focus
-  onChange={(e) => setInputValue(parseInt(e.target.value, 10))}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      if (inputValue <= metadata.totalPages && inputValue > 0) {
-        onPageChange(inputValue);
-      } else {
-        // Prevent changing the page and set red border
-        e.preventDefault();
-        setInputValue(metadata.currentPage);
-      }
-    }
-  }}
-  value={inputValue}
-/>
+					style={{
+						border:
+							inputValue > metadata.totalPages
+								? '2px solid red'
+								: '2px solid transparent',
+					}}
+					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
+					type="number"
+					onFocus={(e) => (e.target as HTMLInputElement).select()} // Select the entire text on input focus
+					onChange={(e) => setInputValue(parseInt(e.target.value, 10))}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							if (inputValue <= metadata.totalPages && inputValue > 0) {
+								onPageChange(inputValue);
+							} else {
+								// Prevent changing the page and set red border
+								e.preventDefault();
+								setInputValue(metadata.currentPage);
+								setTimeout(() => (e.target as HTMLInputElement).select(), 0); // Select the entire text after a brief delay
+							}
+						}
+					}}
+					value={inputValue}
+				/>
 			</div>
 		</div>
 	);
