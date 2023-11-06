@@ -5,6 +5,9 @@ import './header.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { usePathname, useRouter } from 'next/navigation';
 
 import TextButton from '@/components/internal/text-button/text-button.component';
 import Button from '@/components/internal/button/button.component';
@@ -16,7 +19,7 @@ import ThemeService from 'src/shared/services/theme/theme.service';
 import ThemeSvcContext from 'src/shared/services/theme/theme.context';
 import { Theme } from 'src/shared/services/theme/theme.type';
 import ROUTES from '@/static/router.data';
-import { usePathname } from 'next/navigation';
+import { isAddress, isHash } from '@/shared/utils/functions';
 
 function PwrLogo() {
 	return (
@@ -106,6 +109,47 @@ export default function HeaderComponent() {
 		themeSvc.toggleTheme();
 		setCurrentTheme(themeSvc.theme);
 	}
+
+	// *~~*~~*~~ Search bar logic ~~*~~*~~* //
+
+	const { push } = useRouter();
+
+	const formik = useFormik({
+		initialValues: {
+			search: '',
+		},
+		validationSchema: yup.object({
+			search: yup
+				.string()
+				.test(
+					'is-address-hash-or-number',
+					'Search term must be an address, a hash, or a number',
+					(value) =>
+						isAddress(value || '') || isHash(value || '') || !isNaN(Number(value))
+				),
+		}),
+		onSubmit: (values) => {
+			const { search } = values;
+			const address = isAddress(search);
+			const hash = isHash(search);
+			const number = !isNaN(Number(search));
+
+			if (address) {
+				// Navigate to the address page for 42-character input
+				push(`${ROUTES.address}/${search}`);
+			} else if (hash) {
+				// Navigate to the transaction page for 66-character input
+				push(`${ROUTES.transactions}/${search}`);
+			} else if (number) {
+				// Navigate to the block page for number input
+				push(`${ROUTES.blocks}/${search}`);
+			}
+
+			setMobileNavOpen(false);
+		},
+	});
+
+	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
 		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
@@ -206,19 +250,56 @@ export default function HeaderComponent() {
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
 					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
-						{/* asd */}
-						<div className="field lg:w-[800px] w-full relative my-4 ">
-							{/* Filter */}
-							<div className="absolute left-6 top-[13px]">
-								<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-sm font-medium">
-									<FaFilter size={20} className="text-agrey-500" />
-								</button>
+						{/* Search */}
+						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
+							<div className="field">
+								{/* input contianer */}
+								<div
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
+								>
+									{/* Filter */}
+									{/* <div className="">
+									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
+										<span>All Filters</span>
+										<Image
+											className="w-auto h-auto"
+											src="/icons/arrow-down.svg"
+											width={20}
+											height={20}
+											alt=""
+										/>
+									</button>
+								</div> */}
+									<input
+										className="search-bar-nav-input"
+										placeholder="Search by Address | Txn Hash | Block "
+										// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
+
+									<button
+										className="flex items-center gap-x-2"
+										disabled={!dirty || !touched || !formik.isValid}
+										type="submit"
+									>
+										<Image
+											src="/media/icons/enter-arrow.svg"
+											width={24}
+											height={24}
+											alt=""
+										/>
+										<div className="text-agrey-500 font-bold text-sm">
+											Enter
+										</div>
+									</button>
+								</div>
 							</div>
-							<input
-								className="text-field !h-[50px] !rounded-[16px] !pl-20"
-								placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
-							/>
-						</div>
+						</form>
 
 						{/* links */}
 						<div className="space-y-2">
@@ -292,7 +373,7 @@ export default function HeaderComponent() {
 									<label className="relative items-center cursor-pointer">
 										<input
 											type="checkbox"
-											value=""
+											checked={currentTheme === 'dark'}
 											className="sr-only peer"
 											onChange={toggleTheme}
 										/>

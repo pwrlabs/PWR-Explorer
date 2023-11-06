@@ -19,9 +19,13 @@ export default function FooterComponent() {
 			href: ROUTES.transactions,
 		},
 		{
-			label: 'Nodes',
-			href: '#',
+			label: 'Blocks',
+			href: ROUTES.blocks,
 		},
+		// {
+		// 	label: 'Nodes',
+		// 	href: '#',
+		// },
 		{
 			label: 'PWR Wallet',
 			href: ROUTES.external.wallet,

@@ -217,11 +217,11 @@ export default function Home() {
 								The PWR Chain Explorer
 							</h1>
 							{/* Search */}
-							<form onSubmit={handleSubmit}>
-								<div className="field ">
+							<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
+								<div className="field">
 									{/* input contianer */}
 									<div
-										className={`search-bar-container lg:w-[800px] ${
+										className={`search-bar-container  ${
 											errors.search ? ' !border-ared-500' : ''
 										}`}
 									>

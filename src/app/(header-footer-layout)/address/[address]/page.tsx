@@ -130,9 +130,14 @@ export default function AddressPage({ params }: AddressPageProps) {
 				</h1>
 
 				<div className="flex items-center space-x-4 ">
-					<h1>
-						<span className="dark:text-white text-abrandc-dark-grey mr-2">Address</span>
-						<span className="dark:text-ablue-100 text-ablue-500">{address}</span>
+					<h1 className="flex flex-grow sm:flex-grow-0 min-w-0">
+						<div className="dark:text-white text-abrandc-dark-grey mr-2">Address</div>
+						<div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
+							{address}
+						</div>
+						{/* <div className="dark:text-ablue-100 text-ablue-500 min-w-0 overflow-hidden flex-grow text-ellipsis w-[200px]">
+							{address}
+						</div> */}
 					</h1>
 
 					<Tooltip text="Copied to clipbloard" position="up" trigger="click">
@@ -257,19 +262,26 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 			{/* Table */}
 			<section className="overflow-x-auto mt-12">
-				<div className="flex justify-between items-center">
-					<div className="dark:text-white text-abrandc-dark-grey font-medium">
-						<h1 className="leading-[26px] px-2 py-1">Total 213 transactions found</h1>
-						<h2 className="text-xs px-2 py-1">(Showing the last 15 records)</h2>
+				{/* Title */}
+				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
+					<div>
+						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+							More than {txnHistoryData.metadata.totalItems} transactions found
+						</h1>
+						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+							(Showing the latest records)
+						</h2>
 					</div>
-					<div className="flex items-center gap-x-2 text-white">
-						<h3 className="">First</h3>
-						<h3 className="">Last</h3>
+					<div className="flex items-center justify-center gap-x-2 text-white">
+						<QuickPagination
+							metadata={paginationMetadata}
+							onPageChange={handlePageChange}
+						/>
 					</div>
 				</div>
 				{/* Table */}
 				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					<table className="table-auto bg-awhite w-full min-w-[900px]">
+					<table className="table-auto bg-awhite w-full min-w-[950px]">
 						{/* table header */}
 						<thead className="sticky top-0">
 							<tr>
@@ -283,10 +295,9 @@ export default function AddressPage({ params }: AddressPageProps) {
 												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 													{header.name}
 												</div>
-												<div className="text-agrey-500 dark:text-agrey-600">
-													{/* info icon */}
+												{/* <div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fa-sm far fa-info-circle" />
-												</div>
+												</div> */}
 											</div>
 										)}
 									</th>
@@ -334,12 +345,9 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 										{/* type */}
 										<td className="px-2 py-8">
-											<Link
-												href={`${ROUTES.blocks}/${txn.nonceOrValidationHash}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
-											>
+											<div className="dark:text-ablue-300 text-ablue-200 font-medium text-center block">
 												{txn.txnType}
-											</Link>
+											</div>
 										</td>
 
 										{/* block */}
@@ -354,7 +362,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 										{/* time ago */}
 										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
 												{timeAgo(txn.timeStamp)}
 											</div>
 										</td>
@@ -426,7 +434,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 										{/* value */}
 										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
 												{BnToDec(txn.value, 9)} PWR
 											</div>
 										</td>
