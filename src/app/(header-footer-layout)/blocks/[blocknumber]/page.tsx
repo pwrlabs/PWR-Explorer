@@ -47,9 +47,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Block Height
 							</h1>
-							<Tooltip text="text" large position="right">
+							{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
+							</Tooltip> */}
 						</div>
 						<h2 className="text-sm">{blockNum}</h2>
 					</div>
@@ -60,9 +60,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Timestamp
 							</h1>
-							<Tooltip text="text" large position="right">
+							{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
+							</Tooltip> */}
 						</div>
 						<div className="flex items-center gap-x-2 ">
 							<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
@@ -104,9 +104,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Transactions
 							</h1>
-							<Tooltip text="text" large position="right">
+							{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
+							</Tooltip> */}
 						</div>
 						<div className="flex items-center gap-x-2 ">
 							<h2 className="leading-[24px] break-all text-sm">
@@ -131,17 +131,17 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Fee Recipient
 							</h1>
-							<Tooltip text="text" large position="right">
+							{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
+							</Tooltip> */}
 						</div>
-						<div className="flex gap-x-2">
+						<div className="flex gap-x-2  gap-y-2">
 							<Link
 								href={`${ROUTES.address}/${block_data.blockSubmitter}`}
-								className="dark:text-ablue-100 text-ablue-500 font-medium"
+								className="dark:text-ablue-100 text-ablue-500 font-medium text-ellipsis  overflow-hidden"
 							>
 								{block_data.blockSubmitter}
-							</Link>{' '}
+							</Link>
 							<Tooltip text="copied to clipboard" position="up" trigger="click">
 								<button onClick={() => copyToClipboard(block_data.blockSubmitter)}>
 									<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
@@ -156,9 +156,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Block Reward
 							</h1>
-							<Tooltip text="text" large position="right">
+							{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
+							</Tooltip> */}
 						</div>
 						<h2 className="text-sm">{BnToDec(block_data.blockReward, 9, 9)} PWR</h2>
 					</div>
@@ -167,9 +167,9 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 					<div className="lg:flex space-y-2">
 						<div className="flex items-center gap-x-2 w-[300px]">
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">Size</h1>
-							<Tooltip text="text" large position="right">
+							{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip>
+							</Tooltip> */}
 						</div>
 						<h2 className="text-sm">{block_data.blockSize} Bytes</h2>
 					</div>

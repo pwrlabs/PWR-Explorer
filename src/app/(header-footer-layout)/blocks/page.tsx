@@ -127,20 +127,17 @@ export default function Blocks() {
 				</div>
 				{/* All blocks */}
 				<div className="space-y-2">
-					<div className="flex items-center justify-between flex-col sm:flex-row">
-						<div className="flex sm:items-start">
-							{' '}
-							{/* Make this div start from the left */}
-							<div className="flex flex-col font-medium dark:text-white text-abrandc-dark-grey">
-								<h1 className="px-2 py-1 leading-[26px]">
-									Total of {paginationMetadata.totalItems} blocks
-								</h1>
-								<h2 className="text-xs px-2 py-1 font-normal">
-									(Showing the lastest blocks)
-								</h2>
-							</div>
+					{/* Title */}
+					<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
+						<div>
+							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+								More than {blocks_data.metadata.totalItems} blocks found
+							</h1>
+							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+								(Showing the latest records)
+							</h2>
 						</div>
-						<div className="flex items-center gap-x-2">
+						<div className="flex items-center justify-center gap-x-2 text-white">
 							<QuickPagination
 								metadata={paginationMetadata}
 								onPageChange={handlePageChange}
@@ -206,7 +203,7 @@ export default function Blocks() {
 										<td className="xl:px-8 px-2 py-8">
 											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 												<Link
-													href={`${ROUTES.blocks}/${block.blockHeight}`}
+													href={ROUTES.blockTxns(block.blockHeight)}
 													className="dark:text-ablue-300 text-ablue-200 font-medium"
 												>
 													{block.txnsCount}
@@ -218,7 +215,7 @@ export default function Blocks() {
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
-													href="/"
+													href={`${ROUTES.address}/${block.blockSubmitter}`}
 													className="dark:text-ablue-100 text-ablue-500 font-medium"
 												>
 													{shortenAddress(block.blockSubmitter, 4)}
