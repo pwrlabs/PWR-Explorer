@@ -40,30 +40,50 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	// *~~*~~*~~ handle clicks ~~*~~*~~* //
 	function loadPrevPage() {
 		if (metadata.previousPage) {
-			console.log("PREVIOUS PAGE BUTTON CLICKED: \nthis is the next page: ",metadata.nextPage,"\n this is the previous page: ",metadata.previousPage,"\n this is the current page: ",metadata.currentPage)
+			console.log(
+				'PREVIOUS PAGE BUTTON CLICKED: \nthis is the next page: ',
+				metadata.nextPage,
+				'\n this is the previous page: ',
+				metadata.previousPage,
+				'\n this is the current page: ',
+				metadata.currentPage
+			);
 
 			onPageChange(metadata.previousPage);
 		}
 	}
 	function loadNextPage() {
 		if (metadata.nextPage) {
-			console.log("NEXT PAGE BUTTON CLICKED: \nthis is the next page: ",metadata.nextPage,"\n this is the previous page: ",metadata.previousPage,"\n this is the current page: ",metadata.currentPage)
+			console.log(
+				'NEXT PAGE BUTTON CLICKED: \nthis is the next page: ',
+				metadata.nextPage,
+				'\n this is the previous page: ',
+				metadata.previousPage,
+				'\n this is the current page: ',
+				metadata.currentPage
+			);
 
 			onPageChange(metadata.nextPage);
 		}
 	}
 	function handlePageClick(pageNumber: number) {
 		onPageChange(pageNumber);
-		console.log("HANDLE PAGE CLICKS IS WORKING")
+		console.log('HANDLE PAGE CLICKS IS WORKING');
 	}
 
 	const [inputValue, setInputValue] = useState<number>(metadata.currentPage);
 
 	function inputChange(e: React.ChangeEvent<HTMLInputElement>) {
-		const targetPage = e.target.value as unknown as number;
+		const targetPage = parseInt(e.target.value, 10);
 
+		// Check if the input is valid (greater than 0 and less than or equal to total pages)
 		if (targetPage > 0 && targetPage <= metadata.totalPages) {
+			// Reset the red border and navigate to the selected page
+			e.target.style.borderColor = ''; // Reset the border color
 			onPageChange(targetPage);
+		} else {
+			// Set a red border around the input
+			e.target.style.borderColor = 'red';
 		}
 	}
 
@@ -72,7 +92,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	// create buttons
 	const pageButtons = [];
 	for (let i = firstPage; i <= endPage; i++) {
-		console.log("This is the total page",totalPages,"THIS is the LAST page:",endPage)
+		console.log('This is the total page', totalPages, 'THIS is the LAST page:', endPage);
 		pageButtons.push(
 			<button
 				key={i}
@@ -80,7 +100,6 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 				className={`pagination-btn ${metadata.currentPage === i && 'active'}`}
 			>
 				{i}
-				
 			</button>
 		);
 	}
@@ -154,14 +173,29 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 
 			{/* go to page */}
 			<div className="flex items-center gap-x-2">
-			<label className="text-agrey-900 dark:text-white text-sm font-medium hidden md:block">Go to page</label>
+				<label className="text-agrey-900 dark:text-white text-sm font-medium hidden md:block">
+					Go to page
+				</label>
 
 				<input
-					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey  focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
-					type="number"
-					onChange={inputChange}
-					
-				/>
+  style={{ border: inputValue > metadata.totalPages ? '2px solid red' : '2px solid transparent' }}
+  className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
+  type="number"
+  onFocus={(e) => e.target.select()} // Select the entire text on input focus
+  onChange={(e) => setInputValue(parseInt(e.target.value, 10))}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      if (inputValue <= metadata.totalPages && inputValue > 0) {
+        onPageChange(inputValue);
+      } else {
+        // Prevent changing the page and set red border
+        e.preventDefault();
+        setInputValue(metadata.currentPage);
+      }
+    }
+  }}
+  value={inputValue}
+/>
 			</div>
 		</div>
 	);
