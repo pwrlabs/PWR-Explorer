@@ -92,7 +92,7 @@ export default function Blocks() {
 						Blocks
 					</h1>
 					{/* stats */}
-					<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
+					<div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
 						{/* <StatBox
 							title="NETWORK UTILIZATION (24h)"
 							valueComp={() => (
@@ -128,9 +128,11 @@ export default function Blocks() {
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
 						<div className="flex flex-col font-medium dark:text-white text-abrandc-dark-grey">
-							<h1 className="px-2 py-1 leading-[26px]">Total of 17,242,438 blocks</h1>
+							<h1 className="px-2 py-1 leading-[26px]">
+								Total of {blocks_data.metadata.totalItems} blocks
+							</h1>
 							<h2 className="text-xs px-2 py-1 font-normal">
-								(Showing the last 500k blocks)
+								(Showing the latest blocks)
 							</h2>
 						</div>
 						<div className="flex items-center gap-x-2">
@@ -183,7 +185,7 @@ export default function Blocks() {
 										<td className="xl:px-8 px-2 py-8">
 											<Link
 												href={`${ROUTES.blocks}/${block.blockHeight}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium text-center"
+												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 											>
 												{block.blockHeight}
 											</Link>
