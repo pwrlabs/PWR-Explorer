@@ -5,7 +5,7 @@ import QuickPagination from '@/components/internal/quick-pagination/quick-pagina
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
 import QueryApi from '@/shared/api/query-api';
 import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import { copyToClipboard } from '@/shared/utils/functions';
+import { copyToClipboard, isAddress } from '@/shared/utils/functions';
 import QUERY_KEYS from '@/static/query.keys';
 import ROUTES from '@/static/router.data';
 import Image from 'next/image';
@@ -109,11 +109,9 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 				</h1>
 				<h1 className="text-ablue-100 lg:hidden">{blockNum}</h1>
 			</div>
-
 			<br />
-
 			{/* Transaction details */}
-			<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center">
+			<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-4">
 				<div>
 					<h2 className="dark:text-white text-abrandc-dark-grey font-medium">
 						<span className="mr-4">For Block</span>
@@ -131,7 +129,6 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 					/>
 				</div>
 			</div>
-
 			{/* Table */}
 			<div className="w-full mt-5 overflow-x-auto scroll-sm">
 				<table className="table-auto bg-awhite w-full min-w-[900px]">
@@ -148,10 +145,9 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 											<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 												{header.name}
 											</div>
-											<div className="text-agrey-500 dark:text-agrey-600">
-												{/* info icon */}
+											{/* <div className="text-agrey-500 dark:text-agrey-600">
 												<i className="fa-sm far fa-info-circle" />
-											</div>
+											</div> */}
 										</div>
 									)}
 								</th>
@@ -218,7 +214,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 									<td className="xl:pl-8 pl-2 pr-2 py-8">
 										<div className="flex gap-x-2 justify-center">
 											<Link
-												href="/"
+												href={`${ROUTES.address}/${txn.from}`}
 												className="dark:text-ablue-100 text-ablue-500 font-medium"
 											>
 												{shortenAddress(txn.from, 4)}
@@ -251,12 +247,18 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 									{/* To */}
 									<td className="xl:pr-8 pr-2 pl-2 py-8">
 										<div className="flex gap-x-2 justify-center">
-											<Link
-												href="/"
-												className="dark:text-ablue-100 text-ablue-500 font-medium"
-											>
-												{shortenAddress(txn.to, 4)}
-											</Link>
+											{isAddress(txn.to) ? (
+												<Link
+													href="/"
+													className="dark:text-ablue-100 text-ablue-500 font-medium"
+												>
+													{shortenAddress(txn.to, 4)}
+												</Link>
+											) : (
+												<span className="dark:text-ablue-100 text-ablue-500 font-medium">
+													{txn.to}
+												</span>
+											)}
 
 											<Tooltip
 												text="Copied to clipbloard"
@@ -285,7 +287,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 					</tbody>
 				</table>
 			</div>
-
+			<br />
 			<div>
 				<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 			</div>
