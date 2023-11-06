@@ -42,7 +42,6 @@ export default function QuickPagination({ metadata, onPageChange }: PaginationPr
 
 	function handleLastPageClick() {
 		onPageChange(metadata.totalPages);
-		console.log("LAST INDEX: ",metadata.endIndex)
 	}
 
 	return (

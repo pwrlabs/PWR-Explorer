@@ -81,6 +81,7 @@ export default function Blocks() {
 	if (blocks_loading) return <div>Loading</div>;
 
 	if (blocks_error || !blocks_data) return <div>Error</div>;
+const totalBlocks = blocks_data.blocks.reduce((total, block) => total + block.blockHeight, 0);
 
 	return (
 		<div className="container-2 mx-auto">
@@ -128,7 +129,7 @@ export default function Blocks() {
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
 						<div className="flex flex-col font-medium dark:text-white text-abrandc-dark-grey">
-							<h1 className="px-2 py-1 leading-[26px]">Total of 17,242,438 blocks</h1>
+						<h1 className="px-2 py-1 leading-[26px]">Total of {paginationMetadata.totalItems} blocks</h1>
 							<h2 className="text-xs px-2 py-1 font-normal">
 								(Showing the last 500k blocks)
 							</h2>

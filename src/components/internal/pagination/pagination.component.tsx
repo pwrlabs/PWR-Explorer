@@ -54,14 +54,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	}
 	function loadNextPage() {
 		if (metadata.nextPage) {
-			console.log(
-				'NEXT PAGE BUTTON CLICKED: \nthis is the next page: ',
-				metadata.nextPage,
-				'\n this is the previous page: ',
-				metadata.previousPage,
-				'\n this is the current page: ',
-				metadata.currentPage
-			);
+			
 
 			onPageChange(metadata.nextPage);
 		}
@@ -92,7 +85,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	// create buttons
 	const pageButtons = [];
 	for (let i = firstPage; i <= endPage; i++) {
-		console.log('This is the total page', totalPages, 'THIS is the LAST page:', endPage);
+		console.log('This is the total NUMBER OF ITEMS', metadata.totalItems);
 		pageButtons.push(
 			<button
 				key={i}
