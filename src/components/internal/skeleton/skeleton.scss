@@ -4,6 +4,9 @@
 	@apply bg-gray-200;
 	@apply dark:bg-agrey-800;
 	@apply mb-4;
+	min-height: 20px; /* Set a minimum height for the title */
+	background-color: #ccc;
+	
 }
 
 .skeleton-line {
@@ -15,6 +18,8 @@
 
 	@apply dark:bg-agrey-800;
 	@apply mb-2.5;
+	min-height: 10px; /* Set a minimum height for the line */
+	background-color: #ccc;
 }
 
 .skeleton-circle {

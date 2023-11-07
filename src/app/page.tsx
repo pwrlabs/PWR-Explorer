@@ -285,7 +285,7 @@ export default function Home() {
 												title="PWR PRICE"
 												valueComp={() => (
 													<>
-														<span>${infoData.price}</span>
+														<span>${infoData.price/100}</span>
 														<span
 															className={`font-medium  pl-2 pr-2 ${
 																infoData.priceChange > 0
