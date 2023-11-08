@@ -270,7 +270,7 @@ export default function Blocks() {
             <div className="flex gap-x-2 justify-center">
               <Link
                 href={`${ROUTES.address}/${block.blockSubmitter}`}
-                className="dark-text-ablue-100 text-ablue-500 font-medium"
+                className="dark-text-ablue-100 text-ablue-100 font-medium"
               >
                 {shortenAddress(block.blockSubmitter, 4)}
               </Link>
