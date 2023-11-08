@@ -42,6 +42,8 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 	if (txnLoading || !txnData) return <div>Loading...</div>;
 
 	if (txnError) return <div>Error</div>;
+	const scientificNotation = Number(BnToDec(txnData.value, 9, 9)).toExponential(6);
+	const formattedScientificNotation = scientificNotation.replace(/(\.[0-9]*[1-9])?0+e/, "$1e");
 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
@@ -224,7 +226,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<Image src="/icons/pwr.svg" width={20} height={20} alt="" />
 
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(txnData.value, 9, 9)} PWR
+								{formattedScientificNotation} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">

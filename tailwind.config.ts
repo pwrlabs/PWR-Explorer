@@ -10,6 +10,12 @@ const config: Config = {
 	darkMode: 'class',
 	theme: {
 		extend: {
+			height: {
+				'screen-2': 'calc(100vh - (theme("spacing.header")))',
+			},
+			minHeight: {
+				'screen-2': 'calc(100vh - (theme("spacing.header")))',
+			},
 			spacing: {
 				header: '80px',
 			},
@@ -86,9 +92,7 @@ const config: Config = {
 			},
 			boxShadow: {
 				'3xl': '8px 8px 56px 0px rgba(174, 174, 192, 0.16)', // Custom boxShadow
-				
-			  },
-			  
+			},
 		},
 	},
 	plugins: [
@@ -116,7 +120,10 @@ const config: Config = {
 						maxWidth: '1356px',
 					},
 				},
+
+				// 'h-screen-2': 'calc(100vh - (theme('spacing.header') + theme('spacing.lay_top_offset')))'
 			};
+
 			addComponents(newContainer);
 		},
 	],
