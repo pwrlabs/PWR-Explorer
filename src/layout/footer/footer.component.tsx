@@ -36,17 +36,17 @@ export default function FooterComponent() {
 		{
 			icon: <i className="fab fa-twitter" />,
 			label: 'Join our Twitter',
-			href: '#',
+			href: 'https://twitter.com/pwrlabs',
 		},
 		{
 			icon: <i className="fab fa-telegram-plane" />,
 			label: 'Join our Telegram',
-			href: '#',
+			href: 'https://t.me/pwrlabsofficial',
 		},
 		{
 			icon: <i className="fab fa-discord" />,
 			label: 'Join our Discord',
-			href: '#',
+			href: 'https://discord.gg/wtnvquRpuV',
 		},
 	];
 
@@ -105,6 +105,8 @@ export default function FooterComponent() {
 							className="flex items-center  gap-x-4 dark:bg-white bg-abrandc-dark-grey rounded-2xl py-3 px-4 h-[60px] w-[134px]"
 							key={index}
 							href={item.href}
+							target="_blank"
+							rel="noreferrer noopener"
 						>
 							<i className=" text-white dark:text-black text-2xl">{item.icon}</i>
 							<h2 className="dark:text-black text-white text-xs font-medium leading-[18px]">
