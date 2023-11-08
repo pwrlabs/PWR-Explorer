@@ -79,6 +79,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 		cacheTime: 0,
 	});
 
+
+
 	// *~~*~~*~~ Txn history ~~*~~*~~* //
 
 	const [page, setPage] = useState<number>(1);
@@ -120,6 +122,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 	if (txnHistoryLoading || balanceLoading || !txnHistoryData || !balanceData) return null;
 
 	if (txnHistoryError || balanceError) return <div>Error</div>;
+	const isNoDataFound = txnHistoryData.metadata.totalItems === 0;
 
 	return (
 		<main className="container-2 mx-auto">
@@ -203,12 +206,12 @@ export default function AddressPage({ params }: AddressPageProps) {
 								LAST TXN SENT
 							</div>
 							<div className="flex gap-x-2">
-								<Link
-									href={`${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`}
-									className="text-medium text-ablue-800 dark:text-ablue-100"
-								>
-									{shortenAddress(txnHistoryData.hashOfLastTxnSent)}
-								</Link>
+							<Link
+  href={txnHistoryData.hashOfLastTxnSent ? `${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}` : '#'}
+  className="text-medium text-ablue-800 dark:text-ablue-100"
+>
+  {txnHistoryData.hashOfLastTxnSent ? shortenAddress(txnHistoryData.hashOfLastTxnSent) : 'N/A'}
+</Link>
 
 								<Tooltip position="up" trigger="click" text="copied to clipboard">
 									<button
@@ -261,196 +264,221 @@ export default function AddressPage({ params }: AddressPageProps) {
 			</section>
 
 			{/* Table */}
-			<section className="overflow-x-auto mt-12">
-				{/* Title */}
-				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
-					<div>
-						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							More than {txnHistoryData.metadata.totalItems} transactions found
-						</h1>
-						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							(Showing the latest records)
-						</h2>
-					</div>
-					<div className="flex items-center justify-center gap-x-2 text-white">
-						<QuickPagination
-							metadata={paginationMetadata}
-							onPageChange={handlePageChange}
-						/>
-					</div>
-				</div>
-				{/* Table */}
-				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					<table className="table-auto bg-awhite w-full min-w-[950px]">
-						{/* table header */}
-						<thead className="sticky top-0">
-							<tr>
-								{headers.map((header, idx) => (
-									<th
-										className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-										key={idx}
-									>
-										{header.name.length > 0 && (
-											<div className="flex justify-center items-center gap-x-2">
-												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-													{header.name}
-												</div>
-												{/* <div className="text-agrey-500 dark:text-agrey-600">
-													<i className="fa-sm far fa-info-circle" />
-												</div> */}
-											</div>
-										)}
-									</th>
-								))}
-							</tr>
-						</thead>
+			{isNoDataFound ? (
+        <section className="overflow-x-auto mt-12">
+		<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-4">
+		  <div>
+			<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+			  No transactions found
+			</h1>
+			<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+			  (Showing the latest records)
+			</h2>
+		  </div>
+		  <div className="flex items-center justify-center gap-x-2 text-white pointer-events-none cursor-not-allowed">
+			<QuickPagination
+			  metadata={paginationMetadata}
+			  onPageChange={handlePageChange}
+			/>
+		  </div>
+		</div>
+		<div className="text-center text-ablue-100 text-ablue-100">
+		  <h1>No data found</h1>
+		</div>
+	  </section>
+      ) : (
+        // Render the table if there is data
+        <section className="overflow-x-auto mt-12">
+          {/* Title */}
+          <div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
+            <div>
+              <h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+                More than {txnHistoryData.metadata.totalItems} transactions found
+              </h1>
+              <h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+                (Showing the latest records)
+              </h2>
+            </div>
+            <div className="flex items-center justify-center gap-x-2 text-white">
+              <QuickPagination
+                metadata={paginationMetadata}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </div>
+          {/* Table */}
+          <div className="w-full mt-5 overflow-x-auto scroll-sm">
+            <table className="table-auto bg-awhite w-full min-w-[950px]">
+              {/* table header */}
+              <thead className="sticky top-0">
+                <tr>
+                  {headers.map((header, idx) => (
+                    <th
+                      className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+                      key={idx}
+                    >
+                      {header.name.length > 0 && (
+                        <div className="flex justify-center items-center gap-x-2">
+                          <div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+                            {header.name}
+                          </div>
+                          {/* <div className="text-agrey-500 dark:text-agrey-600">
+                                                                                                        <i className="fa-sm far fa-info-circle" />
+                          </div> */}
+                        </div>
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
 
-						{/* table body */}
-						<tbody>
-							{txnHistoryLoading ? (
-								<tr>
-									<td>Loading</td>
-								</tr>
-							) : (
-								txnHistoryData.transactions.map((txn, idx) => (
-									<tr
-										key={txn.txnHash}
-										className={` ${
-											idx % 2 == 0
-												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-												: 'bg-transparent'
-										}`}
-									>
-										{/* txn hash */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="flex gap-x-2 justify-start">
-												<div>
-													<Image
-														className="w-auto h-auto"
-														src="/icons/eye.svg"
-														width={20}
-														height={20}
-														alt=""
-													/>
-												</div>
+              {/* table body */}
+              <tbody>
+                {txnHistoryLoading ? (
+                  <tr>
+                    <td>Loading</td>
+                  </tr>
+                ) : (
+                  txnHistoryData.transactions.map((txn, idx) => (
+                    <tr
+                      key={txn.txnHash}
+                      className={` ${
+                        idx % 2 == 0
+                          ? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+                          : 'bg-transparent'
+                      }`}
+                    >
+                      {/* txn hash */}
+                      <td className="xl:px-8 px-2 py-8">
+                        <div className="flex gap-x-2 justify-start">
+                          <div>
+                            <Image
+                              className="w-auto h-auto"
+                              src="/icons/eye.svg"
+                              width={20}
+                              height={20}
+                              alt=""
+                            />
+                          </div>
 
-												<Link
-													href={`${ROUTES.transactions}/${txn.txnHash}`}
-													className="dark:text-ablue-300 text-ablue-200 font-medium"
-												>
-													{shortenAddress(txn.txnHash)}
-												</Link>
-											</div>
-										</td>
+                          <Link
+                            href={`${ROUTES.transactions}/${txn.txnHash}`}
+                            className="dark:text-ablue-300 text-ablue-200 font-medium"
+                          >
+                            {shortenAddress(txn.txnHash)}
+                          </Link>
+                        </div>
+                      </td>
 
-										{/* type */}
-										<td className="px-2 py-8">
-											<div className="dark:text-ablue-300 text-ablue-200 font-medium text-center block">
-												{txn.txnType}
-											</div>
-										</td>
+                      {/* type */}
+                      <td className="px-2 py-8">
+                        <div className="dark:text-ablue-300 text-ablue-200 font-medium text-center block">
+                          {txn.txnType}
+                        </div>
+                      </td>
 
-										{/* block */}
-										<td className="xl:px-8 px-2 py-8">
-											<Link
-												href={`${ROUTES.blocks}/${txn.block}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
-											>
-												{txn.block}
-											</Link>
-										</td>
+                      {/* block */}
+                      <td className="xl:px-8 px-2 py-8">
+                        <Link
+                          href={`${ROUTES.blocks}/${txn.block}`}
+                          className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+                        >
+                          {txn.block}
+                        </Link>
+                      </td>
 
-										{/* time ago */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
-												{timeAgo(txn.timeStamp)}
-											</div>
-										</td>
+                      {/* time ago */}
+                      <td className="xl:px-8 px-2 py-8">
+                        <div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
+                          {timeAgo(txn.timeStamp)}
+                        </div>
+                      </td>
 
-										{/* from */}
-										<td className="xl:pl-8 pl-2 pr-2 py-8">
-											<div className="flex gap-x-2 justify-center">
-												<Link
-													href="/"
-													className="dark:text-ablue-100 text-ablue-500 font-medium"
-												>
-													{shortenAddress(txn.from, 4)}
-												</Link>
+                      {/* from */}
+                      <td className="xl:pl-8 pl-2 pr-2 py-8">
+                        <div className="flex gap-x-2 justify-center">
+                          <Link
+                            href="/"
+                            className="dark:text-ablue-100 text-ablue-500 font-medium"
+                          >
+                            {shortenAddress(txn.from, 4)}
+                          </Link>
 
-												<Tooltip
-													text="Copied to clipbloard"
-													position="up"
-													trigger="click"
-												>
-													<button
-														className="text-agrey-500 dark:text-agrey-600"
-														onClick={() => copyToClipboard(txn.from)}
-													>
-														<i className="far fa-clone" />
-													</button>
-												</Tooltip>
-											</div>
-										</td>
+                          <Tooltip
+                            text="Copied to clipboard"
+                            position="up"
+                            trigger="click"
+                          >
+                            <button
+                              className="text-agrey-500 dark:text-agrey-600"
+                              onClick={() => copyToClipboard(txn.from)}
+                            >
+                              <i className="far fa-clone" />
+                            </button>
+                          </Tooltip>
+                        </div>
+                      </td>
 
-										{/* direction */}
-										<td className="px-2 py-8 flex justify-center">
-											<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
-												<div className="text-agrey-500 dark:text-agrey-600">
-													<i className="fas fa-arrow-right fa-sm" />
-												</div>
-											</div>
-										</td>
+                      {/* direction */}
+                      <td className="px-2 py-8 flex justify-center">
+                        <div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
+                          <div className="text-agrey-500 dark:text-agrey-600">
+                            <i className="fas fa-arrow-right fa-sm" />
+                          </div>
+                        </div>
+                      </td>
 
-										{/* To */}
-										<td className="xl:pl-8 pl-2 pr-2 py-8">
-											<div className="flex gap-x-2 justify-center">
-												{isAddress(txn.to) ? (
-													<Link
-														href={`${ROUTES.address}/${txn.to}`}
-														className="dark:text-ablue-100 text-ablue-500 font-medium"
-													>
-														{shortenAddress(txn.to, 4)}
-													</Link>
-												) : (
-													<span className="dark:text-ablue-100 text-ablue-500 font-medium">
-														{txn.to}
-													</span>
-												)}
+                      {/* To */}
+                      <td className="xl:pl-8 pl-2 pr-2 py-8">
+                        <div className="flex gap-x-2 justify-center">
+                          {isAddress(txn.to) ? (
+                            <Link
+                              href={`${ROUTES.address}/${txn.to}`}
+                              className="dark:text-ablue-100 text-ablue-500 font-medium"
+                            >
+                              {shortenAddress(txn.to, 4)}
+                            </Link>
+                          ) : (
+                            <span className="dark:text-ablue-100 text-ablue-500 font-medium">
+                              {txn.to}
+                            </span>
+                          )}
 
-												<Tooltip
-													text="Copied to clipbloard"
-													position="up"
-													trigger="click"
-												>
-													<button
-														className="text-agrey-500 dark:text-agrey-600"
-														onClick={() => copyToClipboard(txn.to)}
-													>
-														<i className="far fa-clone" />
-													</button>
-												</Tooltip>
-											</div>
-										</td>
+                          <Tooltip
+                            text="Copied to clipboard"
+                            position="up"
+                            trigger="click"
+                          >
+                            <button
+                              className="text-agrey-500 dark:text-agrey-600"
+                              onClick={() => copyToClipboard(txn.to)}
+                            >
+                              <i className="far fa-clone" />
+                            </button>
+                          </Tooltip>
+                        </div>
+                      </td>
 
-										{/* value */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
-												{BnToDec(txn.value, 9)} PWR
-											</div>
-										</td>
-									</tr>
-								))
-							)}
-						</tbody>
-					</table>
-				</div>
+                      {/* value */}
+                      <td className="xl:px-8 px-2 py-8">
+                        <div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
+                          {BnToDec(txn.value, 9)} PWR
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
 
-				<br />
+          <br />
 
-				<div>
-					<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
-				</div>
-			</section>
+          <div>
+            <Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
+          </div>
+        </section>
+	  )}
 		</main>
 	);
 }

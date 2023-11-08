@@ -78,11 +78,47 @@ export default function Blocks() {
 		setPage(page);
 	}
 
-	if (blocks_loading) return <div>Loading</div>;
+	function SkeletonStatBox() {
+		return (
+			<div className="bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
+				<div className="flex items-center gap-x-4 skeleton-container h-full">
+					<div className="flex-grow">
+						<div className="skeleton-title max-w-[150px]"></div>
+						<div className="skeleton-line max-w-[100px]"></div>
+						<span className="sr-only">Loading...</span>
+					</div>
+				</div>
+			</div>
+		);
+	}
+	function SkeletonBlockRow() {
+		return (
+			<tr className="skeleton-transaction-row">
+				<div className="flex items-center gap-x-8 skeleton-container h-full w-full">
+					<div className="skeleton-title w-[10vw] max-w-[80vw] mr-3"></div>
+					<div className="skeleton-title w-[10vw] max-w-[80vw] mr-5"></div>
 
-	if (blocks_error || !blocks_data) return <div>Error</div>;
-	const totalBlocks = blocks_data.blocks.reduce((total, block) => total + block.blockHeight, 0);
+					<div className="flex-grow">
+						<div className="flex flex-row">
+							{' '}
+							{/* Added a flex container */}
+							<div className="skeleton-title w-[5vw] max-w-[80vw] mr-20"></div>
+							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-20"></div>
+							<div className="skeleton-title w-[15vw] max-w-[80vw] mr-15"></div>
+							<div className="skeleton-title w-[15vw] max-w-[80vw] ml-20"></div>
+						</div>
+						<span className="sr-only">Loading...</span>
+					</div>
 
+					<div className="flex-grow">
+						<div className="skeleton-title max-w-[80vw]"></div>
+						<div className="skeleton-line max-w-[50px] !mb-0"></div>
+						<span className="sr-only">Loading...</span>
+					</div>
+				</div>{' '}
+			</tr>
+		);
+	}
 	return (
 		<div className="container-2 mx-auto">
 			<div className="space-y-12">
@@ -103,26 +139,43 @@ export default function Blocks() {
 							)}
 						/> */}
 
-						<StatBox
-							title="BLOCK SIZE (24h)"
-							valueComp={() => (
-								<>
-									<span>{blocks_data.averageBlockSizePast24Hours} Bytes</span>
-								</>
-							)}
-						/>
+						{blocks_loading ? (
+							<SkeletonStatBox />
+						) : (
+							<StatBox
+								title={blocks_data ? 'BLOCK SIZE (24h)' : ''}
+								valueComp={() => (
+									<>
+										<span>
+											{blocks_data
+												? blocks_data.averageBlockSizePast24Hours + ' Bytes'
+												: 'N/A'}
+										</span>
+									</>
+								)}
+							/>
+						)}
 
-						<StatBox
-							title="BLOCK REWARDS (24h)"
-							valueComp={() => (
-								<>
-									<span>
-										{BnToDec(blocks_data.totalBlockRewardsPast24Hours, 9, 9)}{' '}
-										PWR
-									</span>
-								</>
-							)}
-						/>
+						{blocks_loading ? (
+							<SkeletonStatBox />
+						) : (
+							<StatBox
+								title={blocks_data ? 'BLOCK REWARDS (24h)' : ''}
+								valueComp={() => (
+									<>
+										<span>
+											{blocks_data?.totalBlockRewardsPast24Hours
+												? BnToDec(
+														blocks_data.totalBlockRewardsPast24Hours,
+														9,
+														9
+												  ) + ' PWR'
+												: 'N/A'}
+										</span>
+									</>
+								)}
+							/>
+						)}
 					</div>
 				</div>
 				{/* All blocks */}
@@ -131,7 +184,7 @@ export default function Blocks() {
 					<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
 						<div>
 							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								More than {blocks_data.metadata.totalItems} blocks found
+								More than {blocks_data?.metadata?.totalItems || 0} blocks found
 							</h1>
 							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 								(Showing the latest records)
@@ -173,93 +226,105 @@ export default function Blocks() {
 
 							{/* table body */}
 							<tbody>
-								{blocks_data.blocks.map((block, idx) => (
-									<tr
-										key={idx}
-										className={` ${
-											idx % 2 == 0
-												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-												: 'bg-transparent'
-										}`}
-									>
-										{/* Block */}
-										<td className="xl:px-8 px-2 py-8">
-											<Link
-												href={`${ROUTES.blocks}/${block.blockHeight}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+								{blocks_loading
+									? Array.from({ length: 10 }, (_, idx) => (
+											<SkeletonBlockRow key={idx} />
+									  ))
+									: (blocks_data?.blocks || []).map((block, idx) => (
+											<tr
+												key={idx}
+												className={` ${
+													idx % 2 === 0
+														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+														: 'bg-transparent'
+												}`}
 											>
-												{block.blockHeight}
-											</Link>
-										</td>
-
-										{/* Age */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{timeAgo(block.timeStamp)}
-											</div>
-										</td>
-
-										{/* txns */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												<Link
-													href={ROUTES.blockTxns(block.blockHeight)}
-													className="dark:text-ablue-300 text-ablue-200 font-medium"
-												>
-													{block.txnsCount}
-												</Link>
-											</div>
-										</td>
-
-										{/* fee recipient */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="flex gap-x-2 justify-center">
-												<Link
-													href={`${ROUTES.address}/${block.blockSubmitter}`}
-													className="dark:text-ablue-100 text-ablue-500 font-medium"
-												>
-													{shortenAddress(block.blockSubmitter, 4)}
-												</Link>
-
-												<Tooltip
-													text="Copied to clipbloard"
-													position="up"
-													trigger="click"
-												>
-													<button
-														className="text-agrey-500 dark:text-agrey-600"
-														onClick={() =>
-															copyToClipboard(block.blockSubmitter)
-														}
+												{/* Block */}
+												<td className="xl:px-8 px-2 py-8">
+													<Link
+														href={`${ROUTES.blocks}/${block.blockHeight}`}
+														className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
 													>
-														<i className="far fa-clone" />
-													</button>
-												</Tooltip>
-											</div>
-										</td>
+														{block.blockHeight}
+													</Link>
+												</td>
 
-										{/* Reward */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{BnToDec(block.blockReward, 9, 9)} PWR
-											</div>
-										</td>
+												{/* Age */}
+												<td className="xl:px-8 px-2 py-8">
+													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+														{timeAgo(block.timeStamp)}
+													</div>
+												</td>
 
-										{/* Shared Rewards */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												<span>
-													{parseFloat(BnToDec(block.blockReward, 9, 9)) /
-														2}{' '}
-													PWR
-												</span>{' '}
-												<span className="dark:text-agrey-600 text-agrey-500">
-													(50%)
-												</span>
-											</div>
-										</td>
-									</tr>
-								))}
+												{/* txns */}
+												<td className="xl:px-8 px-2 py-8">
+													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+														<Link
+															href={ROUTES.blockTxns(
+																block.blockHeight
+															)}
+															className="dark:text-ablue-300 text-ablue-200 font-medium"
+														>
+															{block.txnsCount}
+														</Link>
+													</div>
+												</td>
+
+												{/* fee recipient */}
+												<td className="xl:px-8 px-2 py-8">
+													<div className="flex gap-x-2 justify-center">
+														<Link
+															href={`${ROUTES.address}/${block.blockSubmitter}`}
+															className="dark-text-ablue-100 text-ablue-500 font-medium"
+														>
+															{shortenAddress(
+																block.blockSubmitter,
+																4
+															)}
+														</Link>
+
+														<Tooltip
+															text="Copied to clipboard"
+															position="up"
+															trigger="click"
+														>
+															<button
+																className="text-agrey-500 dark:text-agrey-600"
+																onClick={() =>
+																	copyToClipboard(
+																		block.blockSubmitter
+																	)
+																}
+															>
+																<i className="far fa-clone" />
+															</button>
+														</Tooltip>
+													</div>
+												</td>
+
+												{/* Reward */}
+												<td className="xl:px-8 px-2 py-8">
+													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+														{BnToDec(block.blockReward, 9, 9)} PWR
+													</div>
+												</td>
+
+												{/* Shared Rewards */}
+												<td className="xl:px-8 px-2 py-8">
+													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+														<span>
+															{parseFloat(
+																BnToDec(block.blockReward, 9, 9)
+															) / 2}{' '}
+															PWR
+														</span>{' '}
+														<span className="dark:text-agrey-600 text-agrey-500">
+															(50%)
+														</span>
+													</div>
+												</td>
+											</tr>
+									  ))}
 							</tbody>
 						</table>
 					</div>
