@@ -105,6 +105,7 @@ export default function Blocks() {
 							<div className="skeleton-title w-[5vw] max-w-[80vw] mr-20"></div>
 							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-20"></div>
 							<div className="skeleton-title w-[15vw] max-w-[80vw] mr-15"></div>
+							
 							<div className="skeleton-title w-[15vw] max-w-[80vw] ml-20"></div>
 						</div>
 						<span className="sr-only">Loading...</span>
@@ -139,43 +140,39 @@ export default function Blocks() {
 							)}
 						/> */}
 
-						{blocks_loading ? (
-							<SkeletonStatBox />
-						) : (
-							<StatBox
-								title={blocks_data ? 'BLOCK SIZE (24h)' : ''}
-								valueComp={() => (
-									<>
-										<span>
-											{blocks_data
-												? blocks_data.averageBlockSizePast24Hours + ' Bytes'
-												: 'N/A'}
-										</span>
-									</>
-								)}
-							/>
-						)}
+{blocks_loading ? (
+  <SkeletonStatBox />
+) : (
+  <StatBox
+    title={blocks_data ? 'BLOCK SIZE (24h)' : ''}
+    valueComp={() => (
+      <>
+        <span>
+          {blocks_data
+            ? blocks_data.averageBlockSizePast24Hours + ' Bytes'
+            : 'N/A'}
+        </span>
+      </>
+    )}
+  />
+)}
 
-						{blocks_loading ? (
-							<SkeletonStatBox />
-						) : (
-							<StatBox
-								title={blocks_data ? 'BLOCK REWARDS (24h)' : ''}
-								valueComp={() => (
-									<>
-										<span>
-											{blocks_data?.totalBlockRewardsPast24Hours
-												? BnToDec(
-														blocks_data.totalBlockRewardsPast24Hours,
-														9,
-														9
-												  ) + ' PWR'
-												: 'N/A'}
-										</span>
-									</>
-								)}
-							/>
-						)}
+{blocks_loading ? (
+  <SkeletonStatBox />
+) : (
+  <StatBox
+    title={blocks_data ? 'BLOCK REWARDS (24h)' : ''}
+    valueComp={() => (
+      <>
+        <span>
+          {blocks_data?.totalBlockRewardsPast24Hours
+            ? BnToDec(blocks_data.totalBlockRewardsPast24Hours, 9, 9) + ' PWR'
+            : 'N/A'}
+        </span>
+      </>
+    )}
+  />
+)}
 					</div>
 				</div>
 				{/* All blocks */}
@@ -226,106 +223,96 @@ export default function Blocks() {
 
 							{/* table body */}
 							<tbody>
-								{blocks_loading
-									? Array.from({ length: 10 }, (_, idx) => (
-											<SkeletonBlockRow key={idx} />
-									  ))
-									: (blocks_data?.blocks || []).map((block, idx) => (
-											<tr
-												key={idx}
-												className={` ${
-													idx % 2 === 0
-														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-														: 'bg-transparent'
-												}`}
-											>
-												{/* Block */}
-												<td className="xl:px-8 px-2 py-8">
-													<Link
-														href={`${ROUTES.blocks}/${block.blockHeight}`}
-														className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
-													>
-														{block.blockHeight}
-													</Link>
-												</td>
+  {blocks_loading
+    ? Array.from({ length: 10 }, (_, idx) => (
+        <SkeletonBlockRow key={idx} />
+      ))
+    : (blocks_data?.blocks || []).map((block, idx) => (
+        <tr
+          key={idx}
+          className={` ${
+            idx % 2 === 0
+              ? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+              : 'bg-transparent'
+          }`}
+        >
+          {/* Block */}
+          <td className="xl:px-8 px-2 py-8">
+            <Link
+              href={`${ROUTES.blocks}/${block.blockHeight}`}
+              className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+            >
+              {block.blockHeight}
+            </Link>
+          </td>
 
-												{/* Age */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														{timeAgo(block.timeStamp)}
-													</div>
-												</td>
+          {/* Age */}
+          <td className="xl:px-8 px-2 py-8">
+            <div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+              {timeAgo(block.timeStamp)}
+            </div>
+          </td>
 
-												{/* txns */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														<Link
-															href={ROUTES.blockTxns(
-																block.blockHeight
-															)}
-															className="dark:text-ablue-300 text-ablue-200 font-medium"
-														>
-															{block.txnsCount}
-														</Link>
-													</div>
-												</td>
+          {/* txns */}
+          <td className="xl:px-8 px-2 py-8">
+            <div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+              <Link
+                href={ROUTES.blockTxns(block.blockHeight)}
+                className="dark:text-ablue-300 text-ablue-200 font-medium"
+              >
+                {block.txnsCount}
+              </Link>
+            </div>
+          </td>
 
-												{/* fee recipient */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="flex gap-x-2 justify-center">
-														<Link
-															href={`${ROUTES.address}/${block.blockSubmitter}`}
-															className="dark-text-ablue-100 text-ablue-500 font-medium"
-														>
-															{shortenAddress(
-																block.blockSubmitter,
-																4
-															)}
-														</Link>
+          {/* fee recipient */}
+          <td className="xl:px-8 px-2 py-8">
+            <div className="flex gap-x-2 justify-center">
+              <Link
+                href={`${ROUTES.address}/${block.blockSubmitter}`}
+                className="dark-text-ablue-100 text-ablue-100 font-medium"
+              >
+                {shortenAddress(block.blockSubmitter, 4)}
+              </Link>
 
-														<Tooltip
-															text="Copied to clipboard"
-															position="up"
-															trigger="click"
-														>
-															<button
-																className="text-agrey-500 dark:text-agrey-600"
-																onClick={() =>
-																	copyToClipboard(
-																		block.blockSubmitter
-																	)
-																}
-															>
-																<i className="far fa-clone" />
-															</button>
-														</Tooltip>
-													</div>
-												</td>
+              <Tooltip
+                text="Copied to clipboard"
+                position="up"
+                trigger="click"
+              >
+                <button
+                  className="text-agrey-500 dark:text-agrey-600"
+                  onClick={() =>
+                    copyToClipboard(block.blockSubmitter)
+                  }
+                >
+                  <i className="far fa-clone" />
+                </button>
+              </Tooltip>
+            </div>
+          </td>
 
-												{/* Reward */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														{BnToDec(block.blockReward, 9, 9)} PWR
-													</div>
-												</td>
+          {/* Reward */}
+          <td className="xl:px-8 px-2 py-8">
+            <div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+              {BnToDec(block.blockReward, 9, 9)} PWR
+            </div>
+          </td>
 
-												{/* Shared Rewards */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														<span>
-															{parseFloat(
-																BnToDec(block.blockReward, 9, 9)
-															) / 2}{' '}
-															PWR
-														</span>{' '}
-														<span className="dark:text-agrey-600 text-agrey-500">
-															(50%)
-														</span>
-													</div>
-												</td>
-											</tr>
-									  ))}
-							</tbody>
+          {/* Shared Rewards */}
+          <td className="xl:px-8 px-2 py-8">
+            <div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+              <span>
+                {parseFloat(BnToDec(block.blockReward, 9, 9)) / 2} PWR
+              </span>{' '}
+              <span className="dark:text-agrey-600 text-agrey-500">
+                (50%)
+              </span>
+            </div>
+          </td>
+        </tr>
+      ))}
+  </tbody>
 						</table>
 					</div>
 

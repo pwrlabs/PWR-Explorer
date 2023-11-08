@@ -238,7 +238,7 @@ export default function Transactions() {
 				<div className="w-full mt-5 overflow-x-auto scroll-sm">
 					<table className="table-auto bg-awhite w-full min-w-[900px] ">
 						{/* table header */}
-						<thead className="sticky top-0">
+						<thead className="sticky top-0 ">
 							<tr>
 								{headers.map((header, idx) => (
 									<th
@@ -261,7 +261,7 @@ export default function Transactions() {
 						</thead>
 
 						{/* table body */}
-						<tbody>
+						<tbody className='h-220'>
 							{txnsLoading
 								? Array.from({ length: 10 }, (_, idx) => (
 										<SkeletonTransactionRow key={idx} />

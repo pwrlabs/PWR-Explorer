@@ -224,7 +224,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<Image src="/icons/pwr.svg" width={20} height={20} alt="" />
 
 								<h1 className="leading-[24px] break-all text-sm">
-									{BnToDec(txnData.value, 9, 9)} PWR
+								{Number(BnToDec(txnData.value, 9, 9)).toLocaleString('en-US', { minimumFractionDigits: 9 })} PWR
 									{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 								</h1>
 								<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
