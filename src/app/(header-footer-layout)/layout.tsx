@@ -7,7 +7,9 @@ export default function HeaderFooterLayout({ children }: { children: React.React
 			{/* *~~*~~*~~ LAYOUT ~~*~~*~~* */}
 			<HeaderComponent />
 
-			<div className="dark:bg-abrandc-dark-blackish py-[80px]">{children}</div>
+			<div className="dark:bg-abrandc-dark-blackish bg-white min-h-screen-2 py-header">
+				{children}
+			</div>
 
 			<FooterComponent />
 		</>
