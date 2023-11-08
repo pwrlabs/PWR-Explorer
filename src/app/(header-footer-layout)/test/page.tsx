@@ -1,19 +1,62 @@
-import { BnToDec } from '@/shared/utils/formatters';
-import BigNumber from 'bignumber.js';
+import React from 'react';
 
-export default function Page() {
-	const v = 123;
+interface Header {
+	name: string;
+	thClass: string;
+}
 
-	function bn(value: string, decimals = 9, precision = 2) {
-		const bn = new BigNumber(value).shiftedBy(-decimals);
-		const float = bn.toFixed(precision);
-		const r = BigNumber(float).toFixed();
-		return r;
-	}
+interface SkeletonTableProps {
+	headers: Header[];
+	txnsLoading: boolean;
+}
+
+const SkeletonTable: React.FC<SkeletonTableProps> = ({ headers, txnsLoading }) => {
+	const sampleTransaction = {
+		txnHash: 'sampleTxnHash123',
+	};
 
 	return (
-		<main className="min-h-screen-2 box-border">
-			<div className="container-2">{bn(v, 9, 9)}</div>
-		</main>
+		<section>
+			{/* Title */}
+			{/* Table */}
+			<div className="w-full mt-5 overflow-x-auto scroll-sm">
+				<table className="table-auto bg-awhite w-full min-w-[1500px]">
+					{/* table header */}
+					
+
+					{/* table body - Skeleton Rows */}
+					<tbody>
+						{txnsLoading ? (
+							Array.from({ length: 10 }, (_, idx) => (
+								<tr
+									key={idx}
+									className={` ${
+										idx % 2 == 0
+											? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+											: 'bg-transparent'
+									}`}
+								>
+									<td className="xl:px-8 px-2 py-10" colSpan={headers.length}>
+										{/* Increase the py value */}
+										<div className="skeleton-title w-full w-[80vw]"></div>
+									</td>
+									{/* ... (Other <td> elements) */}
+								</tr>
+							))
+						) : (
+							<tr key={sampleTransaction.txnHash}>
+							</tr>
+						)}
+					</tbody>
+				</table>
+			</div>
+
+			<div>
+				{/* Replace with your pagination component */}
+				<div className="skeleton-pagination" />
+			</div>
+		</section>
 	);
-}
+};
+
+export default SkeletonTable;
