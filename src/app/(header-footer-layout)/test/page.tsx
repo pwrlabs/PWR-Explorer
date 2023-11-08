@@ -20,7 +20,7 @@ const SkeletonTable: React.FC<SkeletonTableProps> = ({ headers, txnsLoading }) =
 			{/* Title */}
 			{/* Table */}
 			<div className="w-full mt-5 overflow-x-auto scroll-sm">
-				<table className="table-auto bg-awhite w-full min-w-[1500px]">
+				<table className="table-auto bg-awhite w-full min-w-[80vw]">
 					{/* table header */}
 					
 
