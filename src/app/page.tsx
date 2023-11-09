@@ -20,8 +20,8 @@ import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from '@/static/router.data';
 import { ApexOptions } from 'apexcharts';
 import { isAddress, isHash } from '@/shared/utils/functions';
-
-// const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+import LatestBlocksTable from '@/components/internal/root-page/latest-blocks-table';
+import LatestTxnsTable from '@/components/internal/root-page/latest-txns-table';
 
 function BlockBoxSkeleton() {
 	return (
@@ -72,91 +72,6 @@ function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; ic
 		</div>
 	);
 }
-
-// function Chart() {
-// 	const options: ApexOptions = {
-// 		chart: {
-// 			type: 'area',
-// 			toolbar: {
-// 				show: false,
-// 			},
-// 		},
-
-// 		colors: ['#007BFF'],
-// 		stroke: {
-// 			width: 2,
-// 			curve: 'smooth', // Makes the line have curved edges
-// 		},
-// 		fill: {
-// 			type: 'gradient',
-// 			gradient: {
-// 				shadeIntensity: 1,
-// 				opacityFrom: 0.7,
-// 				opacityTo: 0.3,
-// 				stops: [0, 100],
-// 			},
-// 			colors: ['#007BFF'],
-// 		},
-// 		xaxis: {
-// 			categories: ['Apr 23', 'Apr 24', '', '', '', 'Apr 30', '', '', '', 'May 7'],
-// 			tickPlacement: 'on',
-// 			labels: {
-// 				rotate: 0,
-// 				style: {
-// 					colors: '#A9A9A9',
-// 					fontSize: '10px', // Adjust font size as desired
-// 				},
-// 			},
-// 			axisTicks: {
-// 				show: false, // This line will hide the tick marks
-// 			},
-// 			axisBorder: {
-// 				show: false, // Ensure the axis border is also hidden
-// 			},
-// 		},
-// 		yaxis: {
-// 			labels: {
-// 				formatter: function (val: any) {
-// 					if (val === 1000) {
-// 						return val / 1000 + 'k';
-// 					}
-// 					return '';
-// 				},
-// 				style: {
-// 					colors: '#A9A9A9',
-// 					fontSize: '10px', // Adjust font size as desired
-// 				},
-// 			},
-// 		},
-// 		grid: {
-// 			show: true,
-// 			borderColor: '#F7F7F7',
-// 			strokeDashArray: 0,
-// 			position: 'back',
-// 			xaxis: {
-// 				lines: {
-// 					show: false,
-// 				},
-// 			},
-// 		},
-// 		dataLabels: {
-// 			enabled: false,
-// 		},
-// 	};
-
-// 	const series = [
-// 		{
-// 			name: 'Series 1',
-// 			data: [840000, 870000, 860000, 850000, 860000, 870000, 880000, 910000, 920000, 930000],
-// 		},
-// 	];
-
-// 	return (
-// 		<>
-// 			<ApexChart type="area" options={options} series={series} height={200} width={300} />
-// 		</>
-// 	);
-// }
 
 export default function Home() {
 	// *~~*~~*~~ search bar *~~*~~*~~* //
@@ -405,88 +320,22 @@ export default function Home() {
 								</h1>
 
 								<div className="rounded-lg overflow-hidden">
-									{infoLoading
-										? [1, 2, 3, 4, 5].map((item, idx) => (
-												<div
-													key={idx}
-													className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
-														idx % 2 === 0
-															? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-															: ''
-													}`}
-												>
-													<BlockBoxSkeleton key={idx} />
-												</div>
-										  ))
-										: infoData?.blocks.map((block, index) => (
-												<div
-													key={index}
-													className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
-														index % 2 === 0
-															? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-															: ''
-													}`}
-												>
-													{/* icon and block number, timestamp */}
-													<div className="flex gap-x-4">
-														<Image
-															className=" xl:block hidden"
-															src="/icons/block.svg"
-															width={32}
-															height={32}
-															alt=""
-														/>
-														<div className="space-y-2">
-															{/* block number */}
-															<Link
-																href={`${ROUTES.blocks}/${block.blockHeight}`}
-																className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
-															>
-																{block.blockHeight}
-															</Link>
-															<h1 className="text-sm dark:text-white text-abrandc-dark-grey pr-2">
-																{timeAgo(block.timeStamp)}
-															</h1>
-														</div>
-													</div>
-
-													{/* txn count and fee recipient */}
-													<div className="">
-														<h1 className="">
-															<span className="dark:text-white text-abrandc-dark-grey inline-block lg:hidden 2xl:inline-block mr-2">
-																Recipient
-															</span>
-															<Link
-																href={`${ROUTES.address}/${block.blockSubmitter}`}
-																className="dark:text-ablue-300 text-ablue-200 font-medium "
-															>
-																{shortenAddress(
-																	block.blockSubmitter,
-																	4
-																)}
-															</Link>
-														</h1>
-
-														<div className="flex justify-between">
-															<Link
-																href={`${ROUTES.blockTxns(
-																	block.blockHeight
-																)}`}
-																className="font-medium dark:text-ablue-300 text-ablue-200"
-															>
-																{block.txnsCount} txns
-															</Link>
-														</div>
-													</div>
-
-													{/* block fee */}
-													<div>
-														<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[130px]">
-															{BnToDec(block.blockReward, 9, 9)} PWR
-														</h1>
-													</div>
-												</div>
-										  ))}
+									{infoLoading ? (
+										[1, 1, 1, 1, 1].map((item, idx) => (
+											<div
+												key={idx}
+												className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
+													idx % 2 === 0
+														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+														: ''
+												}`}
+											>
+												<BlockBoxSkeleton key={idx} />
+											</div>
+										))
+									) : (
+										<LatestBlocksTable blocks={infoData?.blocks || []} />
+									)}
 								</div>
 								<Link
 									href={ROUTES.blocks}
@@ -506,91 +355,22 @@ export default function Home() {
 								</h1>
 
 								<div className="rounded-lg overflow-hidden">
-									{infoLoading
-										? [1, 2, 3, 4, 5].map((item, idx) => (
-												<div
-													key={idx}
-													className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
-														idx % 2 === 0
-															? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-															: ''
-													}`}
-												>
-													<BlockBoxSkeleton key={idx} />
-												</div>
-										  ))
-										: infoData?.txns.map((transaction, index) => (
-												<div
-													key={index}
-													className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
-														index % 2 === 0
-															? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-															: ''
-													}`}
-												>
-													{/* icon and txn hash, timestamp */}
-													<div className="flex gap-x-4 flex-1">
-														<Image
-															className=" xl:block hidden"
-															src="/icons/list.svg"
-															width={32}
-															height={32}
-															alt=""
-														/>
-														<div className="space-y-2">
-															{/* block number */}
-															<Link
-																href={`${ROUTES.transactions}/${transaction.txnHash}`}
-																className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
-															>
-																{shortenAddress(
-																	transaction.txnHash,
-																	4
-																)}
-															</Link>
-															<h1 className="text-sm dark:text-white text-abrandc-dark-grey pr-2">
-																{timeAgo(transaction.timeStamp)}
-															</h1>
-														</div>
-													</div>
-
-													{/* txn count and fee recipient */}
-													<div className="flex-1">
-														<h1 className="flex gap-x-2">
-															<div className="dark:text-white text-abrandc-dark-grey">
-																From
-															</div>
-															<Link
-																href={`${ROUTES.address}/${transaction.from}`}
-																className="font-medium dark:text-ablue-300 text-ablue-200 pl-1"
-															>
-																{shortenAddress(
-																	transaction.from,
-																	4
-																)}
-															</Link>
-														</h1>
-
-														<h1>
-															<span className="dark:text-white text-abrandc-dark-grey">
-																To
-															</span>
-															<span className="dark:text-ablue-100 text-ablue-500 font-medium pl-8">
-																{transaction.to.length > 15
-																	? shortenAddress(transaction.to)
-																	: transaction.to}
-															</span>
-														</h1>
-													</div>
-
-													{/* block fee */}
-													<div className="w-[100px]">
-														<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center">
-															{BnToDec(transaction.value, 9, 9)} PWR
-														</h1>
-													</div>
-												</div>
-										  ))}
+									{infoLoading ? (
+										[1, 2, 3, 4, 5].map((item, idx) => (
+											<div
+												key={idx}
+												className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
+													idx % 2 === 0
+														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+														: ''
+												}`}
+											>
+												<BlockBoxSkeleton key={idx} />
+											</div>
+										))
+									) : (
+										<LatestTxnsTable transactions={infoData?.txns || []} />
+									)}
 								</div>
 
 								<Link

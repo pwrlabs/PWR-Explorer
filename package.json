@@ -20,7 +20,6 @@
 		"react": "latest",
 		"react-apexcharts": "^1.4.1",
 		"react-dom": "latest",
-		"react-icons": "^4.11.0",
 		"react-query": "^3.39.3",
 		"sass": "^1.68.0",
 		"yup": "^1.3.2"
