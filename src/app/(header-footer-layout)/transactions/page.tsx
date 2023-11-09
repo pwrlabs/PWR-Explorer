@@ -174,10 +174,10 @@ export default function Transactions() {
 							valueComp={() => (
 								<>
 									<span>
-										{txnsData
-											? txnsData.averageTransactionFeePast24Hours + ' USD'
-											: 'Loading...'}
-									</span>
+  {txnsData
+    ? (txnsData.averageTransactionFeePast24Hours / 1e9).toFixed(9) + ' USD'
+    : 'Loading...'}
+</span>
 								</>
 							)}
 							icon="/icons/arrows.svg"
