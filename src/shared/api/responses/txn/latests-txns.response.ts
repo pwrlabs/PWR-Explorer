@@ -16,7 +16,7 @@ type Txn = {
 };
 
 export type LatestTransactionsSuccessResponse = {
-	averageTransactionFeePast24Hours: number;
+	averageTransactionFeePast24Hours: string;
 	averageTransactionFeePercentageChangeComparedToPreviousDay: number;
 
 	//

@@ -174,10 +174,14 @@ export default function Transactions() {
 							valueComp={() => (
 								<>
 									<span>
-  {txnsData
-    ? (txnsData.averageTransactionFeePast24Hours / 1e9).toFixed(9) + ' USD'
-    : 'Loading...'}
-</span>
+										{txnsData
+											? BnToDec(
+													txnsData.averageTransactionFeePast24Hours,
+													9,
+													9
+											  ) + ' USD'
+											: 'Loading...'}
+									</span>
 								</>
 							)}
 							icon="/icons/arrows.svg"
@@ -237,7 +241,7 @@ export default function Transactions() {
 
 							{/* table body */}
 							<tbody>
-								{txnsData.transactions.map((txn, idx) => (
+								{txnsData?.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import QueryApi from '@/shared/api/query-api';
 import QUERY_KEYS from '@/static/query.keys';
-import SkeletonTable from '../../test/page';
+import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
 import Tooltip from '@/components/internal/tooltip/tooltip.component';
 
 import StatBox from '@/components/internal/stat-box/stat-box.component';
@@ -143,14 +143,16 @@ export default function AddressPage({ params }: AddressPageProps) {
 					<h1 className="flex flex-grow sm:flex-grow-0 min-w-0">
 						<div className="dark:text-white text-abrandc-dark-grey mr-2">Address</div>
 						<div className="flex-grow">
-  {balanceLoading || !balanceData ? (
-	<div className="skeleton-title max-w-[150px] mt-2">......................................</div>
-  ) : (
-    <div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
-      {address}
-    </div>
-  )}
-</div>
+							{balanceLoading || !balanceData ? (
+								<div className="skeleton-title max-w-[150px] mt-2">
+									......................................
+								</div>
+							) : (
+								<div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
+									{address}
+								</div>
+							)}
+						</div>
 						{/* <div className="dark:text-ablue-100 text-ablue-500 min-w-0 overflow-hidden flex-grow text-ellipsis w-[200px]">
 							{address}
 						</div> */}
@@ -336,7 +338,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 							/>
 						</div>
 					</div>
-					<div className="text-center text-ablue-100 text-ablue-100">
+					<div className="text-center text-ablue-100 ">
 						<h1>No data found</h1>
 					</div>
 				</section>
@@ -362,43 +364,36 @@ export default function AddressPage({ params }: AddressPageProps) {
 					</div>
 					{/* Table */}
 					<div className="w-full mt-5 overflow-x-auto scroll-sm">
-						<table className="table-auto bg-awhite w-full min-w-[950px]">
-							{/* table header */}
-							<thead className="sticky top-0">
-								<tr>
-									{headers.map((header, idx) => (
-										<th
-											className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-											key={idx}
-										>
-											{header.name.length > 0 && (
-												<div className="flex justify-center items-center gap-x-2">
-													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-														{header.name}
-													</div>
-													{/* <div className="text-agrey-500 dark:text-agrey-600">
+						{txnHistoryLoading ? (
+							<TableSkeleton />
+						) : (
+							<table className="table-auto bg-awhite w-full min-w-[950px]">
+								{/* table header */}
+								<thead className="sticky top-0">
+									<tr>
+										{headers.map((header, idx) => (
+											<th
+												className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+												key={idx}
+											>
+												{header.name.length > 0 && (
+													<div className="flex justify-center items-center gap-x-2">
+														<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+															{header.name}
+														</div>
+														{/* <div className="text-agrey-500 dark:text-agrey-600">
                                                                                                         <i className="fa-sm far fa-info-circle" />
                           </div> */}
-												</div>
-											)}
-										</th>
-									))}
-								</tr>
-							</thead>
-
-							{/* table body */}
-							<tbody>
-								{txnHistoryLoading ? (
-									<tr>
-										<td colSpan={headers.length}>
-											<SkeletonTable
-												headers={headers}
-												txnsLoading={txnHistoryLoading}
-											/>
-										</td>
+													</div>
+												)}
+											</th>
+										))}
 									</tr>
-								) : (
-									txnHistoryData?.transactions.map((txn, idx) => (
+								</thead>
+
+								{/* table body */}
+								<tbody>
+									{txnHistoryData?.transactions.map((txn, idx) => (
 										<tr
 											key={txn.txnHash}
 											className={` ${
@@ -527,10 +522,10 @@ export default function AddressPage({ params }: AddressPageProps) {
 												</div>
 											</td>
 										</tr>
-									))
-								)}
-							</tbody>
-						</table>
+									))}
+								</tbody>
+							</table>
+						)}
 					</div>
 
 					<br />
