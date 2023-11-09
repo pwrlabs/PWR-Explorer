@@ -143,7 +143,7 @@ export default function Blocks() {
 							<SkeletonStatBox />
 						) : (
 							<StatBox
-								title={blocks_data ? 'BLOCK SIZE (24h)' : ''}
+								title={blocks_data ? 'AVERAGE BLOCK SIZE (24h)' : ''}
 								valueComp={() => (
 									<>
 										<span>
