@@ -202,7 +202,9 @@ export default function Home() {
 		isLoading: infoLoading,
 		data: infoData,
 		isError: infoError,
-	} = useQuery([QUERY_KEYS.explorer_info], QueryApi.explorer.info);
+	} = useQuery([QUERY_KEYS.explorer_info], QueryApi.explorer.info, {
+		staleTime: 3 * 1000,
+	});
 
 	return (
 		<>
@@ -285,7 +287,7 @@ export default function Home() {
 												title="PWR PRICE"
 												valueComp={() => (
 													<>
-														<span>${infoData.price/100}</span>
+														<span>${infoData.price / 100}</span>
 														<span
 															className={`font-medium  pl-2 pr-2 ${
 																infoData.priceChange > 0

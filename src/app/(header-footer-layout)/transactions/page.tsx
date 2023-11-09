@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { useFloating, autoUpdate, useHover, useInteractions } from '@floating-ui/react';
 
+import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 
@@ -114,35 +115,6 @@ export default function Transactions() {
 		);
 	}
 
-	function SkeletonTransactionRow() {
-		return (
-			<tr className="skeleton-transaction-row">
-				<div className="flex items-center gap-x-8 skeleton-container h-full w-full">
-					<div className="skeleton-title w-[20vw] max-w-[80vw] mr-3"></div>
-
-					<div className="flex-grow">
-						<div className="flex flex-row">
-							{' '}
-							{/* Added a flex container */}
-							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-5"></div>
-							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-5"></div>
-							<div className="skeleton-title w-[15vw] max-w-[80vw] mr-5"></div>
-							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-5"></div>
-							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-5"></div>
-						</div>
-						<span className="sr-only">Loading...</span>
-					</div>
-
-					<div className="flex-grow">
-						<div className="skeleton-title max-w-[80vw]"></div>
-						<div className="skeleton-line max-w-[50px] !mb-0"></div>
-						<span className="sr-only">Loading...</span>
-					</div>
-				</div>{' '}
-			</tr>
-		);
-	}
-
 	return (
 		<main className="container-2 mx-auto space-y-20">
 			<section className="space-y-4">
@@ -236,169 +208,167 @@ export default function Transactions() {
 
 				{/* Table */}
 				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					<table className="table-auto bg-awhite w-full min-w-[900px] ">
-						{/* table header */}
-						<thead className="sticky top-0 ">
-							<tr>
-								{headers.map((header, idx) => (
-									<th
-										className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-										key={idx}
-									>
-										{header.name.length > 0 && (
-											<div className="flex justify-center items-center gap-x-2">
-												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-													{header.name}
-												</div>
-												{/* <div className="text-agrey-500 dark:text-agrey-600">
+					{txnsLoading ? (
+						<TableSkeleton />
+					) : (
+						<table className="table-auto bg-awhite w-full min-w-[900px] ">
+							{/* table header */}
+							<thead className="sticky top-0 ">
+								<tr>
+									{headers.map((header, idx) => (
+										<th
+											className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+											key={idx}
+										>
+											{header.name.length > 0 && (
+												<div className="flex justify-center items-center gap-x-2">
+													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+														{header.name}
+													</div>
+													{/* <div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fa-sm far fa-info-circle" />
 												</div> */}
-											</div>
-										)}
-									</th>
-								))}
-							</tr>
-						</thead>
+												</div>
+											)}
+										</th>
+									))}
+								</tr>
+							</thead>
 
-						{/* table body */}
-						<tbody className='h-220'>
-							{txnsLoading
-								? Array.from({ length: 10 }, (_, idx) => (
-										<SkeletonTransactionRow key={idx} />
-								  ))
-								: (txnsData?.transactions || []).map((txn, idx) => (
-										<tr
-											key={txn.txnHash}
-											className={` ${
-												idx % 2 == 0
-													? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: 'bg-transparent'
-											}`}
-										>
-											{/* txn hash */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="flex gap-x-2 justify-start">
-													<div className={eye_tooltip_cont}>
-														<Image
-															className="w-auto h-auto"
-															src="/icons/eye.svg"
-															width={20}
-															height={20}
-															alt=""
+							{/* table body */}
+							<tbody>
+								{txnsData.transactions.map((txn, idx) => (
+									<tr
+										key={txn.txnHash}
+										className={` ${
+											idx % 2 == 0
+												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+												: 'bg-transparent'
+										}`}
+									>
+										{/* txn hash */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="flex gap-x-2 justify-start">
+												<div className={eye_tooltip_cont}>
+													<Image
+														className="w-auto h-auto"
+														src="/icons/eye.svg"
+														width={20}
+														height={20}
+														alt=""
+													/>
+
+													<div className={tooltip}>
+														<TransactionTooltipDetails
+															usdFee={txn.txnFeeInUsd}
+															fee={txn.txnFee}
+															nonce={txn.nonceOrValidationHash}
 														/>
-
-														<div className={tooltip}>
-															<TransactionTooltipDetails
-																usdFee={txn.txnFeeInUsd}
-																fee={txn.txnFee}
-																nonce={txn.nonceOrValidationHash}
-															/>
-														</div>
 													</div>
-
-													<Link
-														href={`${ROUTES.transactions}/${txn.txnHash}`}
-														className="dark:text-ablue-300 text-ablue-200 font-medium"
-													>
-														{shortenAddress(txn.txnHash)}
-													</Link>
 												</div>
-											</td>
 
-											{/* block */}
-											<td className="xl:px-8 px-2 py-8">
 												<Link
-													href={`${ROUTES.blocks}/${txn.block}`}
-													className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+													href={`${ROUTES.transactions}/${txn.txnHash}`}
+													className="dark:text-ablue-300 text-ablue-200 font-medium"
 												>
-													{txn.block}
+													{shortenAddress(txn.txnHash)}
 												</Link>
-											</td>
+											</div>
+										</td>
 
-											{/* time ago */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													{timeAgo(txn.timeStamp)}
+										{/* block */}
+										<td className="xl:px-8 px-2 py-8">
+											<Link
+												href={`${ROUTES.blocks}/${txn.block}`}
+												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+											>
+												{txn.block}
+											</Link>
+										</td>
+
+										{/* time ago */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+												{timeAgo(txn.timeStamp)}
+											</div>
+										</td>
+
+										{/* from */}
+										<td className="xl:pl-8 pl-2 pr-2 py-8">
+											<div className="flex gap-x-2 justify-center">
+												<Link
+													href="/"
+													className="dark:text-ablue-100 text-ablue-500 font-medium"
+												>
+													{shortenAddress(txn.from, 4)}
+												</Link>
+
+												<Tooltip
+													text="Copied to clipbloard"
+													position="up"
+													trigger="click"
+												>
+													<button
+														className="text-agrey-500 dark:text-agrey-600"
+														onClick={() => copyToClipboard(txn.from)}
+													>
+														<i className="far fa-clone" />
+													</button>
+												</Tooltip>
+											</div>
+										</td>
+
+										{/* direction */}
+										<td className="px-2 py-8 flex justify-center">
+											<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
+												<div className="text-agrey-500 dark:text-agrey-600">
+													<i className="fas fa-arrow-right fa-sm" />
 												</div>
-											</td>
+											</div>
+										</td>
 
-											{/* from */}
-											<td className="xl:pl-8 pl-2 pr-2 py-8">
-												<div className="flex gap-x-2 justify-center">
+										{/* To */}
+										<td className="xl:pr-8 pr-2 pl-2 py-8">
+											<div className="flex gap-x-2 justify-center">
+												{isAddress(txn.to) ? (
 													<Link
 														href="/"
 														className="dark:text-ablue-100 text-ablue-500 font-medium"
 													>
-														{shortenAddress(txn.from, 4)}
+														{shortenAddress(txn.to, 4)}
 													</Link>
+												) : (
+													<span className="dark:text-ablue-100 text-ablue-500 font-medium">
+														{txn.to}
+													</span>
+												)}
 
-													<Tooltip
-														text="Copied to clipbloard"
-														position="up"
-														trigger="click"
+												<Tooltip
+													text="Copied to clipbloard"
+													position="up"
+													trigger="click"
+												>
+													<button
+														className="text-agrey-500 dark:text-agrey-600"
+														onClick={() => copyToClipboard(txn.to)}
 													>
-														<button
-															className="text-agrey-500 dark:text-agrey-600"
-															onClick={() =>
-																copyToClipboard(txn.from)
-															}
-														>
-															<i className="far fa-clone" />
-														</button>
-													</Tooltip>
-												</div>
-											</td>
+														<i className="far fa-clone" />
+													</button>
+												</Tooltip>
+											</div>
+										</td>
 
-											{/* direction */}
-											<td className="px-2 py-8 flex justify-center">
-												<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
-													<div className="text-agrey-500 dark:text-agrey-600">
-														<i className="fas fa-arrow-right fa-sm" />
-													</div>
-												</div>
-											</td>
-
-											{/* To */}
-											<td className="xl:pr-8 pr-2 pl-2 py-8">
-												<div className="flex gap-x-2 justify-center">
-													{isAddress(txn.to) ? (
-														<Link
-															href="/"
-															className="dark:text-ablue-100 text-ablue-500 font-medium"
-														>
-															{shortenAddress(txn.to, 4)}
-														</Link>
-													) : (
-														<span className="dark:text-ablue-100 text-ablue-500 font-medium">
-															{txn.to}
-														</span>
-													)}
-
-													<Tooltip
-														text="Copied to clipbloard"
-														position="up"
-														trigger="click"
-													>
-														<button
-															className="text-agrey-500 dark:text-agrey-600"
-															onClick={() => copyToClipboard(txn.to)}
-														>
-															<i className="far fa-clone" />
-														</button>
-													</Tooltip>
-												</div>
-											</td>
-
-											{/* value */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													{BnToDec(txn.value, 9, 9)} PWR
-												</div>
-											</td>
-										</tr>
-								  ))}
-						</tbody>
-					</table>
+										{/* value */}
+										<td className="xl:px-8 px-2 py-8">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+												{BnToDec(txn.value, 9, 9)} PWR
+											</div>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					)}
 				</div>
 
 				<div>
