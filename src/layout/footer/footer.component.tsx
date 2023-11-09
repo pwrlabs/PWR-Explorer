@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Button from '@/components/internal/button/button.component';
 import TextButton from '@/components/internal/text-button/text-button.component';
 import ROUTES from '@/static/router.data';
-import { FaTwitter, FaTelegramPlane, FaDiscord } from 'react-icons/fa';
 
 export default function FooterComponent() {
 	const navigation = [

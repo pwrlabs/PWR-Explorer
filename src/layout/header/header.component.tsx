@@ -12,9 +12,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import TextButton from '@/components/internal/text-button/text-button.component';
 import Button from '@/components/internal/button/button.component';
 
-import { FaMoon, FaFilter } from 'react-icons/fa';
-import { MdOutlineCancel } from 'react-icons/md';
-import { RxHamburgerMenu } from 'react-icons/rx';
 import ThemeService from 'src/shared/services/theme/theme.service';
 import ThemeSvcContext from 'src/shared/services/theme/theme.context';
 import { Theme } from 'src/shared/services/theme/theme.type';
