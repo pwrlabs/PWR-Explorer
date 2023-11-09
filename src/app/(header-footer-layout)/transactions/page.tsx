@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { useFloating, autoUpdate, useHover, useInteractions } from '@floating-ui/react';
-import SkeletonTable from '../test/page';
+
+import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 
@@ -114,120 +115,6 @@ export default function Transactions() {
 		);
 	}
 
-	function SkeletonTransactionRow() {
-		return (
-			<section>
-				{/* Title */}
-				{/* Table */}
-				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					<table className="table-auto bg-awhite w-full min-w-[1500px] ">
-						{/* table header */}
-						<thead className="sticky top-0">
-							<tr>
-								{headers.map((header, idx) => (
-									<th
-										className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-										key={idx}
-									>
-										{header.name.length > 0 && (
-											<div className="flex justify-center items-center gap-x-2">
-												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-													{header.name}
-												</div>
-											</div>
-										)}
-									</th>
-								))}
-							</tr>
-						</thead>
-
-						{/* table body - Skeleton Rows */}
-						<tbody>
-							{txnsLoading
-								? Array.from({ length: 10 }, (_, idx) => (
-										<tr
-											key={idx}
-											className={` ${
-												idx % 2 == 0
-													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: 'bg-transparent'
-											}`}
-										>
-											<td
-												className="xl:px-8 px-2 py-10"
-												colSpan={headers.length}
-											>
-												{' '}
-												{/* Increase the py value */}
-												<div className="skeleton-title w-full w-[80vw]"></div>
-											</td>
-											<td className="xl:px-8 px-2 py-10">
-												<div className="flex gap-x-2 justify-start">
-													<div className="skeleton-eye-tooltip-cont">
-														<div className="skeleton-image" />
-
-														<div className="skeleton-tooltip" />
-													</div>
-
-													<div className="skeleton-link" />
-												</div>
-											</td>
-
-											<td className="xl:px-8 px-2 py-8">
-												<div className="skeleton-link" />
-											</td>
-
-											<td className="xl:px-8 px-2 py-8">
-												<div className="skeleton-time-ago" />
-											</td>
-
-											<td className="xl:pl-8 pl-2 pr-2 py-8">
-												<div className="flex gap-x-2 justify-center">
-													<div className="skeleton-link" />
-													<div className="skeleton-tooltip" />
-												</div>
-											</td>
-
-											<td className="px-2 py-8 flex justify-center">
-												<div className="skeleton-direction" />
-											</td>
-
-											<td className="xl:pr-8 pr-2 pl-2 py-8">
-												<div className="flex gap-x-2 justify-center">
-													<div className="skeleton-link" />
-													<div className="skeleton-tooltip" />
-												</div>
-											</td>
-
-											<td className="xl:px-8 px-2 py-8">
-												<div className="skeleton-value" />
-											</td>
-										</tr>
-								  ))
-								: (txnsData?.transactions || []).map((txn, idx) => (
-										<tr
-											key={txn.txnHash}
-											className={` ${
-												idx % 2 == 0
-													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: 'bg-transparent'
-											}`}
-										>
-											{/* Insert actual data for each column here */}
-										</tr>
-								  ))}
-						</tbody>
-					</table>
-				</div>
-
-				<div>
-					{/* Replace with your pagination component */}
-					<div className="skeleton-pagination" />
-				</div>
-			</section>
-		);
-	}
-
 	return (
 		<main className="container-2 mx-auto space-y-20">
 			<section className="space-y-4">
@@ -321,43 +208,36 @@ export default function Transactions() {
 
 				{/* Table */}
 				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					<table className="table-auto bg-awhite w-full min-w-[900px] ">
-						{/* table header */}
-						<thead className="sticky top-0 ">
-							<tr>
-								{headers.map((header, idx) => (
-									<th
-										className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-										key={idx}
-									>
-										{header.name.length > 0 && (
-											<div className="flex justify-center items-center gap-x-2">
-												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-													{header.name}
-												</div>
-												{/* <div className="text-agrey-500 dark:text-agrey-600">
+					{txnsLoading ? (
+						<TableSkeleton />
+					) : (
+						<table className="table-auto bg-awhite w-full min-w-[900px] ">
+							{/* table header */}
+							<thead className="sticky top-0 ">
+								<tr>
+									{headers.map((header, idx) => (
+										<th
+											className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+											key={idx}
+										>
+											{header.name.length > 0 && (
+												<div className="flex justify-center items-center gap-x-2">
+													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+														{header.name}
+													</div>
+													{/* <div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fa-sm far fa-info-circle" />
 												</div> */}
-											</div>
-										)}
-									</th>
-								))}
-							</tr>
-						</thead>
-
-						{/* table body */}
-						<tbody>
-							{txnsLoading ? (
-								<tr>
-									<td colSpan={headers.length}>
-										<SkeletonTable
-											headers={headers}
-											txnsLoading={txnsLoading}
-										/>
-									</td>
+												</div>
+											)}
+										</th>
+									))}
 								</tr>
-							) : (
-								(txnsData?.transactions || []).map((txn, idx) => (
+							</thead>
+
+							{/* table body */}
+							<tbody>
+								{txnsData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -485,10 +365,10 @@ export default function Transactions() {
 											</div>
 										</td>
 									</tr>
-								))
-							)}
-						</tbody>
-					</table>
+								))}
+							</tbody>
+						</table>
+					)}
 				</div>
 
 				<div>

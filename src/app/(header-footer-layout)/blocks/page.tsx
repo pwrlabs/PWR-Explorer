@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import QueryApi from '@/shared/api/query-api';
 import { useState } from 'react';
-import SkeletonTable from '../test/page';
+import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
 import StatBox from '@/components/internal/stat-box/stat-box.component';
 import QUERY_KEYS from '@/static/query.keys';
 import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
@@ -200,135 +200,128 @@ export default function Blocks() {
 
 					{/* Table */}
 					<div className="w-full mt-5 overflow-x-auto scroll-sm">
-						<table className="table-auto bg-awhite w-full min-w-[900px]">
-							{/* table header */}
-							<thead className="sticky top-0">
-								<tr>
-									{headers.map((header, idx) => (
-										<th
-											className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-											key={idx}
-										>
-											{header.name.length > 0 && (
-												<div className="flex justify-center items-center gap-x-2">
-													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-														{header.name}
-													</div>
-													{/* <div className="text-agrey-500 dark:text-agrey-600">
+						{blocks_loading ? (
+							<TableSkeleton />
+						) : (
+							<table className="table-auto bg-awhite w-full min-w-[900px]">
+								{/* table header */}
+								<thead className="sticky top-0">
+									<tr>
+										{headers.map((header, idx) => (
+											<th
+												className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+												key={idx}
+											>
+												{header.name.length > 0 && (
+													<div className="flex justify-center items-center gap-x-2">
+														<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+															{header.name}
+														</div>
+														{/* <div className="text-agrey-500 dark:text-agrey-600">
 														<i className="fa-sm far fa-info-circle" />
 													</div> */}
+													</div>
+												)}
+											</th>
+										))}
+									</tr>
+								</thead>
+
+								{/* table body */}
+								<tbody>
+									{(blocks_data?.blocks || []).map((block, idx) => (
+										<tr
+											key={idx}
+											className={` ${
+												idx % 2 === 0
+													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+													: 'bg-transparent'
+											}`}
+										>
+											{/* Block */}
+											<td className="xl:px-8 px-2 py-8">
+												<Link
+													href={`${ROUTES.blocks}/${block.blockHeight}`}
+													className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+												>
+													{block.blockHeight}
+												</Link>
+											</td>
+
+											{/* Age */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													{timeAgo(block.timeStamp)}
 												</div>
-											)}
-										</th>
-									))}
-								</tr>
-							</thead>
+											</td>
 
-							{/* table body */}
-							<tbody>
-								{blocks_loading
-									? (<tr>
-										<td colSpan={headers.length}>
-										  <SkeletonTable headers={headers} txnsLoading={blocks_loading} />
-										</td>
-									  </tr>)
-									: (blocks_data?.blocks || []).map((block, idx) => (
-											<tr
-												key={idx}
-												className={` ${
-													idx % 2 === 0
-														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-														: 'bg-transparent'
-												}`}
-											>
-												{/* Block */}
-												<td className="xl:px-8 px-2 py-8">
+											{/* txns */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 													<Link
-														href={`${ROUTES.blocks}/${block.blockHeight}`}
-														className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+														href={ROUTES.blockTxns(block.blockHeight)}
+														className="dark:text-ablue-300 text-ablue-200 font-medium"
 													>
-														{block.blockHeight}
+														{block.txnsCount}
 													</Link>
-												</td>
+												</div>
+											</td>
 
-												{/* Age */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														{timeAgo(block.timeStamp)}
-													</div>
-												</td>
+											{/* fee recipient */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="flex gap-x-2 justify-center">
+													<Link
+														href={`${ROUTES.address}/${block.blockSubmitter}`}
+														className="dark-text-ablue-100 text-ablue-100 font-medium"
+													>
+														{shortenAddress(block.blockSubmitter, 4)}
+													</Link>
 
-												{/* txns */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														<Link
-															href={ROUTES.blockTxns(
-																block.blockHeight
-															)}
-															className="dark:text-ablue-300 text-ablue-200 font-medium"
+													<Tooltip
+														text="Copied to clipboard"
+														position="up"
+														trigger="click"
+													>
+														<button
+															className="text-agrey-500 dark:text-agrey-600"
+															onClick={() =>
+																copyToClipboard(
+																	block.blockSubmitter
+																)
+															}
 														>
-															{block.txnsCount}
-														</Link>
-													</div>
-												</td>
+															<i className="far fa-clone" />
+														</button>
+													</Tooltip>
+												</div>
+											</td>
 
-												{/* fee recipient */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="flex gap-x-2 justify-center">
-														<Link
-															href={`${ROUTES.address}/${block.blockSubmitter}`}
-															className="dark-text-ablue-100 text-ablue-100 font-medium"
-														>
-															{shortenAddress(
-																block.blockSubmitter,
-																4
-															)}
-														</Link>
+											{/* Reward */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													{BnToDec(block.blockReward, 9, 9)} PWR
+												</div>
+											</td>
 
-														<Tooltip
-															text="Copied to clipboard"
-															position="up"
-															trigger="click"
-														>
-															<button
-																className="text-agrey-500 dark:text-agrey-600"
-																onClick={() =>
-																	copyToClipboard(
-																		block.blockSubmitter
-																	)
-																}
-															>
-																<i className="far fa-clone" />
-															</button>
-														</Tooltip>
-													</div>
-												</td>
-
-												{/* Reward */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														{BnToDec(block.blockReward, 9, 9)} PWR
-													</div>
-												</td>
-
-												{/* Shared Rewards */}
-												<td className="xl:px-8 px-2 py-8">
-													<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-														<span>
-															{parseFloat(
-																BnToDec(block.blockReward, 9, 9)
-															) / 2}{' '}
-															PWR
-														</span>{' '}
-														<span className="dark:text-agrey-600 text-agrey-500">
-															(50%)
-														</span>
-													</div>
-												</td>
-											</tr>
-									  ))}
-							</tbody>
-						</table>
+											{/* Shared Rewards */}
+											<td className="xl:px-8 px-2 py-8">
+												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+													<span>
+														{parseFloat(
+															BnToDec(block.blockReward, 9, 9)
+														) / 2}{' '}
+														PWR
+													</span>{' '}
+													<span className="dark:text-agrey-600 text-agrey-500">
+														(50%)
+													</span>
+												</div>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						)}
 					</div>
 
 					<div>
