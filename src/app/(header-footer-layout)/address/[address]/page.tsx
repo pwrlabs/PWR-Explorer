@@ -116,12 +116,21 @@ export default function AddressPage({ params }: AddressPageProps) {
 	function handlePageChange(page: number) {
 		setPage(page);
 	}
+	const isNoDataFound = txnHistoryData?.metadata.totalItems === 0; // Use optional chaining
 
-	if (txnHistoryLoading || balanceLoading || !txnHistoryData || !balanceData) return null;
-
-	if (txnHistoryError || balanceError) return <div>Error</div>;
-	const isNoDataFound = txnHistoryData.metadata.totalItems === 0;
-
+	function SkeletonStatBox() {
+		return (
+			<div className=" bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
+				<div className="flex items-center gap-x-4 skeleton-container h-full">
+					<div className="flex-grow">
+						<div className="skeleton-title max-w-[150px]"></div>
+						<div className="skeleton-line max-w-[100px]"></div>
+						<span className="sr-only">Loading...</span>
+					</div>
+				</div>
+			</div>
+		);
+	}
 	return (
 		<main className="container-2 mx-auto">
 			<section className="space-y-4">
@@ -133,9 +142,15 @@ export default function AddressPage({ params }: AddressPageProps) {
 				<div className="flex items-center space-x-4 ">
 					<h1 className="flex flex-grow sm:flex-grow-0 min-w-0">
 						<div className="dark:text-white text-abrandc-dark-grey mr-2">Address</div>
-						<div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
-							{address}
-						</div>
+						<div className="flex-grow">
+  {balanceLoading || !balanceData ? (
+	<div className="skeleton-title max-w-[150px] mt-2">......................................</div>
+  ) : (
+    <div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
+      {address}
+    </div>
+  )}
+</div>
 						{/* <div className="dark:text-ablue-100 text-ablue-500 min-w-0 overflow-hidden flex-grow text-ellipsis w-[200px]">
 							{address}
 						</div> */}
@@ -156,112 +171,147 @@ export default function AddressPage({ params }: AddressPageProps) {
 					{/* Overview box */}
 					<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
 						<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
-							Overview
+							{balanceLoading || !balanceData ? '' : 'Overview'}
 						</h1>
 
 						{/* balane */}
-						<div className="space-y-1">
-							<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-								PWR BALANCE
+						{balanceLoading || !balanceData ? (
+							<SkeletonStatBox />
+						) : (
+							<div className="space-y-1">
+								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+									PWR BALANCE
+								</div>
+								<div className="space-x-2">
+									<span className="dark:text-white text-black font-bold">
+										{+BnToDec(balanceData.balance, 9, 9)} PWR
+									</span>
+									<span className="text-agrey-500 dark:text-agrey-600">
+										<Tooltip text="lorem" position="up" trigger="hover">
+											<i className="far fa-info-circle" />
+										</Tooltip>
+									</span>
+								</div>
 							</div>
-							<div className="space-x-2">
-								<span className="dark:text-white text-black font-bold">
-									{+BnToDec(balanceData.balance, 9, 9)} PWR
-								</span>
-								<span className="text-agrey-500 dark:text-agrey-600">
-									<Tooltip text="lorem" position="up" trigger="hover">
-										<i className="far fa-info-circle" />
-									</Tooltip>
-								</span>
-							</div>
-						</div>
-
+						)}
 						{/* Pwr value */}
-						<div className="space-y-1">
-							<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-								PWR VALUE
-							</span>
-							<div className="space-x-2">
-								<span className="dark:text-white text-black font-bold">
-									${balanceData.balanceUsdValue}
+						{balanceLoading || !balanceData ? (
+							<SkeletonStatBox />
+						) : (
+							<div className="space-y-1">
+								<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+									PWR VALUE
 								</span>
-								<span className="text-agrey-500 dark:text-agrey-600">
-									(@ $1.00/PWR)
-								</span>
+								<div className="space-x-2">
+									<span className="dark:text-white text-black font-bold">
+										${balanceData.balanceUsdValue}
+									</span>
+									<span className="text-agrey-500 dark:text-agrey-600">
+										(@ $1.00/PWR)
+									</span>
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
 
 					{/* Overview box */}
 					<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
 						<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
-							More Info
+							{balanceLoading || !balanceData ? '' : 'More Info'}
 						</h1>
 
 						{/* Last Transaction Info */}
 						<div className="space-y-1">
-							<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-								LAST TXN SENT
-							</div>
-							<div className="flex gap-x-2">
-								<Link
-									href={
-										txnHistoryData.hashOfLastTxnSent
-											? `${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`
-											: '#'
-									}
-									className="text-medium text-ablue-800 dark:text-ablue-100"
-								>
-									{txnHistoryData.hashOfLastTxnSent
-										? shortenAddress(txnHistoryData.hashOfLastTxnSent)
-										: 'N/A'}
-								</Link>
+							{txnHistoryLoading ? (
+								<SkeletonStatBox />
+							) : (
+								<>
+									<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+										LAST TXN SENT
+									</div>
+									<div className="flex gap-x-2">
+										<Link
+											href={
+												txnHistoryData?.hashOfLastTxnSent
+													? `${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`
+													: '#'
+											}
+											className="text-medium text-ablue-800 dark:text-ablue-100"
+										>
+											{txnHistoryData?.hashOfLastTxnSent
+												? shortenAddress(txnHistoryData.hashOfLastTxnSent)
+												: 'N/A'}
+										</Link>
 
-								<Tooltip position="up" trigger="click" text="copied to clipboard">
-									<button
-										className="text-agrey-500 dark:text-agrey-600"
-										onClick={() =>
-											copyToClipboard(txnHistoryData.hashOfLastTxnSent)
-										}
-									>
-										<i className="far fa-clone "></i>
-									</button>
-								</Tooltip>
+										<Tooltip
+											position="up"
+											trigger="click"
+											text="copied to clipboard"
+										>
+											<button
+												className="text-agrey-500 dark:text-agrey-600"
+												onClick={() =>
+													copyToClipboard(
+														txnHistoryData?.hashOfLastTxnSent || ''
+													)
+												}
+											>
+												<i className="far fa-clone "></i>
+											</button>
+										</Tooltip>
 
-								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-									{timeAgo(txnHistoryData.timeOfLastTxnSent)}
-								</div>
-							</div>
+										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+											{timeAgo(
+												Number(txnHistoryData?.timeOfLastTxnSent) || 0
+											)}{' '}
+										</div>
+									</div>
+								</>
+							)}
 						</div>
 
 						{/* Last txn info */}
 						<div className="space-y-1">
-							<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-								FIRST TXN SENT
-							</span>
-							<div className="flex gap-x-2">
-								<Link
-									href={`${ROUTES.transactions}/${txnHistoryData.hashOfFirstTxnSent}`}
-									className="text-medium text-ablue-800 dark:text-ablue-100"
-								>
-									{shortenAddress(txnHistoryData.hashOfFirstTxnSent)}
-								</Link>
+							{txnHistoryLoading ? (
+								<SkeletonStatBox />
+							) : (
+								<>
+									<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+										FIRST TXN SENT
+									</span>
+									<div className="flex gap-x-2">
+										<Link
+											href={`${ROUTES.transactions}/${txnHistoryData?.hashOfFirstTxnSent}`}
+											className="text-medium text-ablue-800 dark:text-ablue-100"
+										>
+											{shortenAddress(
+												txnHistoryData?.hashOfFirstTxnSent || ''
+											)}
+										</Link>
 
-								<Tooltip position="up" trigger="click" text="copied to clipboard">
-									<button
-										className="text-agrey-500 dark:text-agrey-600"
-										onClick={() =>
-											copyToClipboard(txnHistoryData.hashOfFirstTxnSent)
-										}
-									>
-										<i className="far fa-clone "></i>
-									</button>
-								</Tooltip>
+										<Tooltip
+											position="up"
+											trigger="click"
+											text="copied to clipboard"
+										>
+											<button
+												className="text-agrey-500 dark:text-agrey-600"
+												onClick={() =>
+													copyToClipboard(
+														txnHistoryData?.hashOfFirstTxnSent || ''
+													)
+												}
+											>
+												<i className="far fa-clone "></i>
+											</button>
+										</Tooltip>
 
-								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-									{timeAgo(txnHistoryData.timeOfFirstTxnSent)}
-								</div>
-							</div>
+										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+											{timeAgo(txnHistoryData?.timeOfFirstTxnSent || 0)}
+										</div>
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 				</div>
@@ -297,7 +347,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 					<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
 						<div>
 							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								More than {txnHistoryData.metadata.totalItems} transactions found
+								More than {txnHistoryData?.metadata.totalItems} transactions found
 							</h1>
 							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 								(Showing the latest records)
@@ -340,10 +390,15 @@ export default function AddressPage({ params }: AddressPageProps) {
 							<tbody>
 								{txnHistoryLoading ? (
 									<tr>
-										<td>Loading</td>
+										<td colSpan={headers.length}>
+											<SkeletonTable
+												headers={headers}
+												txnsLoading={txnHistoryLoading}
+											/>
+										</td>
 									</tr>
 								) : (
-									txnHistoryData.transactions.map((txn, idx) => (
+									txnHistoryData?.transactions.map((txn, idx) => (
 										<tr
 											key={txn.txnHash}
 											className={` ${
