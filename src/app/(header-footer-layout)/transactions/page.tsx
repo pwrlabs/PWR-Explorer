@@ -30,37 +30,44 @@ const headers = [
 	{
 		id: 0,
 		name: 'Txn Hash',
-		thClass: 'xl:px-8 px-2',
+		thClass: 'xl:px-8 px-2 ',
+		containerClass: 'justify-start pl-8',
 	},
 	{
 		id: 1,
 		name: 'Block',
 		thClass: 'xl:px-8 px-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 2,
 		name: 'Timestamp',
 		thClass: 'xl:px-8 px-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 3,
 		name: 'From',
 		thClass: 'xl:pl-8 pl-2 pr-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 4,
 		name: '', // Direction
 		thClass: ' px-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 5,
 		name: 'To',
 		thClass: 'xl:pr-8 pr-2 pl-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 6,
 		name: 'Value',
 		thClass: 'xl:px-8 px-2',
+		containerClass: 'justify-center',
 	},
 ];
 
@@ -133,11 +140,7 @@ export default function Transactions() {
 							title={txnsData ? 'TRANSACTIONS (24h)' : ''}
 							valueComp={() => (
 								<>
-									<span>
-										{txnsData
-											? txnsData.transactionCountPast24Hours
-											: 'Loading...'}
-									</span>
+									<span>{txnsData?.transactionCountPast24Hours}</span>
 								</>
 							)}
 							icon="/icons/arrows.svg"
@@ -225,10 +228,12 @@ export default function Transactions() {
 											key={idx}
 										>
 											{header.name.length > 0 && (
-												<div className="flex justify-center items-center gap-x-2">
-													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+												<div
+													className={`flex  items-center gap-x-2 ${header.containerClass}`}
+												>
+													<h1 className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 														{header.name}
-													</div>
+													</h1>
 													{/* <div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fa-sm far fa-info-circle" />
 												</div> */}
