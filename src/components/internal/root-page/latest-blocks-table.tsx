@@ -32,22 +32,21 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 						{/* block height */}
 						<td className="p-4">
 							<div className="flex gap-x-4">
-								<Image
-									className=" xl:block hidden"
-									src="/icons/block.svg"
-									width={32}
-									height={32}
-									alt=""
-								/>
-								<div className="space-y-2">
-									{/* block number */}
-									<Link
-										href={`${ROUTES.blocks}/${block.blockHeight}`}
-										className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
-									>
-										{block.blockHeight}
-									</Link>
-									<h1 className="text-sm dark:text-white text-abrandc-dark-grey pr-2">
+								<div className="hidden xl:block">
+									<Image src="/icons/block.svg" width={32} height={32} alt="" />
+								</div>
+								<div className="flex flex-col md:space-y-2">
+									<div className="flex md:block">
+										<Link href={`${ROUTES.blocks}/${block.blockHeight}`}>
+											<span className="font-medium pr-2 dark:text-ablue-300 text-ablue-200 cursor-pointer">
+												{block.blockHeight}
+											</span>
+										</Link>
+										<span className="text-sm dark:text-white text-abrandc-dark-grey md:hidden">
+											{timeAgo(block.timeStamp)}
+										</span>
+									</div>
+									<h1 className="text-sm dark:text-white text-abrandc-dark-grey hidden md:block">
 										{timeAgo(block.timeStamp)}
 									</h1>
 								</div>
@@ -77,11 +76,12 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 										{block.txnsCount} txns
 									</Link>
 								</div>
+								
 							</div>
 						</td>
 
 						{/* fee */}
-						<td className="p-4">
+						<td className="p-4 display:hidden">
 							<div>
 								<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[130px]">
 									{BnToDec(block.blockReward, 9, 9)} PWR
