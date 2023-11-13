@@ -1,11 +1,13 @@
+'use client';
 import 'src/components/internal/text-field/text-field.scss';
-
+import '../footer/footer.component.scss';
 import Link from 'next/link';
 import Image from 'next/image';
 
 import Button from '@/components/internal/button/button.component';
 import TextButton from '@/components/internal/text-button/text-button.component';
 import ROUTES from '@/static/router.data';
+import { SetStateAction, useEffect, useState } from 'react';
 
 export default function FooterComponent() {
 	const navigation = [
@@ -48,6 +50,55 @@ export default function FooterComponent() {
 			href: 'https://discord.gg/wtnvquRpuV',
 		},
 	];
+	const [email, setEmail] = useState('');
+	const [notification, setNotification] = useState({ message: '', type: '' });
+	const [notificationClassName, setNotificationClassName] = useState('');
+	const [showNotification, setShowNotification] = useState(false);
+
+	useEffect(() => {
+		let fadeOutTimer: string | number | NodeJS.Timeout | undefined;
+		if (showNotification) {
+			setNotificationClassName('notification-enter');
+			// Set a timer to fade out the notification after 3 seconds
+			fadeOutTimer = setTimeout(() => {
+				setNotificationClassName('notification-exit');
+			}, 3000);
+		}
+
+		// Cleanup the timer when the component is unmounted or the showNotification changes
+		return () => clearTimeout(fadeOutTimer);
+	}, [showNotification]);
+
+	const handleSubmit = async (e: { preventDefault: () => void }) => {
+		e.preventDefault();
+
+		// Email validation function using a simple regex pattern
+		const validateEmail = (email: string) => {
+			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return re.test(String(email).toLowerCase());
+		};
+
+		// Check if the email state is empty
+		if (!email.trim()) {
+			setNotification({ message: 'Please input a value', type: 'error' });
+		} else if (!validateEmail(email)) {
+			// If the email is not valid, show the "please type your email correctly" message
+			setNotification({ message: 'Please type your email correctly', type: 'error' });
+		} else {
+			try {
+				// Mocking a successful submission after a fake delay
+				setTimeout(() => {
+					setNotification({ message: 'Signed up successfully', type: 'success' });
+				}, 1000);
+			} catch (error) {
+				setNotification({ message: 'Failed to subscribe', type: 'error' });
+			}
+		}
+
+		// Show notification and set a timer to hide it after 3 seconds
+		setShowNotification(true);
+		setTimeout(() => setShowNotification(false), 3000);
+	};
 
 	return (
 		<div className="dark:bg-abrandc-dark-grey bg-abrandc-light-grey md:py-20 py-10 overflow-hidden">
@@ -83,17 +134,31 @@ export default function FooterComponent() {
 					</div>
 
 					{/* New letter */}
-					<div className="flex flex-col gap-y-2 mt-2">
+					{showNotification && (
+						<div
+							className={`${notificationClassName} mt-4 text-center text-white px-6 py-2 rounded-md ${
+								notification.type === 'success' ? 'bg-blue-700' : 'bg-red-500'
+							}`}
+						>
+							{notification.message}
+						</div>
+					)}
+					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
 							Join our newsletter
 						</h2>
 						<div className="flex items-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
-								<input className="text-field" placeholder="Enter your email" />
+								<input
+									className="text-field"
+									placeholder="Enter your email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+								/>
 							</div>
 							<Button className="blue medium w-[116px]">Subscribe</Button>
 						</div>
-					</div>
+					</form>
 				</div>
 
 				<hr className="dark:border-agrey-800 border-agrey-200 mt-7 mb-7" />
@@ -105,7 +170,7 @@ export default function FooterComponent() {
 							href={item.href}
 							target="_blank"
 							rel="noreferrer noopener"
-							className="flex items-center gap-x-4 bg-abrandc-dark-grey dark:bg-white rounded-2xl py-3 px-4 h-[60px] w-[134px] transition-colors duration-300 ease-in-out hover:bg-[#6653FF] dark:hover:bg-[#6653FF] hover:scale-105 dark:hover:text-white hover:text-white"
+							className="flex items-center gap-x-4 bg-abrandc-dark-grey dark:bg-white rounded-2xl py-3 px-4 h-[60px] w-[134px] transition-colors duration-600 ease-in-out hover:bg-[#6653FF] dark:hover:bg-[#6653FF] hover:scale-105 dark:hover:text-white hover:text-white"
 						>
 							<i className="text-2xl dark:text-black text-white">{item.icon}</i>
 							<h2 className="text-xs font-medium leading-[18px] dark:text-black text-white">
