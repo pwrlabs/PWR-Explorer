@@ -40,7 +40,7 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 									height={32}
 									alt=""
 								/>
-								<div className="space-y-2">
+								<div className="space-y-2 ">
 									{/* block number */}
 									<Link
 										href={`${ROUTES.transactions}/${txn.txnHash}`}

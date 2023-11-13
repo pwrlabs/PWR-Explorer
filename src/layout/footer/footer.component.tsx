@@ -98,7 +98,7 @@ export default function FooterComponent() {
 
 				<hr className="dark:border-agrey-800 border-agrey-200 mt-7 mb-7" />
 
-				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4 px-2 mt-4 w-full">
+				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4  mt-4 w-full">
 					{socials.map((item, index) => (
 						<Link
 							className="flex items-center  gap-x-4 dark:bg-white bg-abrandc-dark-grey rounded-2xl py-3 px-4 h-[60px] w-[134px]"
