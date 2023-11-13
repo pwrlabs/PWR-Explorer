@@ -3,6 +3,7 @@ import 'src/components/internal/text-field/text-field.scss';
 import '../footer/footer.component.scss';
 import Link from 'next/link';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 import Button from '@/components/internal/button/button.component';
 import TextButton from '@/components/internal/text-button/text-button.component';
@@ -52,54 +53,48 @@ export default function FooterComponent() {
 	];
 	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
-	const [notificationClassName, setNotificationClassName] = useState('');
 	const [showNotification, setShowNotification] = useState(false);
-
-	useEffect(() => {
-		let fadeOutTimer: string | number | NodeJS.Timeout | undefined;
-		if (showNotification) {
-			setNotificationClassName('notification-enter');
-			// Set a timer to fade out the notification after 3 seconds
-			fadeOutTimer = setTimeout(() => {
-				setNotificationClassName('notification-exit');
-			}, 3000);
-		}
-
-		// Cleanup the timer when the component is unmounted or the showNotification changes
-		return () => clearTimeout(fadeOutTimer);
-	}, [showNotification]);
+	const [inputError, setInputError] = useState(false);
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-
+	  
 		// Email validation function using a simple regex pattern
 		const validateEmail = (email: string) => {
-			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			return re.test(String(email).toLowerCase());
+		  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		  return re.test(String(email).toLowerCase());
 		};
-
-		// Check if the email state is empty
-		if (!email.trim()) {
+	  
+		try {
+		  // Check if the email state is empty
+		  if (!email.trim()) {
 			setNotification({ message: 'Please input a value', type: 'error' });
-		} else if (!validateEmail(email)) {
+			setInputError(true); // Set input error to true
+		  } else if (!validateEmail(email)) {
 			// If the email is not valid, show the "please type your email correctly" message
 			setNotification({ message: 'Please type your email correctly', type: 'error' });
-		} else {
-			try {
-				// Mocking a successful submission after a fake delay
-				setTimeout(() => {
-					setNotification({ message: 'Signed up successfully', type: 'success' });
-				}, 1000);
-			} catch (error) {
-				setNotification({ message: 'Failed to subscribe', type: 'error' });
-			}
-		}
-
+			setInputError(true); // Set input error to true
+		  } else {
+			// Mocking a successful submission after a fake delay
+			setTimeout(() => {
+			  setNotification({ message: 'Signed up successfully', type: 'success' });
+			}, 1000);
+		  }
+		} catch (error) {
+			console.error('Error:', error);
+		  
+			// Display an error notification using react-toastify or the appropriate library
+			toast.error('An error occurred while submitting the form.');
+			setInputError(true); // Set input error to true
+		  }
+	  
 		// Show notification and set a timer to hide it after 3 seconds
 		setShowNotification(true);
-		setTimeout(() => setShowNotification(false), 3000);
-	};
-
+		setTimeout(() => {
+		  setShowNotification(false);
+		  setInputError(false); // Reset input error to false
+		}, 3000);
+	  };
 	return (
 		<div className="dark:bg-abrandc-dark-grey bg-abrandc-light-grey md:py-20 py-10 overflow-hidden">
 			<div className="container-2 mx-auto">
@@ -134,7 +129,7 @@ export default function FooterComponent() {
 					</div>
 
 					{/* New letter */}
-					
+
 					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
 							Join our newsletter
@@ -142,7 +137,7 @@ export default function FooterComponent() {
 						<div className="flex items-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
-									className="text-field"
+									className={`text-field ${inputError ? 'invalid' : ''}`}
 									placeholder="Enter your email"
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
@@ -152,10 +147,10 @@ export default function FooterComponent() {
 						</div>
 						{showNotification && (
 							<div
-								className={`${notificationClassName} mt-4 text-center text-white px-6 py-2 rounded-md ${
-									notification.type === 'success' ? 'bg-blue-700' : 'bg-red-500'
-								} `}
-							>
+							className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
+							  notification.type === 'success' ? 'success' : 'error'
+							} ${showNotification ? 'show' : ''}`}
+						  >
 								{notification.message}
 							</div>
 						)}
