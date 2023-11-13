@@ -98,17 +98,17 @@ export default function FooterComponent() {
 
 				<hr className="dark:border-agrey-800 border-agrey-200 mt-7 mb-7" />
 
-				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4 px-2 mt-4 w-full">
+				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4  mt-4 w-full">
 					{socials.map((item, index) => (
 						<Link
-							className="flex items-center  gap-x-4 dark:bg-white bg-abrandc-dark-grey rounded-2xl py-3 px-4 h-[60px] w-[134px]"
 							key={index}
 							href={item.href}
 							target="_blank"
 							rel="noreferrer noopener"
+							className="flex items-center gap-x-4 bg-abrandc-dark-grey dark:bg-white rounded-2xl py-3 px-4 h-[60px] w-[134px] transition-colors duration-300 ease-in-out hover:bg-[#6653FF] dark:hover:bg-[#6653FF] hover:scale-105 dark:hover:text-white hover:text-white"
 						>
-							<i className=" text-white dark:text-black text-2xl">{item.icon}</i>
-							<h2 className="dark:text-black text-white text-xs font-medium leading-[18px]">
+							<i className="text-2xl dark:text-black text-white">{item.icon}</i>
+							<h2 className="text-xs font-medium leading-[18px] dark:text-black text-white">
 								{item.label}
 							</h2>
 						</Link>
