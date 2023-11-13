@@ -134,15 +134,7 @@ export default function FooterComponent() {
 					</div>
 
 					{/* New letter */}
-					{showNotification && (
-						<div
-							className={`${notificationClassName} mt-4 text-center text-white px-6 py-2 rounded-md ${
-								notification.type === 'success' ? 'bg-blue-700' : 'bg-red-500'
-							}`}
-						>
-							{notification.message}
-						</div>
-					)}
+					
 					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
 							Join our newsletter
@@ -158,6 +150,15 @@ export default function FooterComponent() {
 							</div>
 							<Button className="blue medium w-[116px]">Subscribe</Button>
 						</div>
+						{showNotification && (
+							<div
+								className={`${notificationClassName} mt-4 text-center text-white px-6 py-2 rounded-md ${
+									notification.type === 'success' ? 'bg-blue-700' : 'bg-red-500'
+								} `}
+							>
+								{notification.message}
+							</div>
+						)}
 					</form>
 				</div>
 
