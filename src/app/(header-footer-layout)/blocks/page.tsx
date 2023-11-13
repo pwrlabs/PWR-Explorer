@@ -242,8 +242,8 @@ export default function Blocks() {
 											<td className="xl:px-8 px-2 py-8">
 												<Link
 													href={`${ROUTES.blocks}/${block.blockHeight}`}
-													className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
-												>
+													className="text-ablue-300 dark:text-ablue-300 font-medium text-center block hover:text-ablue-400 dark:hover:text-ablue-200 transition duration-200 ease-in-out"
+													>
 													{block.blockHeight}
 												</Link>
 											</td>
@@ -260,8 +260,8 @@ export default function Blocks() {
 												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 													<Link
 														href={ROUTES.blockTxns(block.blockHeight)}
-														className="dark:text-ablue-300 text-ablue-200 font-medium"
-													>
+														className="text-ablue-300 dark:text-ablue-300 font-medium text-center block hover:text-ablue-400 dark:hover:text-ablue-200 transition duration-200 ease-in-out"
+														>
 														{block.txnsCount}
 													</Link>
 												</div>
@@ -272,8 +272,8 @@ export default function Blocks() {
 												<div className="flex gap-x-2 justify-center">
 													<Link
 														href={`${ROUTES.address}/${block.blockSubmitter}`}
-														className="dark-text-ablue-100 text-ablue-100 font-medium"
-													>
+														className="text-ablue-300 dark:text-ablue-100 font-medium hover:text-ablue-400 dark:hover:text-ablue-200 transition duration-200 ease-in-out"
+														>
 														{shortenAddress(block.blockSubmitter, 4)}
 													</Link>
 
