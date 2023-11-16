@@ -1,8 +1,10 @@
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import { isAddress } from '@/shared/utils/functions';
-import ROUTES from '@/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { isAddress } from 'src/shared/utils/functions';
+
+import ROUTES from 'src/static/router.data';
 
 type Txn = {
 	txnHash: string;

@@ -1,5 +1,5 @@
 'use client';
-import api from '@/shared/api/api';
+import api from 'src/shared/api/api';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 

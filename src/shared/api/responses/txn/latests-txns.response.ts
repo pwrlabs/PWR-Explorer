@@ -1,4 +1,4 @@
-import { Block } from '@/shared/models/block.model';
+import { Block } from 'src/shared/models/block.model';
 
 type Txn = {
 	txnHash: string;

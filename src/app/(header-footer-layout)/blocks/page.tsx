@@ -10,6 +10,7 @@ import Pagination from 'src/components/internal/pagination/pagination.component'
 import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
 import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
 import Tooltip from 'src/components/internal/tooltip/tooltip.component';
+import ErrorComponent from 'src/components/error/error.component';
 
 import QueryApi from 'src/shared/api/query-api';
 import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
@@ -17,7 +18,6 @@ import { copyToClipboard } from 'src/shared/utils/functions';
 
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
-import ErrorComponent from '@/components/error/error.component';
 
 const headers = [
 	{

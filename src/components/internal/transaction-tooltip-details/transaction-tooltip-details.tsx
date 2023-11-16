@@ -1,7 +1,8 @@
 'use client';
 
-import { BnToDec } from '@/shared/utils/formatters';
 import Image from 'next/image';
+
+import { BnToDec } from 'src/shared/utils/formatters';
 
 type TransactionTooltipDetailsProps = {
 	fee: string;

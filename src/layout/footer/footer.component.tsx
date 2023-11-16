@@ -1,17 +1,19 @@
 'use client';
 
-import 'src/components/internal/text-field/text-field.scss';
-
-import Button from '@/components/internal/button/button.component';
-import TextButton from '@/components/internal/text-button/text-button.component';
-import ROUTES from '@/static/router.data';
-import { useFormik } from 'formik';
 import Link from 'next/link';
-import { SetStateAction, useEffect, useState } from 'react';
+import { useState } from 'react';
+
 import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import '../footer/footer.component.scss';
+import Button from 'src/components/internal/button/button.component';
+
+import ROUTES from 'src/static/router.data';
+
+import 'src/components/internal/text-field/text-field.scss';
+
+import './footer.component.scss';
 
 export default function FooterComponent() {
 	const navigation = [
@@ -39,8 +41,8 @@ export default function FooterComponent() {
 
 	const socials = [
 		{
-			icon: <i className="fab fa-twitter" />,
-			label: 'Join our Twitter',
+			icon: <i className="fa-brands fa-x-twitter" />,
+			label: 'Join our X',
 			href: 'https://twitter.com/pwrlabs',
 		},
 		{

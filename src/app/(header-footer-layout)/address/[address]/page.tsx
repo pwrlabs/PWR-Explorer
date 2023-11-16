@@ -2,20 +2,23 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useQuery } from 'react-query';
-import QueryApi from '@/shared/api/query-api';
-import QUERY_KEYS from '@/static/query.keys';
-import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
-import Tooltip from '@/components/internal/tooltip/tooltip.component';
-
-import StatBox from '@/components/internal/stat-box/stat-box.component';
-import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-
-import ROUTES from '@/static/router.data';
-import Pagination from '@/components/internal/pagination/pagination.component';
 import { useState } from 'react';
-import { copyToClipboard, isAddress } from '@/shared/utils/functions';
-import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
+
+import { useQuery } from 'react-query';
+
+import TableSkeleton from 'src/components/internal/table-skeleton/table-skeleton.component';
+import Tooltip from 'src/components/internal/tooltip/tooltip.component';
+import Pagination from 'src/components/internal/pagination/pagination.component';
+import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
+import ErrorComponent from 'src/components/error/error.component';
+import OverviewBoxSkeleton from 'src/components/skeletons/address/overview-box.skeleton';
+
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { copyToClipboard, isAddress } from 'src/shared/utils/functions';
+import QueryApi from 'src/shared/api/query-api';
+
+import QUERY_KEYS from 'src/static/query.keys';
+import ROUTES from 'src/static/router.data';
 
 const headers = [
 	{
@@ -116,7 +119,6 @@ export default function AddressPage({ params }: AddressPageProps) {
 	function handlePageChange(page: number) {
 		setPage(page);
 	}
-	const isNoDataFound = txnHistoryData?.metadata.totalItems === 0; // Use optional chaining
 
 	function SkeletonStatBox() {
 		return (
@@ -131,6 +133,15 @@ export default function AddressPage({ params }: AddressPageProps) {
 			</div>
 		);
 	}
+
+	if (
+		balanceError ||
+		(!balanceLoading && !balanceData) ||
+		txnHistoryError ||
+		(!txnHistoryLoading && !txnHistoryData)
+	)
+		return <ErrorComponent />;
+
 	return (
 		<main className="container-2 mx-auto">
 			<section className="space-y-4">
@@ -142,16 +153,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 				<div className="flex items-center space-x-4 ">
 					<h1 className="flex flex-grow sm:flex-grow-0 min-w-0">
 						<div className="dark:text-white text-abrandc-dark-grey mr-2">Address</div>
-						<div className="flex-grow">
-							{balanceLoading || !balanceData ? (
-								<div className="skeleton-title max-w-[150px] mt-2">
-									......................................
-								</div>
-							) : (
-								<div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
-									{address}
-								</div>
-							)}
+						<div className="flex-grow min-w-0 overflow-hidden text-ellipsis dark:text-ablue-100 text-ablue-500">
+							{address}
 						</div>
 						{/* <div className="dark:text-ablue-100 text-ablue-500 min-w-0 overflow-hidden flex-grow text-ellipsis w-[200px]">
 							{address}
@@ -170,79 +173,69 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 				{/* Overview */}
 				<div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
-					{/* Overview box */}
-					<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
-						<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
-							{balanceLoading || !balanceData ? '' : 'Overview'}
-						</h1>
+					{balanceLoading || txnHistoryLoading ? (
+						<>
+							<OverviewBoxSkeleton />
+							<OverviewBoxSkeleton />
+						</>
+					) : (
+						<>
+							{/* Overview box */}
+							<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
+								<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
+									Overview
+								</h1>
 
-						{/* balane */}
-						{balanceLoading || !balanceData ? (
-							<SkeletonStatBox />
-						) : (
-							<div className="space-y-1">
-								<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-									PWR BALANCE
+								{/* balance */}
+								<div className="space-y-1">
+									<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+										PWR BALANCE
+									</div>
+									<div className="space-x-2">
+										<span className="dark:text-white text-black font-bold">
+											{+BnToDec(balanceData.balance, 9, 9)} PWR
+										</span>
+										<span className="text-agrey-500 dark:text-agrey-600">
+											<Tooltip text="lorem" position="up" trigger="hover">
+												<i className="far fa-info-circle" />
+											</Tooltip>
+										</span>
+									</div>
 								</div>
-								<div className="space-x-2">
-									<span className="dark:text-white text-black font-bold">
-										{+BnToDec(balanceData.balance, 9, 9)} PWR
+
+								{/* Pwr value */}
+								<div className="space-y-1">
+									<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+										PWR VALUE
 									</span>
-									<span className="text-agrey-500 dark:text-agrey-600">
-										<Tooltip text="lorem" position="up" trigger="hover">
-											<i className="far fa-info-circle" />
-										</Tooltip>
-									</span>
+									<div className="space-x-2">
+										<span className="dark:text-white text-black font-bold">
+											${balanceData.balanceUsdValue}
+										</span>
+										<span className="text-agrey-500 dark:text-agrey-600">
+											(@ $1.00/PWR)
+										</span>
+									</div>
 								</div>
 							</div>
-						)}
-						{/* Pwr value */}
-						{balanceLoading || !balanceData ? (
-							<SkeletonStatBox />
-						) : (
-							<div className="space-y-1">
-								<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-									PWR VALUE
-								</span>
-								<div className="space-x-2">
-									<span className="dark:text-white text-black font-bold">
-										${balanceData.balanceUsdValue}
-									</span>
-									<span className="text-agrey-500 dark:text-agrey-600">
-										(@ $1.00/PWR)
-									</span>
-								</div>
-							</div>
-						)}
-					</div>
 
-					{/* Overview box */}
-					<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
-						<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
-							{balanceLoading || !balanceData ? '' : 'More Info'}
-						</h1>
+							{/* Overview box */}
+							<div className="  bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full space-y-4">
+								<h1 className="text-xl font-bold dark:text-white text-abrandc-dark-grey">
+									More Info
+								</h1>
 
-						{/* Last Transaction Info */}
-						<div className="space-y-1">
-							{txnHistoryLoading ? (
-								<SkeletonStatBox />
-							) : (
-								<>
+								{/* Last Transaction Info */}
+								<div className="space-y-1">
 									<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 										LAST TXN SENT
 									</div>
 									<div className="flex gap-x-2">
 										<Link
-											href={
-												txnHistoryData?.hashOfLastTxnSent
-													? `${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`
-													: '#'
-											}
+											href={`${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`}
 											className="text-medium text-ablue-800 dark:text-ablue-100"
 										>
-											{txnHistoryData?.hashOfLastTxnSent
-												? shortenAddress(txnHistoryData.hashOfLastTxnSent)
-												: 'N/A'}
+											{shortenAddress(txnHistoryData.hashOfLastTxnSent)}
 										</Link>
 
 										<Tooltip
@@ -254,7 +247,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 												className="text-agrey-500 dark:text-agrey-600"
 												onClick={() =>
 													copyToClipboard(
-														txnHistoryData?.hashOfLastTxnSent || ''
+														txnHistoryData.hashOfLastTxnSent
 													)
 												}
 											>
@@ -263,32 +256,22 @@ export default function AddressPage({ params }: AddressPageProps) {
 										</Tooltip>
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-											{timeAgo(
-												Number(txnHistoryData?.timeOfLastTxnSent) || 0
-											)}{' '}
+											{timeAgo(txnHistoryData.timeOfLastTxnSent)}
 										</div>
 									</div>
-								</>
-							)}
-						</div>
+								</div>
 
-						{/* Last txn info */}
-						<div className="space-y-1">
-							{txnHistoryLoading ? (
-								<SkeletonStatBox />
-							) : (
-								<>
+								{/* Last txn info */}
+								<div className="space-y-1">
 									<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 										FIRST TXN SENT
 									</span>
 									<div className="flex gap-x-2">
 										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData?.hashOfFirstTxnSent}`}
+											href={`${ROUTES.transactions}/${txnHistoryData.hashOfFirstTxnSent}`}
 											className="text-medium text-ablue-800 dark:text-ablue-100"
 										>
-											{shortenAddress(
-												txnHistoryData?.hashOfFirstTxnSent || ''
-											)}
+											{shortenAddress(txnHistoryData.hashOfFirstTxnSent)}
 										</Link>
 
 										<Tooltip
@@ -300,7 +283,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 												className="text-agrey-500 dark:text-agrey-600"
 												onClick={() =>
 													copyToClipboard(
-														txnHistoryData?.hashOfFirstTxnSent || ''
+														txnHistoryData.hashOfFirstTxnSent
 													)
 												}
 											>
@@ -309,64 +292,57 @@ export default function AddressPage({ params }: AddressPageProps) {
 										</Tooltip>
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-											{timeAgo(txnHistoryData?.timeOfFirstTxnSent || 0)}
+											{timeAgo(txnHistoryData.timeOfFirstTxnSent)}
 										</div>
 									</div>
-								</>
-							)}
-						</div>
-					</div>
+								</div>
+							</div>
+						</>
+					)}
 				</div>
 			</section>
 
 			{/* Table */}
-			{isNoDataFound ? (
-				<section className="overflow-x-auto mt-12">
-					<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-4">
-						<div>
-							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+			<section className="overflow-x-auto mt-12">
+				{/* Title */}
+				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
+					{txnHistoryLoading ? (
+						<div className="skeleton-container space-y-4">
+							<div className="skeleton-title w-[300px]"></div>
+							<div className="skeleton-line w-[200px]"></div>
+						</div>
+					) : txnHistoryData.transactions.length === 0 ? null : (
+						<>
+							<div>
+								<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+									More than {txnHistoryData.metadata.totalItems} transactions
+									found
+								</h1>
+								<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+									(Showing the latest records)
+								</h2>
+							</div>
+							<div className="flex items-center justify-center gap-x-2 text-white">
+								<QuickPagination
+									metadata={paginationMetadata}
+									onPageChange={handlePageChange}
+								/>
+							</div>
+						</>
+					)}
+				</div>
+				{/* Table */}
+				<div className="w-full mt-5 overflow-x-auto scroll-sm">
+					{txnHistoryLoading ? (
+						<TableSkeleton />
+					) : txnHistoryData.transactions.length === 0 ? (
+						<div className="text-center">
+							<h1 className=" text-agrey-900 dark:text-white ">
 								No transactions found
 							</h1>
-							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								(Showing the latest records)
-							</h2>
 						</div>
-						<div className="flex items-center justify-center gap-x-2 text-white pointer-events-none cursor-not-allowed">
-							<QuickPagination
-								metadata={paginationMetadata}
-								onPageChange={handlePageChange}
-							/>
-						</div>
-					</div>
-					<div className="text-center text-ablue-100 ">
-						<h1>No data found</h1>
-					</div>
-				</section>
-			) : (
-				// Render the table if there is data
-				<section className="overflow-x-auto mt-12">
-					{/* Title */}
-					<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
-						<div>
-							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								More than {txnHistoryData?.metadata.totalItems} transactions found
-							</h1>
-							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								(Showing the latest records)
-							</h2>
-						</div>
-						<div className="flex items-center justify-center gap-x-2 text-white">
-							<QuickPagination
-								metadata={paginationMetadata}
-								onPageChange={handlePageChange}
-							/>
-						</div>
-					</div>
-					{/* Table */}
-					<div className="w-full mt-5 overflow-x-auto scroll-sm">
-						{txnHistoryLoading ? (
-							<TableSkeleton />
-						) : (
+					) : (
+						<>
 							<table className="table-auto bg-awhite w-full min-w-[950px]">
 								{/* table header */}
 								<thead className="sticky top-0">
@@ -393,7 +369,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 								{/* table body */}
 								<tbody>
-									{txnHistoryData?.transactions.map((txn, idx) => (
+									{txnHistoryData.transactions.map((txn, idx) => (
 										<tr
 											key={txn.txnHash}
 											className={` ${
@@ -525,16 +501,19 @@ export default function AddressPage({ params }: AddressPageProps) {
 									))}
 								</tbody>
 							</table>
-						)}
-					</div>
 
-					<br />
+							<br />
 
-					<div>
-						<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
-					</div>
-				</section>
-			)}
+							<div>
+								<Pagination
+									metadata={paginationMetadata}
+									onPageChange={handlePageChange}
+								/>
+							</div>
+						</>
+					)}
+				</div>
+			</section>
 		</main>
 	);
 }

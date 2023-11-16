@@ -1,7 +1,9 @@
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import ROUTES from '@/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+
+import ROUTES from 'src/static/router.data';
 
 type Block = {
 	blockHeight: number;
