@@ -1,10 +1,10 @@
 'use client';
-import Pagination from '@/components/internal/pagination/pagination.component';
-import Tags from '@/components/internal/tags/tags.component';
-import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import { BnToDec, shortenAddress } from '@/shared/utils/formatters';
-import { copyToClipboard } from '@/shared/utils/functions';
-import ROUTES from '@/static/router.data';
+import Pagination from 'src/components/internal/pagination/pagination.component';
+import Tags from 'src/components/internal/tags/tags.component';
+import Tooltip from 'src/components/internal/tooltip/tooltip.component';
+import { BnToDec, shortenAddress } from 'src/shared/utils/formatters';
+import { copyToClipboard } from 'src/shared/utils/functions';
+import ROUTES from 'src/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
 

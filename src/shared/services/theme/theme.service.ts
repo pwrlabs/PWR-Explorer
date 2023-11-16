@@ -1,4 +1,4 @@
-import STORAGE_KEYS from '@/static/storage.keys';
+import STORAGE_KEYS from 'src/static/storage.keys';
 
 import { type Theme } from './theme.type';
 

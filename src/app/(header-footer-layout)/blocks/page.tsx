@@ -1,18 +1,23 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useQuery } from 'react-query';
-import QueryApi from '@/shared/api/query-api';
 import { useState } from 'react';
-import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
-import StatBox from '@/components/internal/stat-box/stat-box.component';
-import QUERY_KEYS from '@/static/query.keys';
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import { copyToClipboard } from '@/shared/utils/functions';
-import ROUTES from '@/static/router.data';
-import Pagination from '@/components/internal/pagination/pagination.component';
-import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
+
+import { useQuery } from 'react-query';
+
+import TableSkeleton from 'src/components/internal/table-skeleton/table-skeleton.component';
+import StatBox from 'src/components/internal/stat-box/stat-box.component';
+import Pagination from 'src/components/internal/pagination/pagination.component';
+import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
+import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
+import Tooltip from 'src/components/internal/tooltip/tooltip.component';
+import ErrorComponent from 'src/components/error/error.component';
+
+import QueryApi from 'src/shared/api/query-api';
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { copyToClipboard } from 'src/shared/utils/functions';
+
+import QUERY_KEYS from 'src/static/query.keys';
+import ROUTES from 'src/static/router.data';
 
 const headers = [
 	{
@@ -78,47 +83,8 @@ export default function Blocks() {
 		setPage(page);
 	}
 
-	function SkeletonStatBox() {
-		return (
-			<div className="bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
-				<div className="flex items-center gap-x-4 skeleton-container h-full">
-					<div className="flex-grow">
-						<div className="skeleton-title max-w-[150px]"></div>
-						<div className="skeleton-line max-w-[100px]"></div>
-						<span className="sr-only">Loading...</span>
-					</div>
-				</div>
-			</div>
-		);
-	}
-	function SkeletonBlockRow() {
-		return (
-			<tr className="skeleton-transaction-row">
-				<div className="flex items-center gap-x-8 skeleton-container h-full w-full">
-					<div className="skeleton-title w-[10vw] max-w-[80vw] mr-3"></div>
-					<div className="skeleton-title w-[10vw] max-w-[80vw] mr-5"></div>
+	if (blocks_error || (!blocks_loading && !blocks_data)) return <ErrorComponent />;
 
-					<div className="flex-grow">
-						<div className="flex flex-row">
-							{' '}
-							{/* Added a flex container */}
-							<div className="skeleton-title w-[5vw] max-w-[80vw] mr-20"></div>
-							<div className="skeleton-title w-[10vw] max-w-[80vw] mr-20"></div>
-							<div className="skeleton-title w-[15vw] max-w-[80vw] mr-15"></div>
-							<div className="skeleton-title w-[15vw] max-w-[80vw] ml-20"></div>
-						</div>
-						<span className="sr-only">Loading...</span>
-					</div>
-
-					<div className="flex-grow">
-						<div className="skeleton-title max-w-[80vw]"></div>
-						<div className="skeleton-line max-w-[50px] !mb-0"></div>
-						<span className="sr-only">Loading...</span>
-					</div>
-				</div>{' '}
-			</tr>
-		);
-	}
 	return (
 		<div className="container-2 mx-auto">
 			<div className="space-y-12">
@@ -140,41 +106,32 @@ export default function Blocks() {
 						/> */}
 
 						{blocks_loading ? (
-							<SkeletonStatBox />
+							<>
+								<StatBoxSkeleton />
+								<StatBoxSkeleton />
+							</>
 						) : (
-							<StatBox
-								title={blocks_data ? 'AVERAGE BLOCK SIZE (24h)' : ''}
-								valueComp={() => (
-									<>
+							<>
+								<StatBox
+									title="AVERAGE BLOCK SIZE (24h)"
+									valueComp={() => (
+										<span>{blocks_data.averageBlockSizePast24Hours} Bytes</span>
+									)}
+								/>
+								<StatBox
+									title={'BLOCK REWARDS (24h)'}
+									valueComp={() => (
 										<span>
-											{blocks_data
-												? blocks_data.averageBlockSizePast24Hours + ' Bytes'
-												: 'N/A'}
+											{BnToDec(
+												blocks_data.totalBlockRewardsPast24Hours,
+												9,
+												9
+											)}{' '}
+											PWR
 										</span>
-									</>
-								)}
-							/>
-						)}
-
-						{blocks_loading ? (
-							<SkeletonStatBox />
-						) : (
-							<StatBox
-								title={blocks_data ? 'BLOCK REWARDS (24h)' : ''}
-								valueComp={() => (
-									<>
-										<span>
-											{blocks_data?.totalBlockRewardsPast24Hours
-												? BnToDec(
-														blocks_data.totalBlockRewardsPast24Hours,
-														9,
-														9
-												  ) + ' PWR'
-												: 'N/A'}
-										</span>
-									</>
-								)}
-							/>
+									)}
+								/>
+							</>
 						)}
 					</div>
 				</div>
@@ -229,7 +186,7 @@ export default function Blocks() {
 
 								{/* table body */}
 								<tbody>
-									{(blocks_data?.blocks || []).map((block, idx) => (
+									{blocks_data.blocks.map((block, idx) => (
 										<tr
 											key={idx}
 											className={` ${

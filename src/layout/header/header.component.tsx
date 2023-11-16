@@ -212,20 +212,13 @@ export default function HeaderComponent() {
 						className="theme_btn text-agrey-500 dark:text-white"
 						onClick={toggleTheme}
 					>
-						{currentTheme === 'light' ? (
-							<div className="select-none">
-								<Image src="/icons/sun.svg" width={16} height={16} alt="" />
-							</div>
-						) : (
-							<div className="dark:text-white">
-								<i className="fa-lf fas fa-moon" />
-							</div>
-						)}
-						{/* <i
-							className={`fa-lg fas ${
-								currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
-							}`}
-						></i> */}
+						<div className="dark:text-white">
+							<i
+								className={`fa-lg fa-solid fa-${
+									currentTheme === 'light' ? 'sun-bright' : 'moon'
+								}`}
+							></i>
+						</div>
 					</button>
 				</div>
 

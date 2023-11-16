@@ -26,10 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<head>
 				<link
-					href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css"
-					rel="stylesheet"
-				/>
-				<link
 					rel="stylesheet"
 					href={`https://kit.fontawesome.com/${process.env.NEXT_PUBLIC_FONTAWESOME_KEY}.css`}
 					crossOrigin="anonymous"
