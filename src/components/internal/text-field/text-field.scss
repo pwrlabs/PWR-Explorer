@@ -31,6 +31,6 @@
 	@apply disabled:text-ghostly_grey-100;
 
 	&.invalid {
-		@apply border-abrandc-light-red;
+		@apply border border-red-500; /* Add a red border */
 	}
 }
