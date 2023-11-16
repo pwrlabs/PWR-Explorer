@@ -169,7 +169,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 
 					<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
 
-					{/* Second section */}
+					{/* Second section, from and to */}
 					{txnLoading ? (
 						renderTxnDetailsSkeleton(2)
 					) : (
@@ -196,7 +196,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										position="up"
 										trigger="click"
 									>
-										<button onClick={() => copy(txnData.from)}>
+										<button onClick={() => copyToClipboard(txnData.from)}>
 											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 										</button>
 									</Tooltip>
@@ -228,7 +228,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 												position="up"
 												trigger="click"
 											>
-												<button onClick={() => copy(txnData.to)}>
+												<button onClick={() => copyToClipboard(txnData.to)}>
 													<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
 												</button>
 											</Tooltip>
@@ -243,7 +243,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 
 					<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
 
-					{/* Third section */}
+					{/* Third section, price, usd price and data */}
 					{txnLoading ? (
 						renderTxnDetailsSkeleton(3)
 					) : (
