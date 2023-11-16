@@ -1,36 +1,30 @@
 .skeleton-title {
 	@apply h-2.5;
 	@apply rounded-full;
+
 	@apply bg-gray-200;
 	@apply dark:bg-agrey-800;
-	@apply mb-4;
 }
 
 .skeleton-line {
 	@apply h-2;
 	@apply rounded-full;
-	// @apply bg-gray-200;
 
 	@apply bg-gray-200;
-
 	@apply dark:bg-agrey-800;
-	@apply mb-2.5;
 }
 
 .skeleton-box {
 	@apply h-5;
-	// @apply rounded-full;
+
 	@apply bg-gray-200;
 	@apply dark:bg-agrey-800;
-	@apply mb-4;
 }
 
 .skeleton-circle {
 	@apply rounded-full;
-	// @apply bg-gray-200;
 	@apply bg-gray-200;
 	@apply dark:bg-agrey-800;
-	@apply mb-8;
 }
 
 .skeleton-container {
