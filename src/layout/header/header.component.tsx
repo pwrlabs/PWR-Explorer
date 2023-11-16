@@ -1,22 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import './header.scss';
 
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { usePathname, useRouter } from 'next/navigation';
 
-import TextButton from '@/components/internal/text-button/text-button.component';
-import Button from '@/components/internal/button/button.component';
-
-import ThemeService from 'src/shared/services/theme/theme.service';
 import ThemeSvcContext from 'src/shared/services/theme/theme.context';
+import ThemeService from 'src/shared/services/theme/theme.service';
 import { Theme } from 'src/shared/services/theme/theme.type';
-import ROUTES from '@/static/router.data';
-import { isAddress, isHash } from '@/shared/utils/functions';
+
+import Button from 'src/components/internal/button/button.component';
+
+import { isAddress, isHash } from 'src/shared/utils/functions';
+
+import ROUTES from 'src/static/router.data';
+import './header.scss';
 
 function PwrLogo() {
 	return (

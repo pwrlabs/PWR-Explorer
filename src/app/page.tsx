@@ -1,28 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
-import axios from 'axios';
+import React from 'react';
+
+import { useQuery } from 'react-query';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
 import HeaderComponent from 'src/layout/header/header.component';
 import FooterComponent from 'src/layout/footer/footer.component';
+import LatestBlocksTable from 'src/components/internal/root-page/latest-blocks-table';
+import LatestTxnsTable from 'src/components/internal/root-page/latest-txns-table';
+import ErrorComponent from 'src/components/error/error.component';
 
-import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { isAddress, isHash } from 'src/shared/utils/functions';
 
-import { useQuery } from 'react-query';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
-import ROUTES from '@/static/router.data';
-import { ApexOptions } from 'apexcharts';
-import { isAddress, isHash } from '@/shared/utils/functions';
-import LatestBlocksTable from '@/components/internal/root-page/latest-blocks-table';
-import LatestTxnsTable from '@/components/internal/root-page/latest-txns-table';
-import ErrorComponent from '@/components/error/error.component';
+import ROUTES from 'src/static/router.data';
 
 function BlockBoxSkeleton() {
 	return (
