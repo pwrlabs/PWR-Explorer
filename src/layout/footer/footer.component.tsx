@@ -1,14 +1,17 @@
 'use client';
+
 import 'src/components/internal/text-field/text-field.scss';
-import '../footer/footer.component.scss';
-import Link from 'next/link';
-import Image from 'next/image';
-import { toast } from 'react-toastify';
 
 import Button from '@/components/internal/button/button.component';
 import TextButton from '@/components/internal/text-button/text-button.component';
 import ROUTES from '@/static/router.data';
+import { useFormik } from 'formik';
+import Link from 'next/link';
 import { SetStateAction, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
+
+import '../footer/footer.component.scss';
 
 export default function FooterComponent() {
 	const navigation = [
@@ -51,50 +54,30 @@ export default function FooterComponent() {
 			href: 'https://discord.gg/wtnvquRpuV',
 		},
 	];
+
+	// *~~*~~*~~ Formik ~~*~~*~~* //
+	const { handleSubmit, values, handleChange } = useFormik({
+		initialValues: {
+			email: '',
+		},
+		validationSchema: yup.object({
+			email: yup.string().email('Invalid email address').required('Required'),
+		}),
+		onSubmit: (values) => {
+			// Show notification and set a timer to hide it after 3 seconds
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false);
+				setInputError(false); // Reset input error to false
+			}, 3000);
+		},
+	});
+
 	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
 	const [showNotification, setShowNotification] = useState(false);
 	const [inputError, setInputError] = useState(false);
 
-	const handleSubmit = async (e: { preventDefault: () => void }) => {
-		e.preventDefault();
-	  
-		// Email validation function using a simple regex pattern
-		const validateEmail = (email: string) => {
-		  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		  return re.test(String(email).toLowerCase());
-		};
-	  
-		try {
-		  // Check if the email state is empty
-		  if (!email.trim()) {
-			setNotification({ message: 'Please input a value', type: 'error' });
-			setInputError(true); // Set input error to true
-		  } else if (!validateEmail(email)) {
-			// If the email is not valid, show the "please type your email correctly" message
-			setNotification({ message: 'Please type your email correctly', type: 'error' });
-			setInputError(true); // Set input error to true
-		  } else {
-			// Mocking a successful submission after a fake delay
-			setTimeout(() => {
-			  setNotification({ message: 'Signed up successfully', type: 'success' });
-			}, 1000);
-		  }
-		} catch (error) {
-			console.error('Error:', error);
-		  
-			// Display an error notification using react-toastify or the appropriate library
-			toast.error('An error occurred while submitting the form.');
-			setInputError(true); // Set input error to true
-		  }
-	  
-		// Show notification and set a timer to hide it after 3 seconds
-		setShowNotification(true);
-		setTimeout(() => {
-		  setShowNotification(false);
-		  setInputError(false); // Reset input error to false
-		}, 3000);
-	  };
 	return (
 		<div className="dark:bg-abrandc-dark-grey bg-abrandc-light-grey md:py-20 py-10 overflow-hidden">
 			<div className="container-2 mx-auto">
@@ -128,7 +111,7 @@ export default function FooterComponent() {
 						</div>
 					</div>
 
-					{/* New letter */}
+					{/* Newsletter */}
 
 					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
@@ -139,18 +122,21 @@ export default function FooterComponent() {
 								<input
 									className={`text-field ${inputError ? 'invalid' : ''}`}
 									placeholder="Enter your email"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
+									value={values.email}
+									name="email"
+									onChange={handleChange}
 								/>
 							</div>
-							<Button className="blue medium w-[116px]">Subscribe</Button>
+							<Button className="blue medium w-[116px]" type="submit">
+								Subscribe
+							</Button>
 						</div>
 						{showNotification && (
 							<div
-							className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
-							  notification.type === 'success' ? 'success' : 'error'
-							} ${showNotification ? 'show' : ''}`}
-						  >
+								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
+									notification.type === 'success' ? 'success' : 'error'
+								} ${showNotification ? 'show' : ''}`}
+							>
 								{notification.message}
 							</div>
 						)}
@@ -166,12 +152,12 @@ export default function FooterComponent() {
 							href={item.href}
 							target="_blank"
 							rel="noreferrer noopener"
-							className="flex items-center gap-x-4 bg-abrandc-dark-grey dark:bg-white rounded-2xl py-3 px-4 h-[60px] w-[134px] transition-colors duration-600 ease-in-out hover:bg-[#6653FF] dark:hover:bg-[#6653FF] hover:scale-105 dark:hover:text-white hover:text-white"
+							className=" bg-abrandc-dark-grey dark:bg-white text-white dark:text-agrey-900 rounded-2xl h-[60px] w-[134px]  transition-colors duration-600 ease-in-out hover:bg-ablue-400 dark:hover:bg-ablue-400  dark:hover:text-white hover:text-white hover:scale-105"
 						>
-							<i className="text-2xl dark:text-black text-white">{item.icon}</i>
-							<h2 className="text-xs font-medium leading-[18px] dark:text-black text-white">
-								{item.label}
-							</h2>
+							<div className="flex items-center gap-x-4 py-3 px-4 ">
+								<i className="text-2xl">{item.icon}</i>
+								<h2 className="text-xs font-medium leading-[18px]">{item.label}</h2>
+							</div>
 						</Link>
 					))}
 				</div>

@@ -1,11 +1,13 @@
-import 'src/scss/globals.scss';
 import type { Metadata } from 'next';
 import { Montserrat, Space_Grotesk } from 'next/font/google';
+
+import AppInit from 'src/components/app-init/app-init.component';
 import ContextComponent from 'src/components/context/context.component';
-import AppInit from '@/components/app-init/app-init.component';
+
+import AppConfig from 'src/static/app.config';
 
 import 'src/components/internal/button/button.scss';
-import AppConfig from '@/static/app.config';
+import 'src/scss/globals.scss';
 
 const space_grotesk = Space_Grotesk({
 	variable: '--font-grotesk',
