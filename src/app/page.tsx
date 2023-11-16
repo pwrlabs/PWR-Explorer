@@ -15,48 +15,14 @@ import FooterComponent from 'src/layout/footer/footer.component';
 import LatestBlocksTable from 'src/components/internal/root-page/latest-blocks-table';
 import LatestTxnsTable from 'src/components/internal/root-page/latest-txns-table';
 import ErrorComponent from 'src/components/error/error.component';
+import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
+import LatestSkeleton from 'src/components/skeletons/root/latest-tables.skeleton';
 
 import { isAddress, isHash } from 'src/shared/utils/functions';
 
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
-
-function BlockBoxSkeleton() {
-	return (
-		<div className="flex items-center gap-x-8 skeleton-container h-full w-full">
-			<div className="skeleton-circle !h-[32px] w-[32px] !mb-0"></div>
-
-			<div className="flex-grow">
-				<div className="skeleton-title max-w-[200px]"></div>
-				<div className="skeleton-line max-w-[150px] !mb-0"></div>
-				<span className="sr-only">Loading...</span>
-			</div>
-
-			<div className="flex-grow">
-				<div className="skeleton-title max-w-[170px]"></div>
-				<div className="skeleton-line max-w-[50px] !mb-0"></div>
-				<span className="sr-only">Loading...</span>
-			</div>
-		</div>
-	);
-}
-
-function StatBoxSkeleton() {
-	return (
-		<div className=" bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
-			<div className="flex items-center gap-x-4 skeleton-container h-full">
-				<div className="skeleton-circle !h-[28px] w-[28px] !mb-0"></div>
-
-				<div className="flex-grow">
-					<div className="skeleton-title max-w-[150px]"></div>
-					<div className="skeleton-line max-w-[100px]"></div>
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		</div>
-	);
-}
 
 function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; icon: any }) {
 	return (
@@ -327,7 +293,7 @@ export default function Home() {
 														: ''
 												}`}
 											>
-												<BlockBoxSkeleton key={idx} />
+												<LatestSkeleton key={idx} />
 											</div>
 										))
 									) : (
@@ -362,7 +328,7 @@ export default function Home() {
 														: ''
 												}`}
 											>
-												<BlockBoxSkeleton key={idx} />
+												<LatestSkeleton key={idx} />
 											</div>
 										))
 									) : (

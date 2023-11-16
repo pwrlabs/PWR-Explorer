@@ -1,14 +1,19 @@
 'use client';
 import Link from 'next/link';
 
-import Tags from '@/components/internal/tags/tags.component';
 import { useQuery } from 'react-query';
-import QUERY_KEYS from '@/static/query.keys';
-import QueryApi from '@/shared/api/query-api';
-import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import dateToText, { BnToDec, timeAgo } from '@/shared/utils/formatters';
-import ROUTES from '@/static/router.data';
-import { copyToClipboard } from '@/shared/utils/functions';
+
+import Tags from 'src/components/internal/tags/tags.component';
+import Tooltip from 'src/components/internal/tooltip/tooltip.component';
+import ErrorComponent from 'src/components/error/error.component';
+import TransactionDetailSkeleton from 'src/components/skeletons/transactions/txn-detail.skeleton';
+
+import QueryApi from 'src/shared/api/query-api';
+import dateToText, { BnToDec, timeAgo } from 'src/shared/utils/formatters';
+import { copyToClipboard } from 'src/shared/utils/functions';
+
+import QUERY_KEYS from 'src/static/query.keys';
+import ROUTES from 'src/static/router.data';
 
 type BlockTransactionsProps = {
 	params: {
@@ -25,9 +30,18 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 		isError: block_error,
 	} = useQuery([QUERY_KEYS.block_details, blockNum], () => QueryApi.blocks.details(blockNum));
 
-	if (block_loading || !block_data) return null;
+	// *~~*~~*~~ Skeleton function ~~*~~*~~* //
+	function renderTxnDetailsSkeleton(amount: number) {
+		return (
+			<section className="space-y-6 lg:space-y-4">
+				{new Array(amount).fill(0).map((_, i) => (
+					<TransactionDetailSkeleton key={i} />
+				))}
+			</section>
+		);
+	}
 
-	if (block_error) return <div>error</div>;
+	if (block_error || (!block_loading && !block_data)) return <ErrorComponent />;
 
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
@@ -39,43 +53,52 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 
 			{/* Block details */}
 			<div className="space-y-4 mt-12">
-				{/* First section */}
-				<section className="space-y-6 lg:space-y-4">
-					{/* Block height */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Block Height
-							</h1>
-							{/* <Tooltip text="text" large position="right">
+				{block_loading ? (
+					<>
+						{renderTxnDetailsSkeleton(3)}
+						<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
+						{renderTxnDetailsSkeleton(3)}
+					</>
+				) : (
+					<>
+						{/* First section */}
+						<section className="space-y-6 lg:space-y-4">
+							{/* Block height */}
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Block Height
+									</h1>
+									{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip> */}
-						</div>
-						<h2 className="text-sm">{blockNum}</h2>
-					</div>
+								</div>
+								<h2 className="text-sm">{blockNum}</h2>
+							</div>
 
-					{/* Timestamp */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Timestamp
-							</h1>
-							{/* <Tooltip text="text" large position="right">
+							{/* Timestamp */}
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Timestamp
+									</h1>
+									{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip> */}
-						</div>
-						<div className="flex items-center gap-x-2 ">
-							<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
+								</div>
+								<div className="flex items-center gap-x-2 ">
+									<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
 
-							<h2 className="leading-[24px] break-all text-sm">
-								{timeAgo(block_data.timeStamp)} ({dateToText(block_data.timeStamp)})
-								{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
-							</h2>
-						</div>
-					</div>
+									<h2 className="leading-[24px] break-all text-sm">
+										{timeAgo(block_data.timeStamp)} (
+										{dateToText(block_data.timeStamp)})
+										{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
+									</h2>
+								</div>
+							</div>
 
-					{/* Proposed on */}
-					{/* <div className="lg:flex space-y-2">
+							{/* Proposed on */}
+							{/* <div className="lg:flex space-y-2">
 						<div className="flex items-center gap-x-2 w-[300px]">
 							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 								Proposed on
@@ -98,82 +121,97 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 						</div>
 					</div> */}
 
-					{/* Transactions */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Transactions
-							</h1>
-							{/* <Tooltip text="text" large position="right">
+							{/* Transactions */}
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Transactions
+									</h1>
+									{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip> */}
-						</div>
-						<div className="flex items-center gap-x-2 ">
-							<h2 className="leading-[24px] break-all text-sm">
-								<Link
-									href={ROUTES.blockTxns(blockNum)}
-									className="dark:text-ablue-100 text-ablue-500 font-medium"
-								>
-									{block_data.txnsCount} transactions
-								</Link>{' '}
-								in this block
-							</h2>
-						</div>
-					</div>
-				</section>
+								</div>
+								<div className="flex items-center gap-x-2 ">
+									<h2 className="leading-[24px] break-all text-sm">
+										<Link
+											href={ROUTES.blockTxns(blockNum)}
+											className="dark:text-ablue-100 text-ablue-500 font-medium"
+										>
+											{block_data.txnsCount} transactions
+										</Link>{' '}
+										in this block
+									</h2>
+								</div>
+							</div>
+						</section>
 
-				<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
-				{/* Second section */}
-				<section className="space-y-6 lg:space-y-4">
-					{/* Fee */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Fee Recipient
-							</h1>
-							{/* <Tooltip text="text" large position="right">
-								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip> */}
-						</div>
-						<div className="flex gap-x-2  gap-y-2">
-							<Link
-								href={`${ROUTES.address}/${block_data.blockSubmitter}`}
-								className="dark:text-ablue-100 text-ablue-500 font-medium text-ellipsis  overflow-hidden"
-							>
-								{block_data.blockSubmitter}
-							</Link>
-							<Tooltip text="copied to clipboard" position="up" trigger="click">
-								<button onClick={() => copyToClipboard(block_data.blockSubmitter)}>
-									<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
-								</button>
-							</Tooltip>
-						</div>
-					</div>
+						<hr className="dark:border-agrey-800 border-agrey-200 my-4" />
 
-					{/* Reward */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
-								Block Reward
-							</h1>
-							{/* <Tooltip text="text" large position="right">
+						{/* Second section */}
+						<section className="space-y-6 lg:space-y-4">
+							{/* Fee */}
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Fee Recipient
+									</h1>
+									{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip> */}
-						</div>
-						<h2 className="text-sm">{BnToDec(block_data.blockReward, 9, 9)} PWR</h2>
-					</div>
+								</div>
+								<div className="flex gap-x-2  gap-y-2">
+									<Link
+										href={`${ROUTES.address}/${block_data.blockSubmitter}`}
+										className="dark:text-ablue-100 text-ablue-500 font-medium text-ellipsis  overflow-hidden"
+									>
+										{block_data.blockSubmitter}
+									</Link>
+									<Tooltip
+										text="copied to clipboard"
+										position="up"
+										trigger="click"
+									>
+										<button
+											onClick={() =>
+												copyToClipboard(block_data.blockSubmitter)
+											}
+										>
+											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+										</button>
+									</Tooltip>
+								</div>
+							</div>
 
-					{/* Size */}
-					<div className="lg:flex space-y-2">
-						<div className="flex items-center gap-x-2 w-[300px]">
-							<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">Size</h1>
-							{/* <Tooltip text="text" large position="right">
+							{/* Reward */}
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Block Reward
+									</h1>
+									{/* <Tooltip text="text" large position="right">
 								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 							</Tooltip> */}
-						</div>
-						<h2 className="text-sm">{block_data.blockSize} Bytes</h2>
-					</div>
-				</section>
+								</div>
+								<h2 className="text-sm">
+									{BnToDec(block_data.blockReward, 9, 9)} PWR
+								</h2>
+							</div>
+
+							{/* Size */}
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Size
+									</h1>
+									{/* <Tooltip text="text" large position="right">
+								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
+							</Tooltip> */}
+								</div>
+								<h2 className="text-sm">{block_data.blockSize} Bytes</h2>
+							</div>
+						</section>
+					</>
+				)}
 
 				<br />
 

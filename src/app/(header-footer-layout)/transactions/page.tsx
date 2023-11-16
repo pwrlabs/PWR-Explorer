@@ -14,6 +14,7 @@ import StatBox from 'src/components/internal/stat-box/stat-box.component';
 import Pagination from 'src/components/internal/pagination/pagination.component';
 import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
 import TransactionTooltipDetails from 'src/components/internal/transaction-tooltip-details/transaction-tooltip-details';
+import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
 import ErrorComponent from 'src/components/error/error.component';
 
 import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
@@ -103,22 +104,6 @@ export default function Transactions() {
 		setPage(page);
 	}
 
-	function SkeletonStatBox() {
-		return (
-			<div className=" bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
-				<div className="flex items-center gap-x-4 skeleton-container h-full">
-					<div className="skeleton-circle !h-[28px] w-[28px] !mb-0"></div>
-
-					<div className="flex-grow">
-						<div className="skeleton-title max-w-[150px]"></div>
-						<div className="skeleton-line max-w-[100px]"></div>
-						<span className="sr-only">Loading...</span>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
 	if (txnsError || (!txnsLoading && !txnsData)) return <ErrorComponent />;
 
 	return (
@@ -133,45 +118,44 @@ export default function Transactions() {
 				<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
 					{/* Transactions */}
 					{txnsLoading ? (
-						<SkeletonStatBox />
+						<>
+							<StatBoxSkeleton />
+							<StatBoxSkeleton />
+							<StatBoxSkeleton />
+						</>
 					) : (
-						<StatBox
-							title="TRANSACTIONS (24h)"
-							valueComp={() => (
-								<>
-									<span>{txnsData.transactionCountPast24Hours}</span>
-								</>
-							)}
-							icon="/icons/arrows.svg"
-						/>
-					)}
+						<>
+							<StatBox
+								title="TRANSACTIONS (24h)"
+								valueComp={() => (
+									<>
+										<span>{txnsData.transactionCountPast24Hours}</span>
+									</>
+								)}
+								icon="/icons/arrows.svg"
+							/>
+							<StatBox
+								title="TRANSACTION FEE (24h)"
+								valueComp={() => (
+									<span>
+										{BnToDec(txnsData.totalTransactionFeesPast24Hours, 9, 9)}{' '}
+										PWR
+									</span>
+								)}
+								icon="/icons/pwr.svg"
+							/>
 
-					{txnsLoading ? (
-						<SkeletonStatBox />
-					) : (
-						<StatBox
-							title="TRANSACTION FEE (24h)"
-							valueComp={() => (
-								<span>
-									{BnToDec(txnsData.totalTransactionFeesPast24Hours, 9, 9)} PWR
-								</span>
-							)}
-							icon="/icons/pwr.svg"
-						/>
-					)}
-
-					{txnsLoading ? (
-						<SkeletonStatBox />
-					) : (
-						<StatBox
-							title="AVG. TRANSACTION FEE (24h)"
-							valueComp={() => (
-								<span>
-									{BnToDec(txnsData.averageTransactionFeePast24Hours, 9, 9)} USD
-								</span>
-							)}
-							icon="/icons/arrows.svg"
-						/>
+							<StatBox
+								title="AVG. TRANSACTION FEE (24h)"
+								valueComp={() => (
+									<span>
+										{BnToDec(txnsData.averageTransactionFeePast24Hours, 9, 9)}{' '}
+										USD
+									</span>
+								)}
+								icon="/icons/arrows.svg"
+							/>
+						</>
 					)}
 				</div>
 			</section>
@@ -181,14 +165,14 @@ export default function Transactions() {
 				{/* Title */}
 				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
 					{txnsLoading ? (
-						<div className="skeleton-container">
+						<div className="skeleton-container space-y-4">
 							<div className="skeleton-title w-[300px]"></div>
 							<div className="skeleton-line w-[200px]"></div>
 						</div>
 					) : (
 						<div>
 							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								More than {txnsData.metadata.totalItems || 0} transactions found
+								More than {txnsData.metadata.totalItems} transactions found
 							</h1>
 							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 								(Showing the latest records)

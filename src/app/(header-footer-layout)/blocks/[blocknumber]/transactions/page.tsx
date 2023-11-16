@@ -1,17 +1,23 @@
 'use client';
 
-import Pagination from '@/components/internal/pagination/pagination.component';
-import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
-import Tooltip from '@/components/internal/tooltip/tooltip.component';
-import QueryApi from '@/shared/api/query-api';
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import { copyToClipboard, isAddress } from '@/shared/utils/functions';
-import QUERY_KEYS from '@/static/query.keys';
-import ROUTES from '@/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+
 import { useQuery } from 'react-query';
+
+import ErrorComponent from 'src/components/error/error.component';
+import Pagination from 'src/components/internal/pagination/pagination.component';
+import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
+import Tooltip from 'src/components/internal/tooltip/tooltip.component';
+import TableSkeleton from 'src/components/internal/table-skeleton/table-skeleton.component';
+
+import QueryApi from 'src/shared/api/query-api';
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { copyToClipboard, isAddress } from 'src/shared/utils/functions';
+
+import QUERY_KEYS from 'src/static/query.keys';
+import ROUTES from 'src/static/router.data';
 
 type BlockTransactionsProps = {
 	params: {
@@ -94,11 +100,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 		setPage(page);
 	}
 
-	console.log(blocktxns_data);
-
-	if (blocktxns_loading || !blocktxns_data) return null;
-
-	if (blocktxns_error) return <div>error</div>;
+	if (blocktxns_error || (!blocktxns_loading && !blocktxns_data)) return <ErrorComponent />;
 
 	return (
 		<div className="container-2 mx-auto text-white">
@@ -112,15 +114,22 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 			<br />
 			{/* Transaction details */}
 			<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-y-4">
-				<div>
-					<h2 className="dark:text-white text-abrandc-dark-grey font-medium">
-						<span className="mr-4">For Block</span>
-						<span className="text-ablue-800 dark:text-ablue-100 ">{blockNum}</span>
-					</h2>
-					<h3 className="dark:text-white text-abrandc-dark-grey text-xs font-medium">
-						(A total of {blocktxns_data.transactions.length} transactions found)
-					</h3>
-				</div>
+				{blocktxns_loading ? (
+					<div className="skeleton-container space-y-4">
+						<div className="skeleton-title w-[300px]"></div>
+						<div className="skeleton-line w-[200px]"></div>
+					</div>
+				) : (
+					<div>
+						<h2 className="dark:text-white text-abrandc-dark-grey font-medium">
+							<span className="mr-4">For Block</span>
+							<span className="text-ablue-800 dark:text-ablue-100 ">{blockNum}</span>
+						</h2>
+						<h3 className="dark:text-white text-abrandc-dark-grey text-xs font-medium">
+							(A total of {blocktxns_data.transactions.length} transactions found)
+						</h3>
+					</div>
+				)}
 
 				<div className="flex items-center justify-center gap-x-2 text-white">
 					<QuickPagination
@@ -131,38 +140,36 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 			</div>
 			{/* Table */}
 			<div className="w-full mt-5 overflow-x-auto scroll-sm">
-				<table className="table-auto bg-awhite w-full min-w-[900px]">
-					{/* table header */}
-					<thead className="sticky top-0">
-						<tr>
-							{headers.map((header, idx) => (
-								<th
-									className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
-									key={idx}
-								>
-									{header.name.length > 0 && (
-										<div className="flex justify-center items-center gap-x-2">
-											<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
-												{header.name}
-											</div>
-											{/* <div className="text-agrey-500 dark:text-agrey-600">
+				{blocktxns_loading ? (
+					<TableSkeleton />
+				) : (
+					<table className="table-auto bg-awhite w-full min-w-[900px]">
+						{/* table header */}
+						<thead className="sticky top-0">
+							<tr>
+								{headers.map((header, idx) => (
+									<th
+										className={`dark:text-white text-abrandc-dark-grey ${header.thClass} py-1`}
+										key={idx}
+									>
+										{header.name.length > 0 && (
+											<div className="flex justify-center items-center gap-x-2">
+												<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+													{header.name}
+												</div>
+												{/* <div className="text-agrey-500 dark:text-agrey-600">
 												<i className="fa-sm far fa-info-circle" />
 											</div> */}
-										</div>
-									)}
-								</th>
-							))}
-						</tr>
-					</thead>
-
-					{/* table body */}
-					<tbody>
-						{blocktxns_loading ? (
-							<tr>
-								<td>Loading</td>
+											</div>
+										)}
+									</th>
+								))}
 							</tr>
-						) : (
-							blocktxns_data.transactions.map((txn, idx) => (
+						</thead>
+
+						{/* table body */}
+						<tbody>
+							{blocktxns_data.transactions.map((txn, idx) => (
 								<tr
 									key={txn.txnHash}
 									className={` ${
@@ -282,10 +289,10 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 										</div>
 									</td>
 								</tr>
-							))
-						)}
-					</tbody>
-				</table>
+							))}
+						</tbody>
+					</table>
+				)}
 			</div>
 			<br />
 			<div>
