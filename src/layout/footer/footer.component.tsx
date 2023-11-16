@@ -1,11 +1,17 @@
-import 'src/components/internal/text-field/text-field.scss';
+'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
+import 'src/components/internal/text-field/text-field.scss';
 
 import Button from '@/components/internal/button/button.component';
 import TextButton from '@/components/internal/text-button/text-button.component';
 import ROUTES from '@/static/router.data';
+import { useFormik } from 'formik';
+import Link from 'next/link';
+import { SetStateAction, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
+
+import '../footer/footer.component.scss';
 
 export default function FooterComponent() {
 	const navigation = [
@@ -49,6 +55,29 @@ export default function FooterComponent() {
 		},
 	];
 
+	// *~~*~~*~~ Formik ~~*~~*~~* //
+	const { handleSubmit, values, handleChange } = useFormik({
+		initialValues: {
+			email: '',
+		},
+		validationSchema: yup.object({
+			email: yup.string().email('Invalid email address').required('Required'),
+		}),
+		onSubmit: (values) => {
+			// Show notification and set a timer to hide it after 3 seconds
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false);
+				setInputError(false); // Reset input error to false
+			}, 3000);
+		},
+	});
+
+	const [email, setEmail] = useState('');
+	const [notification, setNotification] = useState({ message: '', type: '' });
+	const [showNotification, setShowNotification] = useState(false);
+	const [inputError, setInputError] = useState(false);
+
 	return (
 		<div className="dark:bg-abrandc-dark-grey bg-abrandc-light-grey md:py-20 py-10 overflow-hidden">
 			<div className="container-2 mx-auto">
@@ -82,35 +111,53 @@ export default function FooterComponent() {
 						</div>
 					</div>
 
-					{/* New letter */}
-					<div className="flex flex-col gap-y-2 mt-2">
+					{/* Newsletter */}
+
+					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
 							Join our newsletter
 						</h2>
 						<div className="flex items-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
-								<input className="text-field" placeholder="Enter your email" />
+								<input
+									className={`text-field ${inputError ? 'invalid' : ''}`}
+									placeholder="Enter your email"
+									value={values.email}
+									name="email"
+									onChange={handleChange}
+								/>
 							</div>
-							<Button className="blue medium w-[116px]">Subscribe</Button>
+							<Button className="blue medium w-[116px]" type="submit">
+								Subscribe
+							</Button>
 						</div>
-					</div>
+						{showNotification && (
+							<div
+								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
+									notification.type === 'success' ? 'success' : 'error'
+								} ${showNotification ? 'show' : ''}`}
+							>
+								{notification.message}
+							</div>
+						)}
+					</form>
 				</div>
 
 				<hr className="dark:border-agrey-800 border-agrey-200 mt-7 mb-7" />
 
-				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4 px-2 mt-4 w-full">
+				<div className="grid grid-cols-2 gap-y-4 md:flex md:items-center md:gap-x-4  mt-4 w-full">
 					{socials.map((item, index) => (
 						<Link
-							className="flex items-center  gap-x-4 dark:bg-white bg-abrandc-dark-grey rounded-2xl py-3 px-4 h-[60px] w-[134px]"
 							key={index}
 							href={item.href}
 							target="_blank"
 							rel="noreferrer noopener"
+							className=" bg-abrandc-dark-grey dark:bg-white text-white dark:text-agrey-900 rounded-2xl h-[60px] w-[134px]  transition-colors duration-600 ease-in-out hover:bg-ablue-400 dark:hover:bg-ablue-400  dark:hover:text-white hover:text-white hover:scale-105"
 						>
-							<i className=" text-white dark:text-black text-2xl">{item.icon}</i>
-							<h2 className="dark:text-black text-white text-xs font-medium leading-[18px]">
-								{item.label}
-							</h2>
+							<div className="flex items-center gap-x-4 py-3 px-4 ">
+								<i className="text-2xl">{item.icon}</i>
+								<h2 className="text-xs font-medium leading-[18px]">{item.label}</h2>
+							</div>
 						</Link>
 					))}
 				</div>
