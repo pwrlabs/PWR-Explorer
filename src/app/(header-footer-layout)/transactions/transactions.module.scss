@@ -1,44 +1,34 @@
-.dark\:text-ablue-300.text-ablue-200.font-medium:hover {
-    color: #AE9CFE;
-}
 .eye_tooltip_cont {
-	@apply relative;
-	@apply cursor-pointer;
+    @apply relative cursor-pointer;
 
-	&:hover {
-		.tooltip {
-			@apply block;
-		}
-	}
+    &:hover .tooltip {
+        @apply block;
+    }
 
-	.tooltip {
-		@apply hidden;
-		@apply absolute;
+    .tooltip {
+        @apply hidden absolute top-1/2 -translate-y-1/2;
+        left: calc(100% + 8px);
+        z-index: 1050; // Ensure consistent z-index
 
-		@apply top-1/2;
-		@apply -translate-y-1/2;
-		left: calc(100% + 8px);
+        &::before {
+            @apply absolute border-solid border-transparent border-r-8 border-l-0 border-t-8 border-b-8 top-1/2 -translate-y-1/2 right-full;
+            border-right-color: var(--your-tooltip-border-color); // Define this variable in your styles or replace it with a color value
+            left: calc(100% + 8px);
+        }
+    }
+}
 
-		// arrow
-		&::before {
-			content: '';
-			@apply absolute;
-			@apply border-solid;
-			@apply border-transparent;
-			@apply border-r-8;
-			@apply border-l-0;
-			@apply border-t-8;
-			@apply border-b-8;
+.tooltip-last {
+    @apply hidden absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
 
-			@apply top-1/2;
-			@apply -translate-y-1/2;
-			@apply right-full;
-
-			@apply border-r-white;
-			@apply dark:border-r-abrandc-dark-blackish;
-
-			// border-right-color: ; // match the background color of the tooltip
-			// box-shadow: px 0 2px 5px rgba(0, 0, 0, 0.1);
-		}
-	}
+    &::before {
+        @apply absolute border-solid border-transparent border-t-0 border-b-8 border-l-8 border-r-8;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-bottom-color: var(--tooltip-background-color); // Define this variable or replace with a color
+    }
 }

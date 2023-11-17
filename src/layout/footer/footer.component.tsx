@@ -4,6 +4,7 @@ import '../footer/footer.component.scss';
 import Link from 'next/link';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
+import axios from 'axios'; // Ensure axios is installed or use fetch API
 
 import Button from '@/components/internal/button/button.component';
 import TextButton from '@/components/internal/text-button/text-button.component';
@@ -58,43 +59,56 @@ export default function FooterComponent() {
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-	  
+
 		// Email validation function using a simple regex pattern
 		const validateEmail = (email: string) => {
-		  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		  return re.test(String(email).toLowerCase());
+			const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return re.test(String(email).toLowerCase());
 		};
-	  
-		try {
-		  // Check if the email state is empty
-		  if (!email.trim()) {
+
+		if (!email.trim()) {
 			setNotification({ message: 'Please input a value', type: 'error' });
-			setInputError(true); // Set input error to true
-		  } else if (!validateEmail(email)) {
-			// If the email is not valid, show the "please type your email correctly" message
+			setInputError(true);
+			console.log('FAILED TO SEND');
+		} else if (!validateEmail(email)) {
 			setNotification({ message: 'Please type your email correctly', type: 'error' });
-			setInputError(true); // Set input error to true
-		  } else {
-			// Mocking a successful submission after a fake delay
-			setTimeout(() => {
-			  setNotification({ message: 'Signed up successfully', type: 'success' });
-			}, 1000);
-		  }
-		} catch (error) {
-			console.error('Error:', error);
-		  
-			// Display an error notification using react-toastify or the appropriate library
-			toast.error('An error occurred while submitting the form.');
-			setInputError(true); // Set input error to true
-		  }
-	  
-		// Show notification and set a timer to hide it after 3 seconds
+			setInputError(true);
+			console.log('FAILED TO SEND');
+		} else {
+			try {
+				const response = await axios.post(
+					`https://emailsubscription.pwrlabs.io/subscribeToNewsLetter/?email=${email}`,
+					{
+						email: email,
+						list_ids: ['your-list-id'], // Replace with your actual list ID from Beehiiv
+					},
+					{
+						headers: {
+							Authorization: 'Bearer pub_128941eb-ed14-4c19-87a0-8ce7e0e0cf21',
+							'Content-Type': 'application/json',
+						},
+					}
+				);
+
+				if (response.status === 200) {
+					setNotification({ message: 'Signed up successfully', type: 'success' });
+				} else {
+					throw new Error('Subscription failed');
+					console.log('FAILED TO SEND');
+				}
+			} catch (error) {
+				console.error('Error:', error);
+				toast.error('An error occurred while submitting the form.');
+				setInputError(true);
+			}
+		}
+
 		setShowNotification(true);
 		setTimeout(() => {
-		  setShowNotification(false);
-		  setInputError(false); // Reset input error to false
+			setShowNotification(false);
+			setInputError(false);
 		}, 3000);
-	  };
+	};
 	return (
 		<div className="dark:bg-abrandc-dark-grey bg-abrandc-light-grey md:py-20 py-10 overflow-hidden">
 			<div className="container-2 mx-auto">
@@ -147,10 +161,10 @@ export default function FooterComponent() {
 						</div>
 						{showNotification && (
 							<div
-							className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
-							  notification.type === 'success' ? 'success' : 'error'
-							} ${showNotification ? 'show' : ''}`}
-						  >
+								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
+									notification.type === 'success' ? 'success' : 'error'
+								} ${showNotification ? 'show' : ''}`}
+							>
 								{notification.message}
 							</div>
 						)}

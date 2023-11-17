@@ -10,6 +10,7 @@ type TransactionTooltipDetailsProps = {
 };
 
 const TransactionTooltipDetails = ({ fee, usdFee, nonce }: TransactionTooltipDetailsProps) => {
+	
 	return (
 		<div className=" flex flex-col gap-3 p-3  dark:bg-abrandc-dark-blackish bg-white text-agrey-900 dark:text-white    rounded-2xl z-10 shadow-3xl  w-80 z-index-3">
 			<div>
