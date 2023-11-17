@@ -22,3 +22,9 @@
     background-color: #007bff; /* Blue background for success */
     color: #fff; /* White text color for success */
   }
+  iframe[data-test-id="beehiiv-embed"] {
+    color: red; // Set the color to black or any other color you prefer
+
+    // You can also try to add more specific styling here,
+    // but it may not affect the inner contents of the iframe due to cross-origin restrictions.
+}

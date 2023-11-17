@@ -144,7 +144,7 @@ export default function FooterComponent() {
 
 					{/* New letter */}
 
-					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
+					{/* <form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
 							Join our newsletter
 						</h2>
@@ -168,7 +168,21 @@ export default function FooterComponent() {
 								{notification.message}
 							</div>
 						)}
-					</form>
+					</form> */}
+
+					<div className="mt-2">
+						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
+							Join our newsletter
+						</h2>
+						<iframe
+							src="https://embeds.beehiiv.com/778192a8-8ad2-4767-80f9-d1f2b4bc33ae?slim=true"
+							data-test-id="beehiiv-embed"
+							height="51"
+							frameBorder="0"
+							scrolling="no"
+							style={{ margin: 0, borderRadius: '6px' }}
+						></iframe>
+					</div>
 				</div>
 
 				<hr className="dark:border-agrey-800 border-agrey-200 mt-7 mb-7" />
