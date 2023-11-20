@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import Link, { LinkProps as InternalLinkProps } from 'next/link';
-import './button.scss';
 
 type CustomLinkProps = {
 	href?: string; // Make href optional by adding "?"
@@ -56,7 +55,7 @@ export default function Button({ children, className, tag_type = 'def', href, ..
 	if (tag_type === 'a')
 		return (
 			<a
-				className={`comp_button ${className}`}
+				className={`comp_button flex justify-center items-center ${className}`}
 				{...rest}
 				ref={buttonRef as React.Ref<HTMLAnchorElement>}
 			>
@@ -68,7 +67,7 @@ export default function Button({ children, className, tag_type = 'def', href, ..
 		return (
 			<Link
 				href={href || '/'}
-				className={`comp_button ${className}`}
+				className={`comp_button flex justify-center items-center ${className}`}
 				{...rest}
 				ref={buttonRef as React.Ref<HTMLAnchorElement>}
 			>

@@ -199,7 +199,7 @@ export default function HeaderComponent() {
 
 					{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
 					<Button
-						className="blue medium w-[117px]"
+						className="blue small "
 						tag_type="link"
 						href="https://chrome.google.com/webstore/category/extensions"
 						target="_blank"
@@ -339,7 +339,7 @@ export default function HeaderComponent() {
 						<div className="flex justify-between gap-4">
 							{/* <Button className="secondary medium w-2/4">Connect</Button> */}
 							<Button
-								className="blue medium w-full"
+								className="blue small w-full"
 								tag_type="link"
 								href="https://chrome.google.com/webstore/category/extensions"
 								target="_blank"

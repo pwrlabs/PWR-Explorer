@@ -1,5 +1,10 @@
+// basic components
+@use 'src/components/internal/button/button.scss';
+@use 'src/components/internal/text-field/text-field.scss';
+
 @use '../components/internal/skeleton/skeleton.scss';
 @use './scroll.scss';
+
 @use '../components/internal/search-bar/search-bar.scss';
 
 @tailwind base;

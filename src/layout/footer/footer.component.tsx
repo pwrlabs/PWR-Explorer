@@ -122,7 +122,9 @@ export default function FooterComponent() {
 						<div className="flex items-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
-									className={`text-field ${inputError ? 'invalid' : ''}`}
+									className={`text-field ${
+										inputError ? 'invalid' : ''
+									} dark:!border-agrey-800 !border-agrey-300`}
 									placeholder="Enter your email"
 									value={values.email}
 									name="email"

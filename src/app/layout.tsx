@@ -6,7 +6,6 @@ import ContextComponent from 'src/components/context/context.component';
 
 import AppConfig from 'src/static/app.config';
 
-import 'src/components/internal/button/button.scss';
 import 'src/scss/globals.scss';
 
 const space_grotesk = Space_Grotesk({
