@@ -197,6 +197,58 @@ export default function HeaderComponent() {
 						</div>
 					</div>
 
+					<div>
+						<form onSubmit={handleSubmit} className="w-full lg:w-[250px]">
+							<div className="field">
+								{/* input contianer */}
+								<div
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
+								>
+									{/* Filter */}
+									{/* <div className="">
+									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
+										<span>All Filters</span>
+										<Image
+											className="w-auto h-auto"
+											src="/icons/arrow-down.svg"
+											width={20}
+											height={20}
+											alt=""
+										/>
+									</button>
+								</div> */}
+									<input
+										className="search-bar-nav-input"
+										placeholder="Search by Address | Txn Hash | Block "
+										// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
+
+									<button
+										className="flex items-center gap-x-2"
+										disabled={!dirty || !touched || !formik.isValid}
+										type="submit"
+									>
+										<Image
+											src="/media/icons/enter-arrow.svg"
+											width={24}
+											height={24}
+											alt=""
+										/>
+										<div className="text-agrey-500 font-bold text-sm">
+											Enter
+										</div>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
 					{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
 					<Button
 						className="blue medium w-[117px]"
