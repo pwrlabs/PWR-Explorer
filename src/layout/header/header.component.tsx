@@ -64,7 +64,11 @@ export default function HeaderComponent() {
 
 	const navigation = [
 		{
-			label: 'Explore',
+			label: 'Transactions',
+			href: '#',
+		},
+		{
+			label: 'Blocks',
 			href: '#',
 		},
 		{
@@ -162,15 +166,26 @@ export default function HeaderComponent() {
 				<div className="hidden md:flex items-center gap-x-14	  h-full">
 					<div className="h-full grid place-items-center">
 						<Link
-							href={ROUTES.root}
-							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
+							href={ROUTES.transactions}
+							className={`navbar-link ${
+								pathname === ROUTES.transactions ? 'active' : ''
+							}`}
 						>
-							Explore
+							Transactions
+						</Link>
+					</div>
+
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.blocks}
+							className={`navbar-link ${pathname === ROUTES.blocks ? 'active' : ''}`}
+						>
+							Blocks
 						</Link>
 					</div>
 
 					{/* dropdown */}
-					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
+					{/* <div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
 						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center justify-center gap-x-2 ">
 							<h1>Blockchain</h1>
 							<i className="fa-lg far fa-angle-down mt-2"></i>
@@ -195,9 +210,7 @@ export default function HeaderComponent() {
 								))}
 							</ul>
 						</div>
-					</div>
-
-					
+					</div> */}
 
 					{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
 					<Button
@@ -243,7 +256,7 @@ export default function HeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0  w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0  w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-auto p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
@@ -298,13 +311,19 @@ export default function HeaderComponent() {
 						{/* links */}
 						<div className="space-y-2">
 							<Link
-								href={ROUTES.root}
+								href={ROUTES.transactions}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
 							>
-								<div>Explore</div>
+								<div>Transactions</div>
+							</Link>
+							<Link
+								href={ROUTES.blocks}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Blocks</div>
 							</Link>
 
-							<div>
+							{/* <div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"
 									onClick={toggleBlockchain}
@@ -334,7 +353,7 @@ export default function HeaderComponent() {
 										))}
 									</ul>
 								)}
-							</div>
+							</div> */}
 						</div>
 
 						{/* buttons */}

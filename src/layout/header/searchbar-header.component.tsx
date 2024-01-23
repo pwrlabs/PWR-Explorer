@@ -151,7 +151,7 @@ export default function SearchBarHeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white dark:drop-shadow-white drop-shadow">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -160,17 +160,27 @@ export default function SearchBarHeaderComponent() {
 
 				{/* desktop menu */}
 				<div className="hidden md:flex items-center gap-x-6  h-full">
-					<div className="h-full grid place-items-center">
+                <div className="h-full grid place-items-center">
 						<Link
-							href={ROUTES.root}
-							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
+							href={ROUTES.transactions}
+							className={`navbar-link ${pathname === ROUTES.transactions ? 'active' : ''}`}
 						>
-							Explore
+							Transactions
 						</Link>
 					</div>
 
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.blocks}
+							className={`navbar-link ${pathname === ROUTES.blocks ? 'active' : ''}`}
+						>
+							Blocks
+						</Link>
+					</div>
+
+
 					{/* dropdown */}
-					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
+					{/* <div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
 						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 ">
 							<div>Blockchain</div>
 							<i className="fa-lg far fa-angle-down"></i>
@@ -195,7 +205,7 @@ export default function SearchBarHeaderComponent() {
 								))}
 							</ul>
 						</div>
-					</div>
+					</div> */}
 
 					<div>
 						<form onSubmit={handleSubmit} className="w-full lg:w-[325px]">
@@ -271,7 +281,7 @@ export default function SearchBarHeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
@@ -304,13 +314,19 @@ export default function SearchBarHeaderComponent() {
 						{/* links */}
 						<div className="space-y-2">
 							<Link
-								href={ROUTES.root}
+								href={ROUTES.transactions}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
 							>
-								<div>Explore</div>
+								<div>Transactions</div>
 							</Link>
-
-							<div>
+                            <Link
+								href={ROUTES.blocks}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Blocks</div>
+							</Link>
+                            
+							{/* <div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"
 									onClick={toggleBlockchain}
@@ -340,7 +356,7 @@ export default function SearchBarHeaderComponent() {
 										))}
 									</ul>
 								)}
-							</div>
+							</div> */}
 						</div>
 
 						{/* buttons */}
