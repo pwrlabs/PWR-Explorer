@@ -39,7 +39,7 @@ function PwrLogo() {
 	);
 }
 
-export default function HeaderComponent() {
+export default function SearchBarHeaderComponent() {
 	const pathname = usePathname();
 
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -151,7 +151,7 @@ export default function HeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white dark:drop-shadow-white drop-shadow">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -159,7 +159,7 @@ export default function HeaderComponent() {
 				</Link>
 
 				{/* desktop menu */}
-				<div className="hidden md:flex items-center gap-x-14	  h-full">
+				<div className="hidden md:flex items-center gap-x-6  h-full">
 					<div className="h-full grid place-items-center">
 						<Link
 							href={ROUTES.root}
@@ -171,9 +171,9 @@ export default function HeaderComponent() {
 
 					{/* dropdown */}
 					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
-						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center justify-center gap-x-2 ">
-							<h1>Blockchain</h1>
-							<i className="fa-lg far fa-angle-down mt-2"></i>
+						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 ">
+							<div>Blockchain</div>
+							<i className="fa-lg far fa-angle-down"></i>
 						</button>
 						<div
 							id="dropdown"
@@ -197,7 +197,35 @@ export default function HeaderComponent() {
 						</div>
 					</div>
 
-					
+					<div>
+						<form onSubmit={handleSubmit} className="w-full lg:w-[325px]">
+							<div className="field">
+								{/* input contianer */}
+								<div
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
+								>
+									<button
+										className="flex items-center gap-x-2"
+										disabled={!dirty || !touched || !formik.isValid}
+										type="submit"
+									>
+										<i className="fa-xs fas fa-search text-agrey-500"></i>
+									</button>
+									<input
+										className="search-bar-nav-input"
+										// placeholder="Search by Address | Txn Hash | Block "
+										placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
+								</div>
+							</div>
+						</form>
+					</div>
 
 					{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
 					<Button
@@ -243,7 +271,7 @@ export default function HeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0  w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
@@ -253,44 +281,22 @@ export default function HeaderComponent() {
 										errors.search ? ' !border-ared-500' : ''
 									}`}
 								>
-									{/* Filter */}
-									{/* <div className="">
-									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
-										<span>All Filters</span>
-										<Image
-											className="w-auto h-auto"
-											src="/icons/arrow-down.svg"
-											width={20}
-											height={20}
-											alt=""
-										/>
-									</button>
-								</div> */}
-									<input
-										className="search-bar-nav-input"
-										placeholder="Search by Address | Txn Hash | Block "
-										// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
-										name="search"
-										value={values.search}
-										onChange={handleChange}
-										onBlur={handleBlur}
-									/>
-
 									<button
 										className="flex items-center gap-x-2"
 										disabled={!dirty || !touched || !formik.isValid}
 										type="submit"
 									>
-										<Image
-											src="/media/icons/enter-arrow.svg"
-											width={24}
-											height={24}
-											alt=""
-										/>
-										<div className="text-agrey-500 font-bold text-sm">
-											Enter
-										</div>
+										<i className="fa-xs fas fa-search text-agrey-500"></i>
 									</button>
+									<input
+										className="search-bar-nav-input"
+										// placeholder="Search by Address | Txn Hash | Block "
+										placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
 								</div>
 							</div>
 						</form>
