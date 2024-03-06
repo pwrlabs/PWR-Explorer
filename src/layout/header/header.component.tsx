@@ -158,7 +158,7 @@ export default function HeaderComponent() {
 
 				{/* desktop menu */}
 				<div className="hidden md:flex items-center gap-x-6  h-full">
-					<div className="h-full grid place-items-center">
+					<div className="h-full grid place-items-center hover:text-ablue-200 hover:dark:text-white transition duration-300 ease-in-out">
 						<Link
 							href={ROUTES.root}
 							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
@@ -168,9 +168,9 @@ export default function HeaderComponent() {
 					</div>
 
 					{/* dropdown */}
-					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
-						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 ">
-							<div>Blockchain</div>
+					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer hover:text-ablue-200 hover:dark:text-white">
+						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 hover:text-ablue-200 hover:dark:text-white transition duration-300 ease-in-out">
+							<div >Blockchain</div>
 							<i className="fa-lg far fa-angle-down"></i>
 						</button>
 						<div
@@ -309,7 +309,7 @@ export default function HeaderComponent() {
 
 							<div>
 								<button
-									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"
+									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full hover:text-agrey-900 hover:dark:text-white"
 									onClick={toggleBlockchain}
 								>
 									<div>Blockchain</div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import './pagination.scss';
 
 type PaginationProps = {
 	metadata: {
