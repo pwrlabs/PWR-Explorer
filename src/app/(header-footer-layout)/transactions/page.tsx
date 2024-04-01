@@ -281,7 +281,7 @@ export default function Transactions() {
 										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
-													href="/"
+													href={`${ROUTES.address}/${txn.from}`}
 													className="dark:text-ablue-100 text-ablue-500 font-medium"
 												>
 													{shortenAddress(txn.from, 4)}
