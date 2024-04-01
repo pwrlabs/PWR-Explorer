@@ -58,22 +58,35 @@ export default function FooterComponent() {
 	];
 
 	// *~~*~~*~~ Formik ~~*~~*~~* //
-	const { handleSubmit, values, handleChange } = useFormik({
-		initialValues: {
-			email: '',
-		},
+	const formik = useFormik({
+		initialValues: { email: '' },
 		validationSchema: yup.object({
-			email: yup.string().email('Invalid email address').required('Required'),
+		  email: yup.string().email('Invalid email address').required('Input is empty, fill your email'),
 		}),
 		onSubmit: (values) => {
-			// Show notification and set a timer to hide it after 3 seconds
-			setShowNotification(true);
-			setTimeout(() => {
-				setShowNotification(false);
-				setInputError(false); // Reset input error to false
-			}, 3000);
+		  // Intentionally left empty for custom handling outside Formik
 		},
-	});
+	  });
+	  
+	  // Custom submission handler
+	  const handleFormSubmit = async (e:any) => {
+		e.preventDefault();
+		await formik.validateForm();
+		formik.setTouched({ email: true }); // Ensure the email field is marked as touched
+	  
+		if (formik.errors.email) {
+		  // Custom logic to set notification based on the validation error
+		  setNotification({ message: formik.errors.email, type: 'error' });
+		  setShowNotification(true);
+		  setTimeout(() => {
+			setShowNotification(false);
+		  }, 3000);
+		} else {
+		  // Proceed with form submission logic if no errors
+		  formik.handleSubmit(); // Or directly handle successful submission here
+		}
+	  };
+	
 
 	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
@@ -115,7 +128,7 @@ export default function FooterComponent() {
 
 					{/* Newsletter */}
 
-					<form onSubmit={handleSubmit} className="flex flex-col gap-y-2 mt-2">
+					<form onSubmit={handleFormSubmit} className="flex flex-col gap-y-2 mt-2">
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
 							Join our newsletter
 						</h2>
@@ -124,9 +137,9 @@ export default function FooterComponent() {
 								<input
 									className={`text-field ${inputError ? 'invalid' : ''}`}
 									placeholder="Enter your email"
-									value={values.email}
+									value={formik.values.email}
 									name="email"
-									onChange={handleChange}
+									onChange={formik.handleChange}
 								/>
 							</div>
 							<Button className="blue medium w-[116px]" type="submit">
