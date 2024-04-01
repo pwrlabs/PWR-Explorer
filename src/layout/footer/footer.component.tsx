@@ -72,18 +72,25 @@ export default function FooterComponent() {
 	  const handleFormSubmit = async (e:any) => {
 		e.preventDefault();
 		await formik.validateForm();
-		formik.setTouched({ email: true }); // Ensure the email field is marked as touched
+		formik.setTouched({ email: true });
 	  
-		if (formik.errors.email) {
-		  // Custom logic to set notification based on the validation error
+		if (!formik.isValidating && !formik.errors.email) {
+		  // Simulate API call or some operation with the email
+		  console.log("Form submitted with email:", formik.values.email);
+		  setNotification({ message: 'You have successfully subscribed to our newsletter!', type: 'success' });
+		  setShowNotification(true);
+		  setTimeout(() => {
+			setShowNotification(false);
+		  }, 3000);
+		  
+		  // Reset the form (optional)
+		  formik.resetForm();
+		} else if (formik.errors.email) {
 		  setNotification({ message: formik.errors.email, type: 'error' });
 		  setShowNotification(true);
 		  setTimeout(() => {
 			setShowNotification(false);
 		  }, 3000);
-		} else {
-		  // Proceed with form submission logic if no errors
-		  formik.handleSubmit(); // Or directly handle successful submission here
 		}
 	  };
 	
