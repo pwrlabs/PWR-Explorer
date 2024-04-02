@@ -176,7 +176,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 								: '2px solid transparent',
 						transition: 'border 0.7s ease', // Add a transition for the border
 					}}
-					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey focus:outline-none text-agray-900 dark:text-white pl-4 h-8 w-[50px]"
+					className="rounded-lg bg-abrandc-light-grey dark:bg-abrandc-dark-grey focus:outline-none text-black dark:text-white pl-4 h-8 w-[50px]"
 					type="number"
 					onFocus={(e) => (e.target as HTMLInputElement).select()} // Select the entire text on input focus
 					onChange={(e) => setInputValue(parseInt(e.target.value, 10))}
