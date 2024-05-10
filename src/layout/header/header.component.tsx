@@ -1,22 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import './header.scss';
 
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { usePathname, useRouter } from 'next/navigation';
 
-import TextButton from '@/components/internal/text-button/text-button.component';
-import Button from '@/components/internal/button/button.component';
-
-import ThemeService from 'src/shared/services/theme/theme.service';
 import ThemeSvcContext from 'src/shared/services/theme/theme.context';
+import ThemeService from 'src/shared/services/theme/theme.service';
 import { Theme } from 'src/shared/services/theme/theme.type';
-import ROUTES from '@/static/router.data';
-import { isAddress, isHash } from '@/shared/utils/functions';
+
+import Button from 'src/components/internal/button/button.component';
+
+import { isAddress, isHash } from 'src/shared/utils/functions';
+
+import ROUTES from 'src/static/router.data';
+import './header.scss';
 
 function PwrLogo() {
 	return (
@@ -62,7 +64,11 @@ export default function HeaderComponent() {
 
 	const navigation = [
 		{
-			label: 'Explore',
+			label: 'Transactions',
+			href: '#',
+		},
+		{
+			label: 'Blocks',
 			href: '#',
 		},
 		{
@@ -149,7 +155,7 @@ export default function HeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white dark:drop-shadow-white drop-shadow">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -159,19 +165,35 @@ export default function HeaderComponent() {
 				{/* desktop menu */}
 				<div className="hidden md:flex items-center gap-x-6  h-full">
 					<div className="h-full grid place-items-center hover:text-ablue-200 hover:dark:text-white transition duration-300 ease-in-out">
+
 						<Link
-							href={ROUTES.root}
-							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
+							href={ROUTES.transactions}
+							className={`navbar-link ${pathname === ROUTES.transactions ? 'active' : ''
+								}`}
 						>
-							Explore
+							Transactions
+						</Link>
+					</div>
+
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.blocks}
+							className={`navbar-link ${pathname === ROUTES.blocks ? 'active' : ''}`}
+						>
+							Blocks
 						</Link>
 					</div>
 
 					{/* dropdown */}
-					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer hover:text-ablue-200 hover:dark:text-white">
+					<div className="navbar-dropdown relative  h-full flex gap-5 place-items-center cursor-pointer hover:text-ablue-200 hover:dark:text-white">
 						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 hover:text-ablue-200 hover:dark:text-white transition duration-300 ease-in-out">
 							<div >Blockchain</div>
 							<i className="fa-lg far fa-angle-down"></i>
+						</button>
+						{/* <div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
+						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center justify-center gap-x-2 ">
+							<h1>Blockchain</h1>
+							<i className="fa-lg far fa-angle-down mt-2"></i>
 						</button>
 						<div
 							id="dropdown"
@@ -193,40 +215,32 @@ export default function HeaderComponent() {
 								))}
 							</ul>
 						</div>
-					</div>
+					</div> */}
 
-					{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
-					<Button
-						className="blue medium w-[117px]"
-						tag_type="link"
-						href="https://chrome.google.com/webstore/category/extensions"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Get Wallet
-					</Button>
+						{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
+						<Button
+							className="blue medium w-[117px]"
+							tag_type="link"
+							href="https://chrome.google.com/webstore/category/extensions"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Get Wallet
+						</Button>
 
-					<button
-						className="theme_btn text-agrey-500 dark:text-white"
-						onClick={toggleTheme}
-					>
-						{currentTheme === 'light' ? (
-							<div className="select-none">
-								<Image src="/icons/sun.svg" width={16} height={16} alt="" />
-							</div>
-						) : (
+						<button
+							className="theme_btn text-agrey-500 dark:text-white"
+							onClick={toggleTheme}
+						>
 							<div className="dark:text-white">
-								<i className="fa-lf fas fa-moon" />
+								<i
+									className={`fa-lg fa-solid fa-${currentTheme === 'light' ? 'sun-bright' : 'moon'
+										}`}
+								></i>
 							</div>
-						)}
-						{/* <i
-							className={`fa-lg fas ${
-								currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
-							}`}
-						></i> */}
-					</button>
+						</button>
+					</div>
 				</div>
-
 				{/* Mobile burger icon */}
 				<div className="md:hidden">
 					{/* This is a simple burger icon. You can replace this with any SVG or icon library you prefer. */}
@@ -246,15 +260,14 @@ export default function HeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0  w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-auto p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
 								{/* input contianer */}
 								<div
-									className={`search-bar-nav-container  ${
-										errors.search ? ' !border-ared-500' : ''
-									}`}
+									className={`search-bar-nav-container  ${errors.search ? ' !border-ared-500' : ''
+										}`}
 								>
 									{/* Filter */}
 									{/* <div className="">
@@ -301,13 +314,19 @@ export default function HeaderComponent() {
 						{/* links */}
 						<div className="space-y-2">
 							<Link
-								href={ROUTES.root}
+								href={ROUTES.transactions}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
 							>
-								<div>Explore</div>
+								<div>Transactions</div>
+							</Link>
+							<Link
+								href={ROUTES.blocks}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Blocks</div>
 							</Link>
 
-							<div>
+							{/* <div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full hover:text-agrey-900 hover:dark:text-white"
 									onClick={toggleBlockchain}
@@ -337,7 +356,7 @@ export default function HeaderComponent() {
 										))}
 									</ul>
 								)}
-							</div>
+							</div> */}
 						</div>
 
 						{/* buttons */}
@@ -360,9 +379,8 @@ export default function HeaderComponent() {
 							<div className="w-full bg-agrey-50 dark:bg-agrey-900 flex justify-between h-[52px] px-4 py-2 rounded-lg  items-center ">
 								<div className=" text-agrey-500 dark:text-white">
 									<i
-										className={`fa-lg fas ${
-											currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
-										}`}
+										className={`fa-lg fas ${currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
+											}`}
 									></i>
 								</div>
 

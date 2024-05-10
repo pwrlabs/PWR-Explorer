@@ -1,7 +1,9 @@
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import ROUTES from '@/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+
+import ROUTES from 'src/static/router.data';
 
 type Block = {
 	blockHeight: number;
@@ -30,7 +32,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 						}`}
 					>
 						{/* block height */}
-						<td className="p-4">
+						<td className="lg:p-4 p-2">
 							<div className="flex gap-x-4">
 								<Image
 									className=" xl:block hidden"
@@ -39,7 +41,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 									height={32}
 									alt=""
 								/>
-								<div className="space-y-2">
+								<div className="lg:space-y-2 lg:block flex  items-center gap-x-2">
 									{/* block number */}
 									<Link
 										href={`${ROUTES.blocks}/${block.blockHeight}`}
@@ -55,7 +57,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 						</td>
 
 						{/* receiver */}
-						<td className="p-4">
+						<td className="lg:p-4 p-2">
 							<div className="">
 								<h1 className="">
 									<span className="dark:text-white text-abrandc-dark-grey inline-block md:hidden lg:hidden 2xl:inline-block mr-2">
@@ -69,19 +71,27 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 									</Link>
 								</h1>
 
-								<div className="flex justify-between">
+								<br className="sm:hidden" />
+
+								<div className="flex gap-x-2">
 									<Link
 										href={`${ROUTES.blockTxns(block.blockHeight)}`}
 										className="font-medium dark:text-ablue-300 text-ablue-200"
 									>
 										{block.txnsCount} txns
 									</Link>
+
+									<div className="sm:hidden">
+										<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[130px]">
+											{BnToDec(block.blockReward, 9, 9)} PWR
+										</h1>
+									</div>
 								</div>
 							</div>
 						</td>
 
 						{/* fee */}
-						<td className="p-4">
+						<td className="hidden sm:table-cell lg:p-4">
 							<div>
 								<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[130px]">
 									{BnToDec(block.blockReward, 9, 9)} PWR

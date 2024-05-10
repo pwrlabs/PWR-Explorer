@@ -1,66 +1,71 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
-import { useFloating, autoUpdate, useHover, useInteractions } from '@floating-ui/react';
 
-import TableSkeleton from '@/components/internal/table-skeleton/table-skeleton.component';
+import TableSkeleton from 'src/components/internal/table-skeleton/table-skeleton.component';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 
 import Tooltip from 'src/components/internal/tooltip/tooltip.component';
-
 import StatBox from 'src/components/internal/stat-box/stat-box.component';
-import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import Pagination from 'src/components/internal/pagination/pagination.component';
+import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
+import TransactionTooltipDetails from 'src/components/internal/transaction-tooltip-details/transaction-tooltip-details';
+import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
+import ErrorComponent from 'src/components/error/error.component';
+
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
 
 import ROUTES from 'src/static/router.data';
-import Pagination from 'src/components/internal/pagination/pagination.component';
-import { copyToClipboard, isAddress } from '@/shared/utils/functions';
-import QuickPagination from '@/components/internal/quick-pagination/quick-pagination.component';
+import { copyToClipboard, isAddress } from 'src/shared/utils/functions';
 
-import TransactionTooltipDetails from '@/components/internal/transaction-tooltip-details/transaction-tooltip-details';
-
-import styles from './transactions.module.scss';
-
-const { eye_tooltip_cont, tooltip } = styles;
+import './transactions.scss';
 
 const headers = [
 	{
 		id: 0,
 		name: 'Txn Hash',
-		thClass: 'xl:px-8 px-2',
+		thClass: 'xl:px-8 px-2 ',
+		containerClass: 'justify-start pl-8',
 	},
 	{
 		id: 1,
 		name: 'Block',
 		thClass: 'xl:px-8 px-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 2,
 		name: 'Timestamp',
 		thClass: 'xl:px-8 px-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 3,
 		name: 'From',
 		thClass: 'xl:pl-8 pl-2 pr-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 4,
 		name: '', // Direction
 		thClass: ' px-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 5,
 		name: 'To',
 		thClass: 'xl:pr-8 pr-2 pl-2',
+		containerClass: 'justify-center',
 	},
 	{
 		id: 6,
 		name: 'Value',
 		thClass: 'xl:px-8 px-2',
+		containerClass: 'justify-center',
 	},
 ];
 
@@ -99,21 +104,7 @@ export default function Transactions() {
 		setPage(page);
 	}
 
-	function SkeletonStatBox() {
-		return (
-			<div className=" bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
-				<div className="flex items-center gap-x-4 skeleton-container h-full">
-					<div className="skeleton-circle !h-[28px] w-[28px] !mb-0"></div>
-
-					<div className="flex-grow">
-						<div className="skeleton-title max-w-[150px]"></div>
-						<div className="skeleton-line max-w-[100px]"></div>
-						<span className="sr-only">Loading...</span>
-					</div>
-				</div>
-			</div>
-		);
-	}
+	if (txnsError || (!txnsLoading && !txnsData)) return <ErrorComponent />;
 
 	return (
 		<main className="container-2 mx-auto space-y-20">
@@ -127,65 +118,44 @@ export default function Transactions() {
 				<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
 					{/* Transactions */}
 					{txnsLoading ? (
-						<SkeletonStatBox />
+						<>
+							<StatBoxSkeleton />
+							<StatBoxSkeleton />
+							<StatBoxSkeleton />
+						</>
 					) : (
-						<StatBox
-							title={txnsData ? 'TRANSACTIONS (24h)' : ''}
-							valueComp={() => (
-								<>
+						<>
+							<StatBox
+								title="TRANSACTIONS (24h)"
+								valueComp={() => (
+									<>
+										<span>{txnsData.transactionCountPast24Hours}</span>
+									</>
+								)}
+								icon="/icons/arrows.svg"
+							/>
+							<StatBox
+								title="TRANSACTION FEE (24h)"
+								valueComp={() => (
 									<span>
-										{txnsData
-											? txnsData.transactionCountPast24Hours
-											: 'Loading...'}
+										{BnToDec(txnsData.totalTransactionFeesPast24Hours, 9, 9)}{' '}
+										PWR
 									</span>
-								</>
-							)}
-							icon="/icons/arrows.svg"
-						/>
-					)}
+								)}
+								icon="/icons/pwr.svg"
+							/>
 
-					{txnsLoading ? (
-						<SkeletonStatBox />
-					) : (
-						<StatBox
-							title={txnsData ? 'TRANSACTION FEE (24h)' : ''}
-							valueComp={() => (
-								<>
+							<StatBox
+								title="AVG. TRANSACTION FEE (24h)"
+								valueComp={() => (
 									<span>
-										{txnsData
-											? BnToDec(
-													txnsData.totalTransactionFeesPast24Hours,
-													9,
-													9
-											  ) + ' PWR'
-											: 'Loading...'}
+										{BnToDec(txnsData.averageTransactionFeePast24Hours, 9, 9)}{' '}
+										USD
 									</span>
-								</>
-							)}
-							icon="/icons/pwr.svg"
-						/>
-					)}
-
-					{txnsLoading ? (
-						<SkeletonStatBox />
-					) : (
-						<StatBox
-							title={txnsData ? 'AVG. TRANSACTION FEE (24h)' : ''}
-							valueComp={() => (
-								<>
-									<span>
-										{txnsData
-											? BnToDec(
-													txnsData.averageTransactionFeePast24Hours,
-													9,
-													9
-											  ) + ' USD'
-											: 'Loading...'}
-									</span>
-								</>
-							)}
-							icon="/icons/arrows.svg"
-						/>
+								)}
+								icon="/icons/arrows.svg"
+							/>
+						</>
 					)}
 				</div>
 			</section>
@@ -194,14 +164,22 @@ export default function Transactions() {
 			<section>
 				{/* Title */}
 				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
-					<div>
-						<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							More than {txnsData?.metadata?.totalItems || 0} transactions found
-						</h1>
-						<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-							(Showing the latest records)
-						</h2>
-					</div>
+					{txnsLoading ? (
+						<div className="skeleton-container space-y-4">
+							<div className="skeleton-title w-[300px]"></div>
+							<div className="skeleton-line w-[200px]"></div>
+						</div>
+					) : (
+						<div>
+							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+								More than {txnsData.metadata.totalItems} transactions found
+							</h1>
+							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
+								(Showing the latest records)
+							</h2>
+						</div>
+					)}
+
 					<div className="flex items-center justify-center gap-x-2 text-white">
 						<QuickPagination
 							metadata={paginationMetadata}
@@ -225,10 +203,12 @@ export default function Transactions() {
 											key={idx}
 										>
 											{header.name.length > 0 && (
-												<div className="flex justify-center items-center gap-x-2">
-													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+												<div
+													className={`flex  items-center gap-x-2 ${header.containerClass}`}
+												>
+													<h1 className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 														{header.name}
-													</div>
+													</h1>
 													{/* <div className="text-agrey-500 dark:text-agrey-600">
 													<i className="fa-sm far fa-info-circle" />
 												</div> */}
@@ -241,7 +221,7 @@ export default function Transactions() {
 
 							{/* table body */}
 							<tbody>
-								{txnsData?.transactions.map((txn, idx) => (
+								{txnsData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -253,7 +233,7 @@ export default function Transactions() {
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
-												<div className={eye_tooltip_cont}>
+												<div className="eye_tooltip_container">
 													<Image
 														className="w-auto h-auto"
 														src="/icons/eye.svg"
@@ -262,7 +242,7 @@ export default function Transactions() {
 														alt=""
 													/>
 
-													<div className={tooltip}>
+													<div className="tooltip">
 														<TransactionTooltipDetails
 															usdFee={txn.txnFeeInUsd}
 															fee={txn.txnFee}

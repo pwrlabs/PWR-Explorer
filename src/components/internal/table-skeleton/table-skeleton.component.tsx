@@ -29,9 +29,9 @@ function TableSkeleton() {
 				<table className="table-auto bg-awhite w-full ">
 					{/* table header */}
 					<thead className="">
-						<tr className="border-b border-b-black">
+						<tr className="border-b border-b-black dark:border-b-white border-opacity-20 dark:border-opacity-20">
 							{cols.map((_, idx) => (
-								<th key={idx} className="py-1 px-8 ">
+								<th key={idx} className="py-2 px-8 ">
 									<div className=" skeleton-container">
 										<div className="skeleton-title"></div>
 									</div>

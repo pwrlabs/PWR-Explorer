@@ -1,5 +1,6 @@
-import AppConfig from '@/static/app.config';
 import { Metadata } from 'next';
+
+import AppConfig from 'src/static/app.config';
 
 export const metadata: Metadata = {
 	title: `Account | ${AppConfig.name} `,

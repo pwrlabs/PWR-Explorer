@@ -1,63 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
-import axios from 'axios';
+import React from 'react';
+
+import { useQuery } from 'react-query';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
 import HeaderComponent from 'src/layout/header/header.component';
 import FooterComponent from 'src/layout/footer/footer.component';
+import LatestBlocksTable from 'src/components/internal/root-page/latest-blocks-table';
+import LatestTxnsTable from 'src/components/internal/root-page/latest-txns-table';
+import ErrorComponent from 'src/components/error/error.component';
+import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
+import LatestSkeleton from 'src/components/skeletons/root/latest-tables.skeleton';
 
-import { BnToDec, numberWithCommas, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { isAddress, isHash } from 'src/shared/utils/functions';
 
-import { useQuery } from 'react-query';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
-import ROUTES from '@/static/router.data';
-import { ApexOptions } from 'apexcharts';
-import { isAddress, isHash } from '@/shared/utils/functions';
-import LatestBlocksTable from '@/components/internal/root-page/latest-blocks-table';
-import LatestTxnsTable from '@/components/internal/root-page/latest-txns-table';
-
-function BlockBoxSkeleton() {
-	return (
-		<div className="flex items-center gap-x-8 skeleton-container h-full w-full">
-			<div className="skeleton-circle !h-[32px] w-[32px] !mb-0"></div>
-
-			<div className="flex-grow">
-				<div className="skeleton-title max-w-[200px]"></div>
-				<div className="skeleton-line max-w-[150px] !mb-0"></div>
-				<span className="sr-only">Loading...</span>
-			</div>
-
-			<div className="flex-grow">
-				<div className="skeleton-title max-w-[170px]"></div>
-				<div className="skeleton-line max-w-[50px] !mb-0"></div>
-				<span className="sr-only">Loading...</span>
-			</div>
-		</div>
-	);
-}
-
-function StatBoxSkeleton() {
-	return (
-		<div className=" bg-abrandc-light-grey dark:bg-agrey-900 w-full h-[88px] rounded-xl p-4">
-			<div className="flex items-center gap-x-4 skeleton-container h-full">
-				<div className="skeleton-circle !h-[28px] w-[28px] !mb-0"></div>
-
-				<div className="flex-grow">
-					<div className="skeleton-title max-w-[150px]"></div>
-					<div className="skeleton-line max-w-[100px]"></div>
-					<span className="sr-only">Loading...</span>
-				</div>
-			</div>
-		</div>
-	);
-}
+import ROUTES from 'src/static/router.data';
 
 function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; icon: any }) {
 	return (
@@ -120,6 +85,8 @@ export default function Home() {
 	} = useQuery([QUERY_KEYS.explorer_info], QueryApi.explorer.info, {
 		staleTime: 3 * 1000,
 	});
+
+	if (infoError || (!infoLoading && !infoData)) return <ErrorComponent />;
 
 	return (
 		<>
@@ -195,39 +162,37 @@ export default function Home() {
 										<StatBoxSkeleton />
 									</>
 								) : (
-									infoData && (
-										<>
-											{/* Price */}
-											<StatBox
-												title="PWR PRICE"
-												valueComp={() => (
-													<>
-														<span>${infoData.price / 100}</span>
-														<span
-															className={`font-medium  pl-2 pr-2 ${
-																infoData.priceChange > 0
-																	? 'text-green-500'
-																	: 'text-ared-400'
-															}`}
-														>
-															{infoData.priceChange}%
-														</span>
-													</>
-												)}
-												icon="/icons/pwr.svg"
-											/>
+									<>
+										{/* Price */}
+										<StatBox
+											title="PWR PRICE"
+											valueComp={() => (
+												<>
+													<span>${infoData.price / 100}</span>
+													<span
+														className={`font-medium  pl-2 pr-2 ${
+															infoData.priceChange > 0
+																? 'text-green-500'
+																: 'text-ared-400'
+														}`}
+													>
+														{infoData.priceChange}%
+													</span>
+												</>
+											)}
+											icon="/icons/pwr.svg"
+										/>
 
-											{/* Market Cap */}
-											<StatBox
-												title="PWR MARKET CAP"
-												valueComp={() => (
-													// <>${numberWithCommas(infoData.marketCap)}</>
-													<>$1,000,000,000</>
-												)}
-												icon="/icons/globe.svg"
-											/>
-										</>
-									)
+										{/* Market Cap */}
+										<StatBox
+											title="PWR MARKET CAP"
+											valueComp={() => (
+												// <>${numberWithCommas(infoData.marketCap)}</>
+												<>$1,000,000,000</>
+											)}
+											icon="/icons/globe.svg"
+										/>
+									</>
 								)}
 							</div>
 
@@ -242,55 +207,53 @@ export default function Home() {
 										</div>
 									</>
 								) : (
-									infoData && (
-										<>
-											{/* Transactions */}
-											<div className="flex items-center justify-between bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
-												<div className="flex items-center gap-x-4">
-													<Image
-														src="/icons/arrows.svg"
-														width={28}
-														height={28}
-														alt="PWR Icon"
-													/>
-													<div className="flex flex-col gap-y-2">
-														<h1 className="text-agrey-600 text-sm font-medium leading-[24px] ">
-															TRANSACTIONS
-														</h1>
-														<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
-															{infoData.totalTransactionsCount}
-														</h2>
-													</div>
-												</div>
-
+									<>
+										{/* Transactions */}
+										<div className="flex items-center justify-between bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
+											<div className="flex items-center gap-x-4">
+												<Image
+													src="/icons/arrows.svg"
+													width={28}
+													height={28}
+													alt="PWR Icon"
+												/>
 												<div className="flex flex-col gap-y-2">
-													<h1 className="text-agrey-600 text-sm font-medium leading-[24px] text-right">
-														TPS
+													<h1 className="text-agrey-600 text-sm font-medium leading-[24px] ">
+														TRANSACTIONS
 													</h1>
 													<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
-														{infoData.tps}
+														{infoData.totalTransactionsCount}
 													</h2>
 												</div>
 											</div>
 
-											{/* Blocks, nodes */}
-											<div className="flex flex-col xl:flex-row gap-4 ">
-												{/* Blocks */}
-												<StatBox
-													icon="/icons/clock.svg"
-													title="BLOCKS"
-													valueComp={() => <>{infoData.blocksCount}</>}
-												/>
-
-												{/* nodes */}
-												<StatBox
-													icon="/icons/nodes.svg"
-													title="VALIDATOR NODES"
-													valueComp={() => <>{infoData.validators}</>}
-												/>
+											<div className="flex flex-col gap-y-2">
+												<h1 className="text-agrey-600 text-sm font-medium leading-[24px] text-right">
+													TPS
+												</h1>
+												<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
+													{infoData.tps}
+												</h2>
 											</div>
-										</>
-									)
+										</div>
+
+										{/* Blocks, nodes */}
+										<div className="flex flex-col xl:flex-row gap-4 ">
+											{/* Blocks */}
+											<StatBox
+												icon="/icons/clock.svg"
+												title="BLOCKS"
+												valueComp={() => <>{infoData.blocksCount}</>}
+											/>
+
+											{/* nodes */}
+											<StatBox
+												icon="/icons/nodes.svg"
+												title="VALIDATOR NODES"
+												valueComp={() => <>{infoData.validators}</>}
+											/>
+										</div>
+									</>
 								)}
 							</div>
 
@@ -330,11 +293,11 @@ export default function Home() {
 														: ''
 												}`}
 											>
-												<BlockBoxSkeleton key={idx} />
+												<LatestSkeleton key={idx} />
 											</div>
 										))
 									) : (
-										<LatestBlocksTable blocks={infoData?.blocks || []} />
+										<LatestBlocksTable blocks={infoData.blocks} />
 									)}
 								</div>
 								<Link
@@ -356,7 +319,7 @@ export default function Home() {
 
 								<div className="rounded-lg overflow-hidden">
 									{infoLoading ? (
-										[1, 2, 3, 4, 5].map((item, idx) => (
+										[1, 2, 3, 4, 5].map((_, idx) => (
 											<div
 												key={idx}
 												className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
@@ -365,11 +328,11 @@ export default function Home() {
 														: ''
 												}`}
 											>
-												<BlockBoxSkeleton key={idx} />
+												<LatestSkeleton key={idx} />
 											</div>
 										))
 									) : (
-										<LatestTxnsTable transactions={infoData?.txns || []} />
+										<LatestTxnsTable transactions={infoData.txns} />
 									)}
 								</div>
 

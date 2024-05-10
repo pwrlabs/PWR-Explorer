@@ -1,8 +1,10 @@
-import { BnToDec, shortenAddress, timeAgo } from '@/shared/utils/formatters';
-import { isAddress } from '@/shared/utils/functions';
-import ROUTES from '@/static/router.data';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { isAddress } from 'src/shared/utils/functions';
+
+import ROUTES from 'src/static/router.data';
 
 type Txn = {
 	txnHash: string;
@@ -40,7 +42,7 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 									height={32}
 									alt=""
 								/>
-								<div className="space-y-2">
+								<div className="space-y-2 ">
 									{/* block number */}
 									<Link
 										href={`${ROUTES.transactions}/${txn.txnHash}`}
