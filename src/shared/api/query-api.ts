@@ -103,12 +103,22 @@ const QueryApi = {
 			page: number
 		): Promise<AddressTxnHistorySuccessResponse> => {
 			const url = api.user.txnHistory(address, count, page);
-			const res = await axios<AddressTxnHistorySuccessResponse>({
-				method: 'get',
-				url,
-			});
-
-			return res.data;
+			console.log('Request URL:', url);
+			try {
+				const res = await axios<AddressTxnHistorySuccessResponse>({
+					method: 'get',
+					url,
+				});
+				console.log('Response Data:', res.data);
+				return res.data;
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					console.error('Axios Error:', error.response?.data);
+				} else {
+					console.error('Unexpected Error:', error);
+				}
+				throw error;
+			}
 		},
 
 		balance: async (address: string): Promise<BalanceSuccessResponse> => {
