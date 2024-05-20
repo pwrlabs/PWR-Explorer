@@ -66,14 +66,57 @@ export default function FooterComponent() {
 			email: yup.string().email('Invalid email address').required('Required'),
 		}),
 		onSubmit: (values) => {
-			// Show notification and set a timer to hide it after 3 seconds
-			setShowNotification(true);
-			setTimeout(() => {
-				setShowNotification(false);
-				setInputError(false); // Reset input error to false
-			}, 3000);
+			subscribeToNewsletter(values.email)
+				.then(() => {
+					setNotification({ message: 'Newsletter subscription successful!', type: 'success' });
+					setShowNotification(true);
+					setTimeout(() => {
+						setShowNotification(false);
+						setInputError(false);
+					}, 3000);
+				})
+				.catch((error) => {
+					setNotification({ message: 'Error subscribing to newsletter', type: 'error' });
+					setShowNotification(true);
+					setTimeout(() => {
+						setShowNotification(false);
+						setInputError(false);
+					}, 3000);
+					console.error('Error subscribing to newsletter:', error);
+				});
 		},
 	});
+	const subscribeToNewsletter = async (email: string) => {
+		const apiUrl = '/api/publications/128941eb-ed14-4c19-87a0-8ce7e0e0cf21/subscriptions';
+		const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer FrbPlzl1w97GNA0WOkuNIx2UpodNT052NXExjaJ9ytPvWXWLbXvB09B9ZNNUE4Hd',
+			},
+			body: JSON.stringify({
+				email,
+				reactivate_existing: false,
+				send_welcome_email: false,
+			}),
+		};
+
+		try {
+			const response = await fetch(apiUrl, requestOptions);
+			const data = await response.json();
+
+			if (response.ok) {
+				console.log('Newsletter subscription successful:', data);
+			} else {
+				console.error('Newsletter subscription failed:', data);
+				throw new Error(data.message || 'Unknown error');
+			}
+		} catch (error) {
+			console.error('Error occurred during newsletter subscription:', error);
+			throw error;
+		}
+	};
+
 
 	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
@@ -135,9 +178,8 @@ export default function FooterComponent() {
 						</div>
 						{showNotification && (
 							<div
-								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
-									notification.type === 'success' ? 'success' : 'error'
-								} ${showNotification ? 'show' : ''}`}
+								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${notification.type === 'success' ? 'success' : 'error'
+									} ${showNotification ? 'show' : ''}`}
 							>
 								{notification.message}
 							</div>
