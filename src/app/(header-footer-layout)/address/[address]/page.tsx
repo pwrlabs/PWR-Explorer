@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useQuery } from 'react-query';
 
@@ -99,45 +99,25 @@ export default function AddressPage({ params }: AddressPageProps) {
 	});
 
 	// txnHistory
-	useEffect(() => {
-		if (page > 0 && page <= paginationMetadata.totalPages) {
-			const url = `${process.env.NEXT_PUBLIC_API_URL}/transactionHistory/?address=${address}&count=${count}&page=${page}`;
-			console.log('Request URL:', url);
-		} else {
-			console.warn('Initial page number is out of range');
-		}
-	}, [address, page, count, paginationMetadata.totalPages]);
-	if (!address) {
-		// Handle the case when address is undefined
-		return <div>Invalid address</div>;
-	}
+
 	const {
 		data: txnHistoryData,
 		isLoading: txnHistoryLoading,
 		isError: txnHistoryError,
 	} = useQuery(
 		[QUERY_KEYS.txn_history, address, page, count],
-		() => QueryApi.user.txnHistory(address, count, page),
+		() => QueryApi.user.txnHistory(address, page, count),
 		{
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
-				console.log('Transaction History Data:', data);
-				console.log('Pagination Metadata:', data.metadata);
 				setPaginationMetadata(data.metadata);
-			},
-			onError: (error) => {
-				console.error('Transaction History Error:', error);
 			},
 		}
 	);
 
-	function handlePageChange(newPage: number) {
-		if (newPage >= 1 && newPage <= paginationMetadata.totalPages) {
-			setPage(newPage);
-		} else {
-			console.warn('Requested page number is out of range');
-		}
+	function handlePageChange(page: number) {
+		setPage(page);
 	}
 
 	function SkeletonStatBox() {
@@ -393,8 +373,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 										<tr
 											key={txn.txnHash}
 											className={` ${idx % 2 == 0
-												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-												: 'bg-transparent'
+													? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+													: 'bg-transparent'
 												}`}
 										>
 											{/* txn hash */}
