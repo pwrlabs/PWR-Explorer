@@ -84,10 +84,12 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-3 ">
-									<div className="bg-green-500 rounded-full h-4 w-4 flex items-center justify-center">
-										{/* Placeholder for the check icon */}
-									</div>
+								<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2 ">
+									<svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<circle cx="9" cy="9" r="6.75" fill="#00B85B" />
+										<path d="M6 9.34517L7.95126 11.2206C7.99202 11.2598 8.05807 11.2598 8.09884 11.2206L12.75 6.75" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+
 									<span className="ml-2 py-1">Success</span>
 								</div>
 							</div>
