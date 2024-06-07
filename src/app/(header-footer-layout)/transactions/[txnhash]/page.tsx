@@ -68,10 +68,10 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 						<Tags className="capitalize">{txnData.txnType}</Tags>
 					)}
 				</div>
-				<div className="flex-1 items-center gap-x-2 w-full xl:justify-end justify-center hidden lg:flex">
+				{/* <div className="flex-1 items-center gap-x-2 w-full xl:justify-end justify-center hidden lg:flex">
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Buy</Button>
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Exchange</Button>
-				</div>
+				</div> */}
 			</div>
 
 			<br />
