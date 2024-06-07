@@ -61,39 +61,39 @@ export default function FooterComponent() {
 	const formik = useFormik({
 		initialValues: { email: '' },
 		validationSchema: yup.object({
-		  email: yup.string().email('Invalid email address').required('Input is empty, fill your email'),
+			email: yup.string().email('Invalid email address').required('Input is empty, fill your email'),
 		}),
 		onSubmit: (values) => {
-		  // Intentionally left empty for custom handling outside Formik
+			// Intentionally left empty for custom handling outside Formik
 		},
-	  });
-	  
-	  // Custom submission handler
-	  const handleFormSubmit = async (e:any) => {
+	});
+
+	// Custom submission handler
+	const handleFormSubmit = async (e: any) => {
 		e.preventDefault();
 		await formik.validateForm();
 		formik.setTouched({ email: true });
-	  
+
 		if (!formik.isValidating && !formik.errors.email) {
-		  // Simulate API call or some operation with the email
-		  console.log("Form submitted with email:", formik.values.email);
-		  setNotification({ message: 'You have successfully subscribed to our newsletter!', type: 'success' });
-		  setShowNotification(true);
-		  setTimeout(() => {
-			setShowNotification(false);
-		  }, 3000);
-		  
-		  // Reset the form (optional)
-		  formik.resetForm();
+			// Simulate API call or some operation with the email
+			console.log("Form submitted with email:", formik.values.email);
+			setNotification({ message: 'You have successfully subscribed to our newsletter!', type: 'success' });
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false);
+			}, 3000);
+
+			// Reset the form (optional)
+			formik.resetForm();
 		} else if (formik.errors.email) {
-		  setNotification({ message: formik.errors.email, type: 'error' });
-		  setShowNotification(true);
-		  setTimeout(() => {
-			setShowNotification(false);
-		  }, 3000);
+			setNotification({ message: formik.errors.email, type: 'error' });
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false);
+			}, 3000);
 		}
-	  };
-	
+	};
+
 
 	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
@@ -155,9 +155,8 @@ export default function FooterComponent() {
 						</div>
 						{showNotification && (
 							<div
-								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${
-									notification.type === 'success' ? 'success' : 'error'
-								} ${showNotification ? 'show' : ''}`}
+								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${notification.type === 'success' ? 'success' : 'error'
+									} ${showNotification ? 'show' : ''}`}
 							>
 								{notification.message}
 							</div>
@@ -186,7 +185,7 @@ export default function FooterComponent() {
 
 				<div className="flex flex-col md:flex-row justify-between gap-y-5">
 					<h1 className="text-sm font-medium mt-[30px] dark:text-white text-abrandc-dark-black">
-						@WOM Protocol Pte. Ltd. All Rights reserved
+						@PWR Labs. Ltd. All Rights reserved
 					</h1>
 					<div className="flex gap-x-12 md:px-8 text-sm font-medium text-agrey-600 items-start md:items-center">
 						<Link href="#">Terms</Link>

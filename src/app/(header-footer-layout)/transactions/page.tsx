@@ -224,11 +224,10 @@ export default function Transactions() {
 								{txnsData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
-										className={` ${
-											idx % 2 == 0
-												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-												: 'bg-transparent'
-										}`}
+										className={` ${idx % 2 == 0
+											? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+											: 'bg-transparent'
+											}`}
 									>
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
@@ -247,6 +246,7 @@ export default function Transactions() {
 															usdFee={txn.txnFeeInUsd}
 															fee={txn.txnFee}
 															nonce={txn.nonceOrValidationHash}
+
 														/>
 													</div>
 												</div>

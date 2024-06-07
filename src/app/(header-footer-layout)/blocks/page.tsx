@@ -189,11 +189,10 @@ export default function Blocks() {
 									{blocks_data.blocks.map((block, idx) => (
 										<tr
 											key={idx}
-											className={` ${
-												idx % 2 === 0
-													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: 'bg-transparent'
-											}`}
+											className={` ${idx % 2 === 0
+												? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+												: 'bg-transparent'
+												}`}
 										>
 											{/* Block */}
 											<td className="xl:px-8 px-2 py-8">

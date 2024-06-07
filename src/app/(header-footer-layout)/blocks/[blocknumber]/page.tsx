@@ -75,7 +75,22 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								</div>
 								<h2 className="text-sm">{blockNum}</h2>
 							</div>
-
+							<div className="lg:flex space-y-2">
+								<div className="flex items-center gap-x-2 w-[300px]">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+										Status
+									</h1>
+									{/* <Tooltip text="text" large position="right">
+									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
+								</Tooltip> */}
+								</div>
+								<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-3 ">
+									<div className="bg-green-500 rounded-full h-4 w-4 flex items-center justify-center">
+										{/* Placeholder for the check icon */}
+									</div>
+									<span className="ml-2 py-1">Success</span>
+								</div>
+							</div>
 							{/* Timestamp */}
 							<div className="lg:flex space-y-2">
 								<div className="flex items-center gap-x-2 w-[300px]">
