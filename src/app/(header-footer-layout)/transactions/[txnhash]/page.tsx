@@ -153,10 +153,15 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<div className="flex gap-x-2">
 									<div className="flex items-center gap-x-2 ">
 										<i className="fas fa-check-circle text-ablue-500 dark:text-ablue-100 fa-lg" />
-
-										<h2 className="dark:text-ablue-100 text-ablue-500 font-medium text-sm">
+										<Link
+											href={`${ROUTES.blocks}/${txnData.blockNumber}`}
+											className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+										>
 											{txnData.blockNumber}
-										</h2>
+										</Link>
+										{/* <h2 className="dark:text-ablue-100 text-ablue-500 font-medium text-sm">
+											{txnData.blockNumber}
+										</h2> */}
 									</div>
 									{/* <Tags>1153 Block Confirmations</Tags> */}
 								</div>
