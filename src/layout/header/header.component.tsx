@@ -64,11 +64,7 @@ export default function HeaderComponent() {
 
 	const navigation = [
 		{
-			label: 'Transactions',
-			href: '#',
-		},
-		{
-			label: 'Blocks',
+			label: 'Explore',
 			href: '#',
 		},
 		{
@@ -155,7 +151,7 @@ export default function HeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white dark:drop-shadow-white drop-shadow">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -163,31 +159,21 @@ export default function HeaderComponent() {
 				</Link>
 
 				{/* desktop menu */}
-				<div className="hidden md:flex items-center gap-x-14	  h-full">
+				<div className="hidden md:flex items-center gap-x-6  h-full">
 					<div className="h-full grid place-items-center">
 						<Link
-							href={ROUTES.transactions}
-							className={`navbar-link ${pathname === ROUTES.transactions ? 'active' : ''
-								}`}
+							href={ROUTES.root}
+							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
 						>
-							Transactions
-						</Link>
-					</div>
-
-					<div className="h-full grid place-items-center">
-						<Link
-							href={ROUTES.blocks}
-							className={`navbar-link ${pathname === ROUTES.blocks ? 'active' : ''}`}
-						>
-							Blocks
+							Explore
 						</Link>
 					</div>
 
 					{/* dropdown */}
-					{/* <div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
-						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center justify-center gap-x-2 ">
-							<h1>Blockchain</h1>
-							<i className="fa-lg far fa-angle-down mt-2"></i>
+					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
+						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 ">
+							<div>Blockchain</div>
+							<i className="fa-lg far fa-angle-down"></i>
 						</button>
 						<div
 							id="dropdown"
@@ -209,13 +195,64 @@ export default function HeaderComponent() {
 								))}
 							</ul>
 						</div>
-					</div> */}
+					</div>
+
+					<div>
+						<form onSubmit={handleSubmit} className="w-full lg:w-[250px]">
+							<div className="field">
+								{/* input contianer */}
+								<div
+									className={`search-bar-nav-container  ${errors.search ? ' !border-ared-500' : ''
+										}`}
+								>
+									{/* Filter */}
+									{/* <div className="">
+									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
+										<span>All Filters</span>
+										<Image
+											className="w-auto h-auto"
+											src="/icons/arrow-down.svg"
+											width={20}
+											height={20}
+											alt=""
+										/>
+									</button>
+								</div> */}
+									<input
+										className="search-bar-nav-input"
+										placeholder="Search by Address | Txn Hash | Block "
+										// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
+
+									<button
+										className="flex items-center gap-x-2"
+										disabled={!dirty || !touched || !formik.isValid}
+										type="submit"
+									>
+										<Image
+											src="/media/icons/enter-arrow.svg"
+											width={24}
+											height={24}
+											alt=""
+										/>
+										<div className="text-agrey-500 font-bold text-sm">
+											Enter
+										</div>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
 
 					{/* <Button className="secondary medium w-[106px]">Connect</Button> */}
 					<Button
 						className="blue medium w-[117px]"
 						tag_type="link"
-						href="https://chromewebstore.google.com/detail/pwr-wallet/kennjipeijpeengjlogfdjkiiadhbmjl"
+						href="https://chrome.google.com/webstore/category/extensions"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -254,7 +291,7 @@ export default function HeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0  w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-auto p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
@@ -308,19 +345,13 @@ export default function HeaderComponent() {
 						{/* links */}
 						<div className="space-y-2">
 							<Link
-								href={ROUTES.transactions}
+								href={ROUTES.root}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
 							>
-								<div>Transactions</div>
-							</Link>
-							<Link
-								href={ROUTES.blocks}
-								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
-							>
-								<div>Blocks</div>
+								<div>Explore</div>
 							</Link>
 
-							{/* <div>
+							<div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"
 									onClick={toggleBlockchain}
@@ -329,9 +360,8 @@ export default function HeaderComponent() {
 
 									<div>
 										<i
-											className={`fa-lg far fa-angle-${
-												blockchainOpened ? 'up' : 'down'
-											}`}
+											className={`fa-lg far fa-angle-${blockchainOpened ? 'up' : 'down'
+												}`}
 										></i>
 									</div>
 								</button>
@@ -350,7 +380,7 @@ export default function HeaderComponent() {
 										))}
 									</ul>
 								)}
-							</div> */}
+							</div>
 						</div>
 
 						{/* buttons */}
@@ -359,7 +389,7 @@ export default function HeaderComponent() {
 							<Button
 								className="blue medium w-full"
 								tag_type="link"
-								href="https://chromewebstore.google.com/detail/pwr-wallet/kennjipeijpeengjlogfdjkiiadhbmjl"
+								href="https://chrome.google.com/webstore/category/extensions"
 								target="_blank"
 								rel="noopener noreferrer"
 							>

@@ -11,6 +11,11 @@
 	.tooltip {
 		@apply hidden;
 		@apply absolute;
+		@apply bg-white;
+		@apply dark:bg-abrandc-dark-blackish;
+		@apply dark:shadow-white-lg-y-axis;
+
+
 
 		@apply top-1/2;
 		@apply -translate-y-1/2;

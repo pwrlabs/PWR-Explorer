@@ -101,13 +101,12 @@ export default function Home() {
 								The PWR Chain Explorer
 							</h1>
 							{/* Search */}
-							<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
+							<form onSubmit={formik.handleSubmit} className="w-full lg:w-[800px]">
 								<div className="field">
 									{/* input contianer */}
 									<div
-										className={`search-bar-container  ${
-											errors.search ? ' !border-ared-500' : ''
-										}`}
+										className={`search-bar-container  ${formik.errors.search ? ' !border-ared-500' : ''
+											}`}
 									>
 										{/* Filter */}
 										{/* <div className="">
@@ -128,8 +127,16 @@ export default function Home() {
 											// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
 											name="search"
 											value={values.search}
-											onChange={handleChange}
-											onBlur={handleBlur}
+											onChange={(e) => {
+												const trimmedValue = e.target.value.trim();
+												formik.setFieldValue('search', trimmedValue);
+												formik.handleChange(e);
+											}}
+											onBlur={(e) => {
+												const trimmedValue = e.target.value.trim();
+												formik.setFieldValue('search', trimmedValue);
+												formik.handleBlur(e);
+											}}
 										/>
 
 										<button
@@ -170,11 +177,10 @@ export default function Home() {
 												<>
 													<span>${infoData.price / 100}</span>
 													<span
-														className={`font-medium  pl-2 pr-2 ${
-															infoData.priceChange > 0
-																? 'text-green-500'
-																: 'text-ared-400'
-														}`}
+														className={`font-medium  pl-2 pr-2 ${infoData.priceChange > 0
+															? 'text-green-500'
+															: 'text-ared-400'
+															}`}
 													>
 														{infoData.priceChange}%
 													</span>
@@ -287,11 +293,10 @@ export default function Home() {
 										[1, 1, 1, 1, 1].map((item, idx) => (
 											<div
 												key={idx}
-												className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
-													idx % 2 === 0
-														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-														: ''
-												}`}
+												className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${idx % 2 === 0
+													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+													: ''
+													}`}
 											>
 												<LatestSkeleton key={idx} />
 											</div>
@@ -322,11 +327,10 @@ export default function Home() {
 										[1, 2, 3, 4, 5].map((_, idx) => (
 											<div
 												key={idx}
-												className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
-													idx % 2 === 0
-														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-														: ''
-												}`}
+												className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${idx % 2 === 0
+													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+													: ''
+													}`}
 											>
 												<LatestSkeleton key={idx} />
 											</div>

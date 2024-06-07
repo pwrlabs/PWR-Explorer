@@ -85,7 +85,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 		isLoading: blocktxns_loading,
 		isError: blocktxns_error,
 	} = useQuery(
-		[QUERY_KEYS.block_txns, blockNum],
+		[QUERY_KEYS.block_txns, blockNum, page, count], // Include page and count in the query key
 		() => QueryApi.blocks.allTxn(blockNum, page, count),
 		{
 			staleTime: 1000 * 60 * 5,
@@ -96,8 +96,10 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 		}
 	);
 
-	function handlePageChange(page: number) {
-		setPage(page);
+	function handlePageChange(newPage: number) {
+		setPage(newPage);
+		// Optionally, log to ensure this function is called correctly
+		console.log("Changing to page:", newPage);
 	}
 
 	if (blocktxns_error || (!blocktxns_loading && !blocktxns_data)) return <ErrorComponent />;
