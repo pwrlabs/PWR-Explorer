@@ -53,7 +53,7 @@ export default function FooterComponent() {
 		{
 			icon: <i className="fab fa-discord" />,
 			label: 'Join our Discord',
-			href: 'https://discord.gg/wtnvquRpuV',
+			href: 'https://discord.com/invite/Q27n6K9ZBV',
 		},
 	];
 
