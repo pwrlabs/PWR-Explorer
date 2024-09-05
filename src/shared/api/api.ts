@@ -1,5 +1,4 @@
 const _baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
 const api = {
 	baseUrl: _baseUrl,
 
@@ -23,6 +22,12 @@ const api = {
 			`${_baseUrl}/transactionHistory/?address=${address}&count=${count}&page=${page}`,
 
 		balance: (address: string) => `${_baseUrl}/balanceOf/?userAddress=${address}`,
+		blocksCreated: (address: string, page: number, count: number) =>
+			`${_baseUrl}/blocksCreated/?validatorAddress=${address}&page=${page}&count=${count}`,
+	},
+	nodes: {
+		nodesInfo: (page: number, count: number) =>
+			`${_baseUrl}/nodesInfo/?page=${page}&count=${count}`,
 	},
 };
 

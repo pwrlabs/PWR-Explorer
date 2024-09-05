@@ -43,3 +43,35 @@ type AddressTxnHistoryFailureResponse = {
 export type AddressTxnHistoryResponse =
 	| AddressTxnHistorySuccessResponse
 	| AddressTxnHistoryFailureResponse;
+
+type Block = {
+	timeStamp: number;
+	blockHeight: number;
+	txnsCount: number;
+	blockReward: number;
+	error: boolean;
+	blockSubmitter: string;
+};
+export type AddressBlocksCreatedHistorySuccessResponse = {
+	//
+	metadata: {
+		previousPage: number;
+		currentPage: number;
+		nextPage: number;
+		totalPages: number;
+		totalItems: number;
+		itemsPerPage: number;
+		startIndex: number;
+		endIndex: number;
+	};
+
+	//
+	blocks: Block[];
+};
+type AddressBlocksCreatedHistoryFailureResponse = {
+	message: string;
+};
+
+export type AddressBlocksCreatedHistoryResponse =
+	| AddressBlocksCreatedHistorySuccessResponse
+	| AddressBlocksCreatedHistoryFailureResponse;

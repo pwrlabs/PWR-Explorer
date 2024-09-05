@@ -23,10 +23,13 @@ import {
 	BlockDetailsSuccessResponse,
 } from './responses/blocks/block-details.response';
 import {
+	AddressBlocksCreatedHistoryResponse,
+	AddressBlocksCreatedHistorySuccessResponse,
 	AddressTxnHistoryResponse,
 	AddressTxnHistorySuccessResponse,
 } from './responses/addresss/txn-history.response';
 import { BalanceResponse, BalanceSuccessResponse } from './responses/addresss/balance.response';
+import { NodesSuccessResponse } from './responses/nodes/nodes-responses';
 
 const QueryApi = {
 	blocks: {
@@ -114,6 +117,31 @@ const QueryApi = {
 		balance: async (address: string): Promise<BalanceSuccessResponse> => {
 			const url = api.user.balance(address);
 			const res = await axios<BalanceSuccessResponse>({
+				method: 'get',
+				url,
+			});
+
+			return res.data;
+		},
+
+		blocksCreated: async (
+			address: string,
+			count: number,
+			page: number
+		): Promise<AddressBlocksCreatedHistorySuccessResponse> => {
+			const url = api.user.blocksCreated(address, count, page);
+			const res = await axios<AddressBlocksCreatedHistorySuccessResponse>({
+				method: 'get',
+				url,
+			});
+
+			return res.data;
+		},
+	},
+	nodes: {
+		nodesInfo: async (page: number, count: number): Promise<NodesSuccessResponse> => {
+			const url = api.nodes.nodesInfo(page, count);
+			const res = await axios<NodesSuccessResponse>({
 				method: 'get',
 				url,
 			});

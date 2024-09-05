@@ -23,13 +23,14 @@ import { isAddress, isHash } from 'src/shared/utils/functions';
 import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
+import TransactionChart from 'src/components/internal/chart/chart.component';
 
 function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; icon: any }) {
 	return (
 		<div className="flex items-center gap-x-4 bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
 			<Image src={icon} width={28} height={28} alt="PWR Icon" />
 			<div className="flex flex-col gap-y-2">
-				<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">{title}</h1>
+				<h1 className="text-agrey-600 text-sm font-medium	 leading-[24px]">{title}</h1>
 				<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
 					{valueComp()}
 				</h2>
@@ -88,6 +89,8 @@ export default function Home() {
 
 	if (infoError || (!infoLoading && !infoData)) return <ErrorComponent />;
 
+	console.log('sevenDaysTxn', infoData?.sevenDaysTxn);
+
 	return (
 		<>
 			<HeaderComponent />
@@ -105,8 +108,9 @@ export default function Home() {
 								<div className="field">
 									{/* input contianer */}
 									<div
-										className={`search-bar-container  ${formik.errors.search ? ' !border-ared-500' : ''
-											}`}
+										className={`search-bar-container  ${
+											formik.errors.search ? ' !border-ared-500' : ''
+										}`}
 									>
 										{/* Filter */}
 										{/* <div className="">
@@ -177,10 +181,11 @@ export default function Home() {
 												<>
 													<span>${infoData.price / 100}</span>
 													<span
-														className={`font-medium  pl-2 pr-2 ${infoData.priceChange > 0
-															? 'text-green-500'
-															: 'text-ared-400'
-															}`}
+														className={`font-medium  pl-2 pr-2 ${
+															infoData.priceChange > 0
+																? 'text-green-500'
+																: 'text-ared-400'
+														}`}
 													>
 														{infoData.priceChange}%
 													</span>
@@ -263,20 +268,12 @@ export default function Home() {
 								)}
 							</div>
 
-							{/* Graph */}
-							<div className="xl:col-span-3">
-								<div className="w-9/10 h-[192px] bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 space-y-2">
-									<h1 className="text-agrey-600 text-sm font-medium ">
-										TRANSACTION HISTORY IN 14 DAYS
-									</h1>
-
-									<div className="p-4 w-full h-full  rounded-xl  flex items-center justify-center">
-										{/* <Chart /> */}
-										<img src="/graph.svg" alt="" />
-
-										{/* <Image className="" src="/graph.svg" alt="" layout="fill" /> */}
-									</div>
-								</div>
+							<div className="xl:col-span-3 ">
+								{infoData?.sevenDaysTxn ? (
+									<TransactionChart data={infoData?.sevenDaysTxn} />
+								) : (
+									<p>Loading transaction history...</p>
+								)}
 							</div>
 						</div>
 
@@ -293,10 +290,11 @@ export default function Home() {
 										[1, 1, 1, 1, 1].map((item, idx) => (
 											<div
 												key={idx}
-												className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${idx % 2 === 0
-													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: ''
-													}`}
+												className={`block_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
+													idx % 2 === 0
+														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+														: ''
+												}`}
 											>
 												<LatestSkeleton key={idx} />
 											</div>
@@ -327,10 +325,11 @@ export default function Home() {
 										[1, 2, 3, 4, 5].map((_, idx) => (
 											<div
 												key={idx}
-												className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${idx % 2 === 0
-													? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-													: ''
-													}`}
+												className={`txn_box flex justify-between items-center gap-x-2 lg:gap-x-6 p-4 ${
+													idx % 2 === 0
+														? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+														: ''
+												}`}
 											>
 												<LatestSkeleton key={idx} />
 											</div>
