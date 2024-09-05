@@ -20,6 +20,8 @@ import QueryApi from 'src/shared/api/query-api';
 
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
+import TransactionTooltipDetails from 'src/components/internal/transaction-tooltip-details/transaction-tooltip-details';
+import './address.scss';
 
 const headers = [
 	{
@@ -66,9 +68,21 @@ const headers = [
 
 type TransactionComponentProps = {
 	address: string;
+	page: number;
+	setPage: (page: number) => void;
+	count: number;
+	setCount: (count: number) => void;
 };
 
-export default function TransactionComponent({ address }: TransactionComponentProps) {
+let met: any = null;
+
+export default function TransactionComponent({
+	address,
+	page,
+	setPage,
+	count,
+	setCount,
+}: TransactionComponentProps) {
 	// *~~*~~*~~ account balance ~~*~~*~~* //
 	const {
 		data: balanceData,
@@ -81,19 +95,18 @@ export default function TransactionComponent({ address }: TransactionComponentPr
 
 	// *~~*~~*~~ Txn history ~~*~~*~~* //
 
-	const [page, setPage] = useState<number>(1);
-	const [count, setCount] = useState<number>(10);
-
-	const [paginationMetadata, setPaginationMetadata] = useState({
-		currentPage: 1,
-		totalPages: 1,
-		startIndex: 0,
-		endIndex: 0,
-		totalItems: 0,
-		itemsPerPage: 0,
-		nextPage: 0,
-		previousPage: 0,
-	});
+	const [paginationMetadata, setPaginationMetadata] = useState(
+		met || {
+			currentPage: 1,
+			totalPages: 1,
+			startIndex: 0,
+			endIndex: 0,
+			totalItems: 0,
+			itemsPerPage: 0,
+			nextPage: 0,
+			previousPage: 0,
+		}
+	);
 
 	// txnHistory
 
@@ -105,16 +118,17 @@ export default function TransactionComponent({ address }: TransactionComponentPr
 		[QUERY_KEYS.txn_history, address, page, count],
 		() => QueryApi.user.txnHistory(address, page, count),
 		{
-			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
 				setPaginationMetadata(data.metadata);
+				met = data.metadata;
 			},
 		}
 	);
+	console.log('TransactionComponentProps', txnHistoryData?.metadata);
 
-	function handlePageChange(page: number) {
-		setPage(page);
+	function handlePageChange(newPage: number) {
+		setPage(newPage);
 	}
 
 	if (
@@ -201,7 +215,7 @@ export default function TransactionComponent({ address }: TransactionComponentPr
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
-												<div>
+												<div className="eye_tooltip_container">
 													<Image
 														className="w-auto h-auto"
 														src="/icons/eye.svg"
@@ -209,6 +223,14 @@ export default function TransactionComponent({ address }: TransactionComponentPr
 														height={20}
 														alt=""
 													/>
+
+													<div className="tooltip">
+														<TransactionTooltipDetails
+															usdFee={txn.txnFeeInUsd}
+															fee={txn.txnFee}
+															nonce={txn.nonceOrValidationHash}
+														/>
+													</div>
 												</div>
 
 												<Link

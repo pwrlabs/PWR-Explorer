@@ -13,17 +13,17 @@ type TransactionChartProps = {
 
 const TransactionChart = ({ data }: TransactionChartProps) => {
 	const [seriesData, setSeriesData] = useState<number[]>([]);
-	const [categories, setCategories] = useState<string[]>([]);
-
-	console.log('data', data);
+	const [categories, setCategories] = useState<string[]>(['192']);
 
 	useEffect(() => {
+		console.log('data before the if statment', data);
+
 		if (data && Object.keys(data).length > 0) {
 			const dates = Object.keys(data).map((timestamp) => {
 				const date = new Date(parseInt(timestamp) * 1000);
 				return date.toLocaleDateString('en-US', {
-					month: 'short', // Only display month
-					day: 'numeric', // Only display day number
+					month: 'short',
+					day: 'numeric',
 				});
 			});
 			const values = Object.values(data);
@@ -31,6 +31,8 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 			setCategories(dates);
 			setSeriesData(values);
 		}
+		console.log('seriesData', seriesData);
+		console.log('data', data);
 	}, [data]);
 
 	const options: ApexOptions = {
@@ -107,17 +109,17 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 	const series = [
 		{
 			name: 'Transactions',
-			data: seriesData.length ? seriesData : [0], // Ensure the seriesData is not empty
+			data: seriesData.length ? seriesData : [0],
 		},
 	];
 
 	return (
-		<div className="w-[400px] h-48 bg-agrey-50 dark:bg-agrey-900 p-4 rounded-md">
+		<div className="w-full h-48 bg-agrey-50 dark:bg-agrey-900 p-4 rounded-md">
 			<h1 className="text-agrey-600 text-sm font-medium leading-normal uppercase">
 				Transaction History in 14 Days
 			</h1>
 			<div className="">
-				<Chart options={options} series={series} type="area" height={150} />
+				<Chart options={options} series={series} type="area" width="100%" height={150} />{' '}
 			</div>
 		</div>
 	);

@@ -14,14 +14,14 @@ function StatBox({ title, valueComp, icon, tooltipText }: StatBoxProps) {
 			{icon && <Image src={icon} width={28} height={28} alt="" />}
 
 			<div className="flex flex-col gap-y-2">
-				<div className="">
+				<div className="flex items-center justify-center gap-4">
 					<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">{title}</h1>
 					{tooltipText && (
 						<Tooltip text={tooltipText} position="up" trigger="hover">
 							<button className="text-agrey-500 dark:text-agrey-600">
 								<i className="fa-sm far fa-info-circle" />
 							</button>
-						</Tooltip>
+						</Tooltip>	
 					)}
 				</div>
 				<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">

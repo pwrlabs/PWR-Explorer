@@ -121,21 +121,24 @@ export default function Nodes() {
 									</>
 								)}
 								icon="/icons/check.svg"
+								tooltipText="Total number of active nodes on the network"
 							/>
 							<StatBox
 								title="TOTAL STANDBY NODES"
 								valueComp={() => <span>{nodesData.totalStandbyNodes}</span>}
 								icon="/icons/nodes.svg"
+								tooltipText="Total number of standby nodes on the network"
 							/>
 
 							<StatBox
 								title="TOTAL VOTING POWER"
 								valueComp={() => (
 									<span>
-										{BnToDec(nodesData.totalVotingPower.toString(), 9, 9)} PWR
+										{BnToDec(nodesData.totalVotingPower.toString(), 9, 0)} PWR
 									</span>
 								)}
 								icon="/icons/pwr.svg"
+								tooltipText="Total voting power of all nodes on the network"
 							/>
 						</>
 					)}
@@ -215,12 +218,12 @@ export default function Nodes() {
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
-												<Link
-													href={`${ROUTES.transactions}/${node.address}`}
+												<h1
+													// href={`${ROUTES.transactions}/${node.address}`}
 													className="dark:text-ablue-100 text-ablue-500 font-medium"
 												>
 													{shortenAddress(node.address)}
-												</Link>
+												</h1>
 												<Tooltip
 													text="Copied to clipbloard"
 													position="up"
@@ -240,7 +243,7 @@ export default function Nodes() {
 
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
-											<Link	
+											<Link
 												href={`${ROUTES.blocks}/${node.host}`}
 												className="dark:text-white  text-abrandc-dark-grey font-medium text-center block"
 											>

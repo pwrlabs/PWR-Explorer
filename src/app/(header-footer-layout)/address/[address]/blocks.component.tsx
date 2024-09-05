@@ -51,15 +51,21 @@ const headers = [
 
 type BlockComponentProps = {
 	address: string;
+	page: number;
+	setPage: (page: number) => void;
+	count: number;
+	setCount: (count: number) => void;
 };
 
-export default function BlockComponent({ address }: BlockComponentProps) {
+export default function BlockComponent({
+	address,
+	page,
+	setPage,
+	count,
+	setCount,
+}: BlockComponentProps) {
 	// *~~*~~*~~ Txn history ~~*~~*~~* //
 
-	const [page, setPage] = useState<number>(1);
-	const [count, setCount] = useState<number>(10);
-
-	
 	const [paginationMetadata, setPaginationMetadata] = useState({
 		currentPage: 1,
 		totalPages: 1,
@@ -81,13 +87,14 @@ export default function BlockComponent({ address }: BlockComponentProps) {
 		[QUERY_KEYS.blocks_Created, address, page, count],
 		() => QueryApi.user.blocksCreated(address, page, count),
 		{
-			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
 			onSuccess: (data) => {
 				setPaginationMetadata(data.metadata);
 			},
 		}
 	);
+
+	console.log('BlockComponentProps', blockData?.metadata);
 
 	function handlePageChange(page: number) {
 		setPage(page);
@@ -245,10 +252,7 @@ export default function BlockComponent({ address }: BlockComponentProps) {
 			</div>
 
 			<div>
-				<Pagination
-					metadata={paginationMetadata} // Pass updated metadata
-					onPageChange={(page: number) => setPage(page)}
-				/>
+				<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
 			</div>
 		</section>
 	);

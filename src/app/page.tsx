@@ -24,6 +24,7 @@ import QueryApi from 'src/shared/api/query-api';
 import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
 import TransactionChart from 'src/components/internal/chart/chart.component';
+import ChartSkeleton from 'src/components/skeletons/root/chart-skeleton';
 
 function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; icon: any }) {
 	return (
@@ -208,7 +209,7 @@ export default function Home() {
 							</div>
 
 							{/* Transactions, blocks, nodes */}
-							<div className="xl:col-span-5 space-y-4">
+							<div className="xl:col-span-4 space-y-4">
 								{infoLoading ? (
 									<>
 										<StatBoxSkeleton />
@@ -268,8 +269,10 @@ export default function Home() {
 								)}
 							</div>
 
-							<div className="xl:col-span-3 ">
-								{infoData?.sevenDaysTxn ? (
+							<div className="xl:col-span-4">
+								{infoLoading ? (
+									<ChartSkeleton />
+								) : infoData?.sevenDaysTxn ? (
 									<TransactionChart data={infoData?.sevenDaysTxn} />
 								) : (
 									<p>Loading transaction history...</p>

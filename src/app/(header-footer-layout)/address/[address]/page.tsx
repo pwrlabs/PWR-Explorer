@@ -35,7 +35,9 @@ export default function AddressPage({ params }: AddressPageProps) {
 	const address = params.address;
 	const { push } = useRouter();
 
-	const [activeTab, setActiveTab] = useState('transactions'); // Manage active tab state
+	const [activeTab, setActiveTab] = useState('transactions');
+	const [page, setPage] = useState<number>(1);
+	const [count, setCount] = useState<number>(10);
 
 	const handleTabChange = (tab: string) => {
 		setActiveTab(tab);
@@ -85,11 +87,6 @@ export default function AddressPage({ params }: AddressPageProps) {
 	});
 
 	// *~~*~~*~~ Txn history ~~*~~*~~* //
-
-	const [page, setPage] = useState<number>(1);
-	const [count, setCount] = useState<number>(10);
-
-	// txnHistory
 
 	const {
 		data: txnHistoryData,
@@ -331,9 +328,23 @@ export default function AddressPage({ params }: AddressPageProps) {
 			{/* Tab content */}
 			<div className="mt-4">
 				{activeTab === 'transactions' ? (
-					<TransactionComponent address={address} /> // Render transactions component
+					<TransactionComponent
+						key="transactions"
+						address={address}
+						page={page}
+						setPage={setPage}
+						count={count}
+						setCount={setCount}
+					/>
 				) : (
-					<BlockComponent address={address} /> // Render blocks component
+					<BlockComponent
+						key="blocks"
+						address={address}
+						page={page}
+						setPage={setPage}
+						count={count}
+						setCount={setCount}
+					/>
 				)}
 			</div>
 		</main>
