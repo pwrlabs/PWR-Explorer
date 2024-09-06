@@ -202,11 +202,11 @@ export default function AddressPage({ params }: AddressPageProps) {
 									</div>
 									<div className="flex gap-x-2">
 										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData.fistLastTransactions.lastTransaction.txnHash}`}
+											href={`${ROUTES.transactions}/${txnHistoryData.firstLastTransactions.lastTransaction.txnHash}`}
 											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
 											{shortenAddress(
-												txnHistoryData.fistLastTransactions.lastTransaction
+												txnHistoryData.firstLastTransactions.lastTransaction
 													.txnHash
 											)}
 										</Link>
@@ -220,7 +220,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												onClick={() =>
 													copyToClipboard(
-														txnHistoryData.fistLastTransactions
+														txnHistoryData.firstLastTransactions
 															.lastTransaction.txnHash
 													)
 												}
@@ -231,7 +231,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 											{timeAgo(
-												txnHistoryData.fistLastTransactions.lastTransaction
+												txnHistoryData.firstLastTransactions.lastTransaction
 													.timeStamp
 											)}
 										</div>
@@ -245,11 +245,11 @@ export default function AddressPage({ params }: AddressPageProps) {
 									</span>
 									<div className="flex gap-x-2">
 										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData.fistLastTransactions.firstTransaction.txnHash}`}
+											href={`${ROUTES.transactions}/${txnHistoryData.firstLastTransactions.firstTransaction.txnHash}`}
 											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
 											{shortenAddress(
-												txnHistoryData.fistLastTransactions.firstTransaction
+												txnHistoryData.firstLastTransactions.firstTransaction
 													.txnHash
 											)}
 										</Link>
@@ -263,7 +263,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												onClick={() =>
 													copyToClipboard(
-														txnHistoryData.fistLastTransactions
+														txnHistoryData.firstLastTransactions
 															.firstTransaction.txnHash
 													)
 												}
@@ -274,7 +274,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 											{timeAgo(
-												txnHistoryData.fistLastTransactions.firstTransaction
+												txnHistoryData.firstLastTransactions.firstTransaction
 													.timeStamp
 											)}
 										</div>

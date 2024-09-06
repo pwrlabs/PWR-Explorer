@@ -54,7 +54,7 @@ export type AddressTxnHistorySuccessResponse = {
 	};
 
 	//
-	fistLastTransactions: firstLastTransactions;
+	firstLastTransactions: firstLastTransactions;
 };
 
 type AddressTxnHistoryFailureResponse = {

@@ -107,8 +107,12 @@ export default function Home() {
 								<div className="field">
 									{/* input contianer */}
 									<div
-										className={`search-bar-container  ${
-											formik.errors.search ? ' !border-ared-500' : ''
+										className={`search-bar-container ${
+											formik.errors.search &&
+											formik.touched.search &&
+											values.search
+												? ' !border-ared-500'
+												: ''
 										}`}
 									>
 										{/* Filter */}
@@ -126,8 +130,7 @@ export default function Home() {
 								</div> */}
 										<input
 											className="search-bar-input"
-											placeholder="Search by Address | Txn Hash | Block "
-											// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+											placeholder="Search by Address | Txn Hash | Block"
 											name="search"
 											value={values.search}
 											onChange={(e) => {
@@ -141,7 +144,6 @@ export default function Home() {
 												formik.handleBlur(e);
 											}}
 										/>
-
 										<button
 											className="flex items-center gap-x-2"
 											disabled={!dirty || !touched || !formik.isValid}
@@ -308,7 +310,7 @@ export default function Home() {
 									href={ROUTES.blocks}
 									className="flex items-center justify-center gap-x-2 font-medium dark:text-white dark:hover:text-ablue-300 hover:text-ablue-200 text-abrandc-dark-grey leading-[26px] mt-3.5"
 								>
-									<span>VIEW ALL BLOCKS</span>	
+									<span>VIEW ALL BLOCKS</span>
 									<span>
 										<i className="fas fa-arrow-right"></i>
 									</span>

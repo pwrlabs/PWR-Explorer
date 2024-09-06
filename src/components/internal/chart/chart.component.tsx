@@ -137,7 +137,7 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 				Transaction History in 14 Days
 			</h1>
 			<div className="">
-				<Chart options={options} series={series} type="area" width="100%" height={170} />{' '}
+				<Chart options={options} series={series} type="area" width="100%" height={150} />{' '}
 			</div>
 		</div>
 	);
