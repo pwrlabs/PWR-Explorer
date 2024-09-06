@@ -55,11 +55,11 @@ export default function SearchBarHeaderComponent() {
 			label: 'Blocks',
 			href: ROUTES.blocks,
 		},
-		// {
-		// 	id: 2,
-		// 	label: 'Nodes',
-		// 	href: ROUTES.nodes,
-		// },
+		{
+			id: 2,
+			label: 'Nodes',
+			href: ROUTES.nodes,
+		},
 	];
 
 	const navigation = [
@@ -177,6 +177,15 @@ export default function SearchBarHeaderComponent() {
 							className={`navbar-link ${pathname === ROUTES.blocks ? 'active' : ''}`}
 						>
 							Blocks
+						</Link>
+					</div>
+
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.nodes}
+							className={`navbar-link ${pathname === ROUTES.nodes ? 'active' : ''}`}
+						>
+							Nodes
 						</Link>
 					</div>
 
@@ -326,7 +335,12 @@ export default function SearchBarHeaderComponent() {
 							>
 								<div>Blocks</div>
 							</Link>
-
+							<Link
+								href={ROUTES.nodes}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Nodes</div>
+							</Link>
 							{/* <div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"

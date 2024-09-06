@@ -90,8 +90,6 @@ export default function Home() {
 
 	if (infoError || (!infoLoading && !infoData)) return <ErrorComponent />;
 
-	console.log('sevenDaysTxn', infoData?.sevenDaysTxn);
-
 	return (
 		<>
 			<HeaderComponent />
@@ -272,8 +270,8 @@ export default function Home() {
 							<div className="xl:col-span-4">
 								{infoLoading ? (
 									<ChartSkeleton />
-								) : infoData?.sevenDaysTxn ? (
-									<TransactionChart data={infoData?.sevenDaysTxn} />
+								) : infoData?.fourteenDaysTxn ? (
+									<TransactionChart data={infoData?.fourteenDaysTxn} />
 								) : (
 									<p>Loading transaction history...</p>
 								)}
@@ -308,9 +306,9 @@ export default function Home() {
 								</div>
 								<Link
 									href={ROUTES.blocks}
-									className="flex items-center justify-center gap-x-2 font-medium dark:text-white text-abrandc-dark-grey leading-[26px] mt-3.5"
+									className="flex items-center justify-center gap-x-2 font-medium dark:text-white dark:hover:text-ablue-300 hover:text-ablue-200 text-abrandc-dark-grey leading-[26px] mt-3.5"
 								>
-									<span>VIEW ALL BLOCKS</span>
+									<span>VIEW ALL BLOCKS</span>	
 									<span>
 										<i className="fas fa-arrow-right"></i>
 									</span>
@@ -344,7 +342,7 @@ export default function Home() {
 
 								<Link
 									href={ROUTES.transactions}
-									className="flex items-center justify-center gap-x-2 font-medium dark:text-white text-abrandc-dark-grey leading-[26px] mt-3.5"
+									className="flex items-center justify-center gap-x-2 font-medium dark:text-white text-abrandc-dark-grey dark:hover:text-ablue-300 hover:text-ablue-200 leading-[26px] mt-3.5"
 								>
 									<span>VIEW ALL TRANSACTIONS</span>
 

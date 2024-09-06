@@ -201,7 +201,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 									<div className="flex gap-x-2">
 										<Link
 											href={`${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`}
-											className="text-medium text-ablue-800 dark:text-ablue-100"
+											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
 											{shortenAddress(txnHistoryData.hashOfLastTxnSent)}
 										</Link>
@@ -212,7 +212,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 											text="copied to clipboard"
 										>
 											<button
-												className="text-agrey-500 dark:text-agrey-600"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												onClick={() =>
 													copyToClipboard(
 														txnHistoryData.hashOfLastTxnSent
@@ -237,7 +237,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 									<div className="flex gap-x-2">
 										<Link
 											href={`${ROUTES.transactions}/${txnHistoryData.hashOfFirstTxnSent}`}
-											className="text-medium text-ablue-800 dark:text-ablue-100"
+											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
 											{shortenAddress(txnHistoryData.hashOfFirstTxnSent)}
 										</Link>
@@ -248,7 +248,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 											text="copied to clipboard"
 										>
 											<button
-												className="text-agrey-500 dark:text-agrey-600"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												onClick={() =>
 													copyToClipboard(
 														txnHistoryData.hashOfFirstTxnSent

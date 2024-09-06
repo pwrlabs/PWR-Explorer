@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { useQuery } from 'react-query';
 
-import Button from 'src/components/internal/button/button.component';
 import Tags from 'src/components/internal/tags/tags.component';
 import Tooltip from 'src/components/internal/tooltip/tooltip.component';
 import ErrorComponent from 'src/components/error/error.component';
@@ -19,7 +18,6 @@ import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
 
 import 'src/components/internal/checkbox/checkbox.scss';
-import test from 'node:test';
 
 type TransactionDetailsProps = {
 	params: {
@@ -52,15 +50,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 	}
 
 	if (txnError || (!txnLoading && !txnData)) return <ErrorComponent />;
-	const object = {
-		ip: '12121321312',
-		port: 123,
-		username: 'admin',
-		password: 'admin',
-		test: 'test',
-		test2: 'test',
-		test3: 'test',
-	};
+
 	return (
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
 			{/* Title */}
@@ -222,7 +212,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										</svg>{' '}
 										<Link
 											href={`${ROUTES.blocks}/${txnData.blockNumber}`}
-											className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+											className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
 										>
 											{txnData.blockNumber}
 										</Link>
@@ -277,7 +267,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<div className="flex items-center gap-x-2">
 									<Link
 										href={`${ROUTES.address}/${txnData.from}`}
-										className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+										className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
 									>
 										{txnData.from}
 									</Link>
@@ -287,7 +277,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										trigger="click"
 									>
 										<button onClick={() => copyToClipboard(txnData.from)}>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
@@ -308,7 +298,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										<>
 											<Link
 												href={`${ROUTES.address}/${txnData.to}`}
-												className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
 											>
 												{/* {item.value} */}
 												{txnData.to}
@@ -319,7 +309,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 												trigger="click"
 											>
 												<button onClick={() => copyToClipboard(txnData.to)}>
-													<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+													<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 												</button>
 											</Tooltip>
 										</>
@@ -405,7 +395,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										<button
 											onClick={() => copyToClipboard(txnData.data || '0x')}
 										>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
@@ -442,7 +432,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 												);
 											}}
 										>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>

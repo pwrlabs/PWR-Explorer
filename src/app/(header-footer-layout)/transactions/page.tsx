@@ -224,10 +224,11 @@ export default function Transactions() {
 								{txnsData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
-										className={` ${idx % 2 == 0
-											? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
-											: 'bg-transparent'
-											}`}
+										className={` ${
+											idx % 2 == 0
+												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
+												: 'bg-transparent'
+										}`}
 									>
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
@@ -246,14 +247,13 @@ export default function Transactions() {
 															usdFee={txn.txnFeeInUsd}
 															fee={txn.txnFee}
 															nonce={txn.nonceOrValidationHash}
-
 														/>
 													</div>
 												</div>
 
 												<Link
 													href={`${ROUTES.transactions}/${txn.txnHash}`}
-													className="dark:text-ablue-300 text-ablue-200 font-medium"
+													className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												>
 													{shortenAddress(txn.txnHash)}
 												</Link>
@@ -264,7 +264,7 @@ export default function Transactions() {
 										<td className="xl:px-8 px-2 py-8">
 											<Link
 												href={`${ROUTES.blocks}/${txn.block}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-center block"
 											>
 												{txn.block}
 											</Link>
@@ -282,7 +282,7 @@ export default function Transactions() {
 											<div className="flex gap-x-2 justify-center">
 												<Link
 													href={`${ROUTES.address}/${txn.from}`}
-													className="dark:text-ablue-100 text-ablue-500 font-medium"
+													className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												>
 													{shortenAddress(txn.from, 4)}
 												</Link>
@@ -293,7 +293,7 @@ export default function Transactions() {
 													trigger="click"
 												>
 													<button
-														className="text-agrey-500 dark:text-agrey-600"
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 														onClick={() => copyToClipboard(txn.from)}
 													>
 														<i className="far fa-clone" />
@@ -317,7 +317,7 @@ export default function Transactions() {
 												{isAddress(txn.to) ? (
 													<Link
 														href="/"
-														className="dark:text-ablue-100 text-ablue-500 font-medium"
+														className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 													>
 														{shortenAddress(txn.to, 4)}
 													</Link>
@@ -333,7 +333,7 @@ export default function Transactions() {
 													trigger="click"
 												>
 													<button
-														className="text-agrey-500 dark:text-agrey-600"
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 														onClick={() => copyToClipboard(txn.to)}
 													>
 														<i className="far fa-clone" />

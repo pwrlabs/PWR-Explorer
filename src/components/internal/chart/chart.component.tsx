@@ -15,9 +15,9 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 	const [seriesData, setSeriesData] = useState<number[]>([]);
 	const [categories, setCategories] = useState<string[]>(['192']);
 
-	useEffect(() => {
-		console.log('data before the if statment', data);
+	console.log('data', data);
 
+	useEffect(() => {
 		if (data && Object.keys(data).length > 0) {
 			const dates = Object.keys(data).map((timestamp) => {
 				const date = new Date(parseInt(timestamp) * 1000);
@@ -31,10 +31,11 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 			setCategories(dates);
 			setSeriesData(values);
 		}
-		console.log('seriesData', seriesData);
-		console.log('data', data);
 	}, [data]);
 
+	const minValue = Math.min(...seriesData);
+    const maxValue = Math.max(...seriesData);
+	
 	const options: ApexOptions = {
 		chart: {
 			type: 'area',
@@ -59,20 +60,29 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 			axisTicks: { show: false },
 		},
 		yaxis: {
-			show: true, // Show y-axis labels
-			labels: {
-				formatter: (value) => (value ? `${value / 1000}k` : '0k'), // Ensure value is valid
-				style: {
-					colors: '#737289', // Custom color for Y-axis labels (change to your desired color)
-					fontSize: '12px', // Adjust font size if necessary
-					fontWeight: 'bold',
-				},
-			},
-		},
+            show: true, // Show y-axis labels
+            labels: {
+                formatter: (value) => {
+                    if (value === minValue || value === maxValue) {
+                        return `${value / 1000}k`;
+                    }
+                    return '';
+                },
+                style: {
+                    colors: '#737289', // Custom color for Y-axis labels (change to your desired color)
+                    fontSize: '12px', // Adjust font size if necessary
+                    fontWeight: 'bold',
+                },
+            },
+            min: minValue,
+            max: maxValue,
+        },
 		tooltip: {
 			enabled: true,
 			x: {
-				formatter: (value) => (value ? value.toString() : 'N/A'), // Fallback if value is undefined
+				formatter: (value, { dataPointIndex }) => {
+					return categories[dataPointIndex] ? categories[dataPointIndex] : 'N/A';
+				},
 			},
 		},
 		markers: {
@@ -119,7 +129,7 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 				Transaction History in 14 Days
 			</h1>
 			<div className="">
-				<Chart options={options} series={series} type="area" width="100%" height={150} />{' '}
+				<Chart options={options} series={series} type="area" width="100%" height={170} />{' '}
 			</div>
 		</div>
 	);

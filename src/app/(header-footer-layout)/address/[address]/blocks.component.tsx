@@ -186,7 +186,7 @@ export default function BlockComponent({
 									<td className="xl:px-8 px-2 py-8">
 										<Link
 											href={`${ROUTES.blocks}/${block.blockHeight}`}
-											className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+											className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-center block"
 										>
 											{block.blockHeight}
 										</Link>
@@ -204,7 +204,7 @@ export default function BlockComponent({
 										<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 											<Link
 												href={ROUTES.blockTxns(block.blockHeight)}
-												className="dark:text-ablue-300 text-ablue-200 font-medium"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 											>
 												{block.txnsCount}
 											</Link>
@@ -216,7 +216,7 @@ export default function BlockComponent({
 										<div className="flex gap-x-2 justify-center">
 											<Link
 												href={`${ROUTES.address}/${block.blockSubmitter}`}
-												className="dark-text-ablue-100 text-ablue-100 font-medium"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 											>
 												{shortenAddress(block.blockSubmitter, 4)}
 											</Link>
@@ -227,7 +227,7 @@ export default function BlockComponent({
 												trigger="click"
 											>
 												<button
-													className="text-agrey-500 dark:text-agrey-600"
+													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 													onClick={() =>
 														copyToClipboard(block.blockSubmitter)
 													}

@@ -195,7 +195,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 
 											<Link
 												href={`${ROUTES.transactions}/${txn.txnHash}`}
-												className="dark:text-ablue-300 text-ablue-200 font-medium"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 											>
 												{shortenAddress(txn.txnHash)}
 											</Link>
@@ -206,7 +206,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 									<td className="xl:px-8 px-2 py-8">
 										<Link
 											href={`${ROUTES.blocks}/${txn.blockNumber}`}
-											className="dark:text-ablue-300 text-ablue-200 font-medium text-center block"
+											className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-center block"
 										>
 											{txn.blockNumber}
 										</Link>
@@ -224,7 +224,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 										<div className="flex gap-x-2 justify-center">
 											<Link
 												href={`${ROUTES.address}/${txn.from}`}
-												className="dark:text-ablue-100 text-ablue-500 font-medium"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 											>
 												{shortenAddress(txn.from, 4)}
 											</Link>
@@ -235,7 +235,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 												trigger="click"
 											>
 												<button
-													className="text-agrey-500 dark:text-agrey-600"
+													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 													onClick={() => copyToClipboard(txn.from)}
 												>
 													<i className="far fa-clone" />
@@ -259,7 +259,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 											{isAddress(txn.to) ? (
 												<Link
 													href="/"
-													className="dark:text-ablue-100 text-ablue-500 font-medium"
+													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 												>
 													{shortenAddress(txn.to, 4)}
 												</Link>
@@ -275,7 +275,7 @@ export default function BlockTransactions({ params }: BlockTransactionsProps) {
 												trigger="click"
 											>
 												<button
-													className="text-agrey-500 dark:text-agrey-600"
+													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 													onClick={() => copyToClipboard(txn.to)}
 												>
 													<i className="far fa-clone" />

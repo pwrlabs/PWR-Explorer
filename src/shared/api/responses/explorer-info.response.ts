@@ -19,7 +19,7 @@ export type ExplorerSuccessResponse = {
 
 	blocks: Block[];
 
-	sevenDaysTxn: {
+	fourteenDaysTxn: {
 		[key: string]: number;
 	};
 

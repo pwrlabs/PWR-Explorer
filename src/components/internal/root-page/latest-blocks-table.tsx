@@ -45,7 +45,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 									{/* block number */}
 									<Link
 										href={`${ROUTES.blocks}/${block.blockHeight}`}
-										className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
+										className="font-medium pr-2 dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 									>
 										{block.blockHeight}
 									</Link>
@@ -65,7 +65,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 									</span>
 									<Link
 										href={`${ROUTES.address}/${block.blockSubmitter}`}
-										className="dark:text-ablue-300 text-ablue-200 font-medium "
+										className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium "
 									>
 										{shortenAddress(block.blockSubmitter, 4)}
 									</Link>
@@ -76,9 +76,9 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 								<div className="flex gap-x-2">
 									<Link
 										href={`${ROUTES.blockTxns(block.blockHeight)}`}
-										className="font-medium dark:text-ablue-300 text-ablue-200"
+										className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 									>
-										{block.txnsCount} txns
+										{block.txnsCount} txns	
 									</Link>
 
 									<div className="sm:hidden">

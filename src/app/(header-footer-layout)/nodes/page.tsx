@@ -230,7 +230,7 @@ export default function Nodes() {
 													trigger="click"
 												>
 													<button
-														className="text-agrey-500 dark:text-agrey-600"
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 														onClick={() =>
 															copyToClipboard(node.address)
 														}
