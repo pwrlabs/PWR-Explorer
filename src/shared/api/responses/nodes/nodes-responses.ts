@@ -1,9 +1,10 @@
 type Node = {
-	votingPower: number;
+	votingPowerInPwr: number;
 	earnings: number;
 	address: string;
 	blocksSubmitted: number;
 	host: string;
+	votingPowerInPercentage: number;
 };
 
 export type NodesSuccessResponse = {

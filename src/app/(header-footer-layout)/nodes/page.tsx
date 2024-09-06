@@ -255,8 +255,9 @@ export default function Nodes() {
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex justify-center items-center">
 												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white  text-abrandc-dark-grey text-sm py-1 px-2 text-center w-auto">
-													{node.votingPower}%
-												</h1>
+													{node.votingPowerInPwr} /{' '}
+													{node.votingPowerInPercentage}%
+												</h1>	
 											</div>
 										</td>
 
