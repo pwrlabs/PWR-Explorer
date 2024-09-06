@@ -15,8 +15,6 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 	const [seriesData, setSeriesData] = useState<number[]>([]);
 	const [categories, setCategories] = useState<string[]>(['192']);
 
-	console.log('data', data);
-
 	useEffect(() => {
 		if (data && Object.keys(data).length > 0) {
 			const dates = Object.keys(data).map((timestamp) => {
@@ -34,8 +32,8 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 	}, [data]);
 
 	const minValue = Math.min(...seriesData);
-    const maxValue = Math.max(...seriesData);
-	
+	const maxValue = Math.max(...seriesData);
+
 	const options: ApexOptions = {
 		chart: {
 			type: 'area',
@@ -55,28 +53,38 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
 					fontSize: '12px', // Adjust font size if necessary
 					fontWeight: 'bold',
 				},
+				rotate: 0, // Prevents diagonal rotation
+				formatter: function (value: any, arg2: any) {
+					// Show only the first day, middle day, and last day
+					const idx = categories.indexOf(value);
+
+					if (idx === 0 || idx === 6 || idx === 13) {
+						return value;
+					}
+					return '';
+				},
 			}, // Show x-axis labels
 			axisBorder: { show: false },
 			axisTicks: { show: false },
 		},
 		yaxis: {
-            show: true, // Show y-axis labels
-            labels: {
-                formatter: (value) => {
-                    if (value === minValue || value === maxValue) {
-                        return `${value / 1000}k`;
-                    }
-                    return '';
-                },
-                style: {
-                    colors: '#737289', // Custom color for Y-axis labels (change to your desired color)
-                    fontSize: '12px', // Adjust font size if necessary
-                    fontWeight: 'bold',
-                },
-            },
-            min: minValue,
-            max: maxValue,
-        },
+			show: true, // Show y-axis labels
+			labels: {
+				formatter: (value, ops) => {
+					if (value === minValue || value === maxValue) {
+						return `${value / 1000}k`;
+					}
+					return '';
+				},
+				style: {
+					colors: '#737289', // Custom color for Y-axis labels (change to your desired color)
+					fontSize: '12px', // Adjust font size if necessary
+					fontWeight: 'bold',
+				},
+			},
+			min: minValue,
+			max: maxValue,
+		},
 		tooltip: {
 			enabled: true,
 			x: {

@@ -100,6 +100,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 			cacheTime: 0,
 		}
 	);
+	console.log('txnHistoryData', txnHistoryData);
 
 	if (
 		balanceError ||
@@ -110,6 +111,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 		return <ErrorComponent />;
 
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
+
 	return (
 		<main className="container-2 mx-auto space-y-12">
 			<section className="space-y-4">
@@ -200,10 +202,13 @@ export default function AddressPage({ params }: AddressPageProps) {
 									</div>
 									<div className="flex gap-x-2">
 										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData.hashOfLastTxnSent}`}
+											href={`${ROUTES.transactions}/${txnHistoryData.fistLastTransactions.lastTransaction.txnHash}`}
 											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
-											{shortenAddress(txnHistoryData.hashOfLastTxnSent)}
+											{shortenAddress(
+												txnHistoryData.fistLastTransactions.lastTransaction
+													.txnHash
+											)}
 										</Link>
 
 										<Tooltip
@@ -215,7 +220,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												onClick={() =>
 													copyToClipboard(
-														txnHistoryData.hashOfLastTxnSent
+														txnHistoryData.fistLastTransactions
+															.lastTransaction.txnHash
 													)
 												}
 											>
@@ -224,7 +230,10 @@ export default function AddressPage({ params }: AddressPageProps) {
 										</Tooltip>
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-											{timeAgo(txnHistoryData.timeOfLastTxnSent)}
+											{timeAgo(
+												txnHistoryData.fistLastTransactions.lastTransaction
+													.timeStamp
+											)}
 										</div>
 									</div>
 								</div>
@@ -236,10 +245,13 @@ export default function AddressPage({ params }: AddressPageProps) {
 									</span>
 									<div className="flex gap-x-2">
 										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData.hashOfFirstTxnSent}`}
+											href={`${ROUTES.transactions}/${txnHistoryData.fistLastTransactions.firstTransaction.txnHash}`}
 											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
-											{shortenAddress(txnHistoryData.hashOfFirstTxnSent)}
+											{shortenAddress(
+												txnHistoryData.fistLastTransactions.firstTransaction
+													.txnHash
+											)}
 										</Link>
 
 										<Tooltip
@@ -251,7 +263,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 												onClick={() =>
 													copyToClipboard(
-														txnHistoryData.hashOfFirstTxnSent
+														txnHistoryData.fistLastTransactions
+															.firstTransaction.txnHash
 													)
 												}
 											>
@@ -260,7 +273,10 @@ export default function AddressPage({ params }: AddressPageProps) {
 										</Tooltip>
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-											{timeAgo(txnHistoryData.timeOfFirstTxnSent)}
+											{timeAgo(
+												txnHistoryData.fistLastTransactions.firstTransaction
+													.timeStamp
+											)}
 										</div>
 									</div>
 								</div>
