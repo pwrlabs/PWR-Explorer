@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { useQuery } from 'react-query';
 
-import Button from 'src/components/internal/button/button.component';
 import Tags from 'src/components/internal/tags/tags.component';
 import Tooltip from 'src/components/internal/tooltip/tooltip.component';
 import ErrorComponent from 'src/components/error/error.component';
@@ -68,10 +67,10 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 						<Tags className="capitalize">{txnData.txnType}</Tags>
 					)}
 				</div>
-				<div className="flex-1 items-center gap-x-2 w-full xl:justify-end justify-center hidden lg:flex">
+				{/* <div className="flex-1 items-center gap-x-2 w-full xl:justify-end justify-center hidden lg:flex">
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Buy</Button>
 					<Button className="blue !h-[36px] xl:w-[120px] w-[40%]">Exchange</Button>
-				</div>
+				</div> */}
 			</div>
 
 			<br />
@@ -130,14 +129,57 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2 ">
-									<svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<circle cx="9" cy="9" r="6.75" fill="#00B85B" />
-										<path d="M6 9.34517L7.95126 11.2206C7.99202 11.2598 8.05807 11.2598 8.09884 11.2206L12.75 6.75" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-									</svg>
-
-									<span className="ml-2 py-1">Success</span>
-								</div>
+								{txnData.success ? (
+									// Success Status
+									<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2">
+										<svg
+											width="22"
+											height="22"
+											viewBox="0 0 18 18"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<circle cx="9" cy="9" r="6.75" fill="#00B85B" />
+											<path
+												d="M6 9.34517L7.95126 11.2206C7.99202 11.2598 8.05807 11.2598 8.09884 11.2206L12.75 6.75"
+												stroke="white"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+										<span className="ml-2 py-1 font-medium">Success</span>
+									</div>
+								) : (
+									// Fail Status with Error Message
+									<div className="flex items-center justify-center gap-4">
+										<div className="flex items-center dark:bg-gray-800 text-ared-400 text-bold border border-ared-400 rounded-lg px-2">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="22"
+												height="22"
+												viewBox="0 0 18 18"
+												fill="none"
+											>
+												<circle cx="9" cy="9" r="6.75" fill="#F65251" />
+												<path
+													fill-rule="evenodd"
+													clip-rule="evenodd"
+													d="M6.11461 6.11461C6.26742 5.9618 6.51518 5.9618 6.668 6.11461L9 8.44661L11.332 6.11461C11.4848 5.9618 11.7326 5.9618 11.8854 6.11461C12.0382 6.26742 12.0382 6.51518 11.8854 6.668L9.55339 9L11.8854 11.332C12.0382 11.4848 12.0382 11.7326 11.8854 11.8854C11.7326 12.0382 11.4848 12.0382 11.332 11.8854L9 9.55339L6.668 11.8854C6.51518 12.0382 6.26742 12.0382 6.11461 11.8854C5.9618 11.7326 5.9618 11.4848 6.11461 11.332L8.44661 9L6.11461 6.668C5.9618 6.51518 5.9618 6.26742 6.11461 6.11461Z"
+													fill="white"
+												/>
+											</svg>
+											<span className="ml-2 py-1 font-medium">Fail</span>
+										</div>
+										{/* Error message if it exists */}
+										{txnData.errorMessage && (
+											<div className="">
+												<p className="text-ared-400 font-medium">
+													{txnData.errorMessage}
+												</p>
+											</div>
+										)}
+									</div>
+								)}
 							</div>
 
 							{/* Block */}
@@ -152,11 +194,31 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</div>
 								<div className="flex gap-x-2">
 									<div className="flex items-center gap-x-2 ">
-										<i className="fas fa-check-circle text-ablue-500 dark:text-ablue-100 fa-lg" />
-
-										<h2 className="dark:text-ablue-100 text-ablue-500 font-medium text-sm">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+										>
+											<circle cx="12" cy="12" r="9" fill="#112FF8" />
+											<path
+												d="M8 12.4602L10.6017 14.9608C10.656 15.013 10.7441 15.0131 10.7985 14.9608L17 9"
+												stroke="white"
+												stroke-width="1.5"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>{' '}
+										<Link
+											href={`${ROUTES.blocks}/${txnData.blockNumber}`}
+											className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
+										>
 											{txnData.blockNumber}
-										</h2>
+										</Link>
+										{/* <h2 className="dark:text-ablue-100 text-ablue-500 font-medium text-sm">
+											{txnData.blockNumber}
+										</h2> */}
 									</div>
 									{/* <Tags>1153 Block Confirmations</Tags> */}
 								</div>
@@ -205,7 +267,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								<div className="flex items-center gap-x-2">
 									<Link
 										href={`${ROUTES.address}/${txnData.from}`}
-										className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+										className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
 									>
 										{txnData.from}
 									</Link>
@@ -215,7 +277,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										trigger="click"
 									>
 										<button onClick={() => copyToClipboard(txnData.from)}>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
@@ -236,7 +298,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										<>
 											<Link
 												href={`${ROUTES.address}/${txnData.to}`}
-												className="dark:text-ablue-100 text-ablue-500 font-medium text-sm"
+												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
 											>
 												{/* {item.value} */}
 												{txnData.to}
@@ -247,7 +309,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 												trigger="click"
 											>
 												<button onClick={() => copyToClipboard(txnData.to)}>
-													<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+													<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 												</button>
 											</Tooltip>
 										</>
@@ -313,7 +375,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 
 							{/* Data (Hex) */}
 							<div className="lg:flex space-y-2">
-								<div className="flex items-center gap-x-2 min-w-[300px]">
+								<div className="flex items-start gap-x-2 min-w-[300px]">
 									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
 										Data (Hex)
 									</h1>
@@ -321,21 +383,60 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center gap-x-2 flex-grow min-w-0">
+								<div className="flex items-center justify-between gap-x-2 flex-grow min-w-0">
 									<h1 className="leading-[24px] break-all text-sm">
-										{txnData.data}
+										{txnData.data || '0x'}
 									</h1>
 									<Tooltip
 										text="Copied to clipboard!"
 										position="up"
 										trigger="click"
 									>
-										<button onClick={() => copyToClipboard(txnData.data)}>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+										<button
+											onClick={() => copyToClipboard(txnData.data || '0x')}
+										>
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
 							</div>
+
+							{/* Extra Data */}
+
+							{txnData.extraData ? (
+								<div className="lg:flex space-y-2">
+									<div className="flex items-start gap-x-2 min-w-[300px]">
+										<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+											Extra Data (JSON)
+										</h1>
+										{/* <Tooltip text="text" large position="right">
+										<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
+									</Tooltip> */}
+									</div>
+									<div className="flex items-start justify-between gap-x-2 flex-grow min-w-0">
+										<pre className="leading-[24px] text-sm">
+											<code>
+												{JSON.stringify(txnData.extraData, null, 2)}
+											</code>
+										</pre>
+									</div>
+									<Tooltip
+										text="Copied to clipboard!"
+										position="up"
+										trigger="click"
+									>
+										<button
+											onClick={() => {
+												copyToClipboard(
+													JSON.stringify(txnData.extraData, null, 2)
+												);
+											}}
+										>
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+										</button>
+									</Tooltip>
+								</div>
+							) : null}
 						</section>
 					)}
 				</div>

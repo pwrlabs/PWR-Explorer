@@ -1,201 +1,185 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
 
 import TableSkeleton from 'src/components/internal/table-skeleton/table-skeleton.component';
-import QueryApi from 'src/shared/api/query-api';
-import QUERY_KEYS from 'src/static/query.keys';
-
 import Tooltip from 'src/components/internal/tooltip/tooltip.component';
-import StatBox from 'src/components/internal/stat-box/stat-box.component';
 import Pagination from 'src/components/internal/pagination/pagination.component';
 import QuickPagination from 'src/components/internal/quick-pagination/quick-pagination.component';
-import TransactionTooltipDetails from 'src/components/internal/transaction-tooltip-details/transaction-tooltip-details';
-import StatBoxSkeleton from 'src/components/skeletons/root/stat-box.skeleton';
 import ErrorComponent from 'src/components/error/error.component';
 
 import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
+import { copyToClipboard, isAddress, isHash } from 'src/shared/utils/functions';
+import QueryApi from 'src/shared/api/query-api';
 
+import QUERY_KEYS from 'src/static/query.keys';
 import ROUTES from 'src/static/router.data';
-import { copyToClipboard, isAddress } from 'src/shared/utils/functions';
-
-import './transactions.scss';
+import TransactionTooltipDetails from 'src/components/internal/transaction-tooltip-details/transaction-tooltip-details';
+import './address.scss';
 
 const headers = [
 	{
 		id: 0,
 		name: 'Txn Hash',
-		thClass: 'xl:px-8 px-2 ',
-		containerClass: 'justify-start pl-8',
+		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 1,
-		name: 'Block',
+		name: 'Type',
 		thClass: 'xl:px-8 px-2',
-		containerClass: 'justify-center',
 	},
 	{
 		id: 2,
-		name: 'Timestamp',
+		name: 'Block',
 		thClass: 'xl:px-8 px-2',
-		containerClass: 'justify-center',
 	},
 	{
 		id: 3,
-		name: 'From',
-		thClass: 'xl:pl-8 pl-2 pr-2',
-		containerClass: 'justify-center',
+		name: 'Timestamp',
+		thClass: 'xl:px-8 px-2',
 	},
 	{
 		id: 4,
-		name: '', // Direction
-		thClass: ' px-2',
-		containerClass: 'justify-center',
+		name: 'From',
+		thClass: 'xl:pl-8 pl-2 pr-2',
 	},
 	{
 		id: 5,
-		name: 'To',
-		thClass: 'xl:pr-8 pr-2 pl-2',
-		containerClass: 'justify-center',
+		name: '', // Direction
+		thClass: ' px-2',
 	},
 	{
 		id: 6,
+		name: 'To',
+		thClass: 'xl:pr-8 pr-2 pl-2',
+	},
+	{
+		id: 7,
 		name: 'Value',
 		thClass: 'xl:px-8 px-2',
-		containerClass: 'justify-center',
 	},
 ];
 
-export default function Transactions() {
-	const [page, setPage] = useState<number>(1);
-	const [count, setCount] = useState<number>(10);
+type TransactionComponentProps = {
+	address: string;
+	page: number;
+	setPage: (page: number) => void;
+	count: number;
+	setCount: (count: number) => void;
+};
 
-	const [paginationMetadata, setPaginationMetadata] = useState({
-		currentPage: 1,
-		totalPages: 1,
-		startIndex: 0,
-		endIndex: 0,
-		totalItems: 0,
-		itemsPerPage: 0,
-		nextPage: 0,
-		previousPage: 0,
+let met: any = null;
+
+export default function TransactionComponent({
+	address,
+	page,
+	setPage,
+	count,
+	setCount,
+}: TransactionComponentProps) {
+	// *~~*~~*~~ account balance ~~*~~*~~* //
+	const {
+		data: balanceData,
+		isLoading: balanceLoading,
+		isError: balanceError,
+	} = useQuery([QUERY_KEYS.balance, address], () => QueryApi.user.balance(address), {
+		staleTime: 1000 * 60 * 5,
+		cacheTime: 0,
 	});
 
-	const {
-		data: txnsData,
-		isLoading: txnsLoading,
-		isError: txnsError,
-	} = useQuery(
-		[QUERY_KEYS.latest_txns, page, count],
-		() => QueryApi.transactions.latest(page, count),
-		{
-			staleTime: 1000 * 60 * 5,
-			cacheTime: 0,
-			onSuccess: (data) => {
-				setPaginationMetadata(data.metadata);
-			},
+	// *~~*~~*~~ Txn history ~~*~~*~~* //
+
+	const [paginationMetadata, setPaginationMetadata] = useState(
+		met || {
+			currentPage: 1,
+			totalPages: 1,
+			startIndex: 0,
+			endIndex: 0,
+			totalItems: 0,
+			itemsPerPage: 0,
+			nextPage: 0,
+			previousPage: 0,
 		}
 	);
 
-	function handlePageChange(page: number) {
-		setPage(page);
+	// txnHistory
+
+	const {
+		data: txnHistoryData,
+		isLoading: txnHistoryLoading,
+		isError: txnHistoryError,
+	} = useQuery(
+		[QUERY_KEYS.txn_history, address, page, count],
+		() => QueryApi.user.txnHistory(address, page, count),
+		{
+			cacheTime: 0,
+			onSuccess: (data) => {
+				setPaginationMetadata(data.metadata);
+				met = data.metadata;
+			},
+		}
+	);
+	console.log('TransactionComponentProps', txnHistoryData?.metadata);
+
+	function handlePageChange(newPage: number) {
+		setPage(newPage);
 	}
 
-	if (txnsError || (!txnsLoading && !txnsData)) return <ErrorComponent />;
+	if (
+		balanceError ||
+		(!balanceLoading && !balanceData) ||
+		txnHistoryError ||
+		(!txnHistoryLoading && !txnHistoryData)
+	)
+		return <ErrorComponent />;
 
 	return (
-		<main className="container-2 mx-auto space-y-20">
-			<section className="space-y-4">
-				{/* Title */}
-				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
-					Transactions
-				</h1>
-
-				{/* stats */}
-				<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
-					{/* Transactions */}
-					{txnsLoading ? (
-						<>
-							<StatBoxSkeleton />
-							<StatBoxSkeleton />
-							<StatBoxSkeleton />
-						</>
-					) : (
-						<>
-							<StatBox
-								title="TRANSACTIONS (24h)"
-								valueComp={() => (
-									<>
-										<span>{txnsData.transactionCountPast24Hours}</span>
-									</>
-								)}
-								icon="/icons/arrows.svg"
-							/>
-							<StatBox
-								title="TRANSACTION FEE (24h)"
-								valueComp={() => (
-									<span>
-										{BnToDec(txnsData.totalTransactionFeesPast24Hours, 9, 9)}{' '}
-										PWR
-									</span>
-								)}
-								icon="/icons/pwr.svg"
-							/>
-
-							<StatBox
-								title="AVG. TRANSACTION FEE (24h)"
-								valueComp={() => (
-									<span>
-										{BnToDec(txnsData.averageTransactionFeePast24Hours, 9, 9)}{' '}
-										USD
-									</span>
-								)}
-								icon="/icons/arrows.svg"
-							/>
-						</>
-					)}
-				</div>
-			</section>
-
-			{/* Table */}
-			<section>
-				{/* Title */}
-				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
-					{txnsLoading ? (
-						<div className="skeleton-container space-y-4">
-							<div className="skeleton-title w-[300px]"></div>
-							<div className="skeleton-line w-[200px]"></div>
-						</div>
-					) : (
+		<section className="overflow-x-auto mt-12">
+			{/* Title */}
+			<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
+				{txnHistoryLoading ? (
+					<div className="skeleton-container space-y-4">
+						<div className="skeleton-title w-[300px]"></div>
+						<div className="skeleton-line w-[200px]"></div>
+					</div>
+				) : txnHistoryData.transactions.length === 0 ? null : (
+					<>
 						<div>
 							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								More than {txnsData.metadata.totalItems} transactions found
+								More than {txnHistoryData.metadata.totalItems} transactions found
 							</h1>
 							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 								(Showing the latest records)
 							</h2>
 						</div>
-					)}
-
-					<div className="flex items-center justify-center gap-x-2 text-white">
-						<QuickPagination
-							metadata={paginationMetadata}
-							onPageChange={handlePageChange}
-						/>
+						<div className="flex items-center justify-center gap-x-2 text-white">
+							<QuickPagination
+								metadata={paginationMetadata}
+								onPageChange={handlePageChange}
+							/>
+						</div>
+					</>
+				)}
+			</div>
+			{/* Table */}
+			<div className="w-full mt-5 overflow-x-auto scroll-sm">
+				{txnHistoryLoading ? (
+					<TableSkeleton />
+				) : txnHistoryData.transactions.length === 0 ? (
+					<div className="text-center">
+						<h1 className=" text-agrey-900 dark:text-white ">No transactions found</h1>
 					</div>
-				</div>
-
-				{/* Table */}
-				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					{txnsLoading ? (
-						<TableSkeleton />
-					) : (
-						<table className="table-auto bg-awhite w-full min-w-[900px] ">
+				) : (
+					<>
+						<table className="table-auto bg-awhite w-full min-w-[950px]">
 							{/* table header */}
-							<thead className="sticky top-0 ">
+							<thead className="sticky top-0">
 								<tr>
 									{headers.map((header, idx) => (
 										<th
@@ -203,15 +187,13 @@ export default function Transactions() {
 											key={idx}
 										>
 											{header.name.length > 0 && (
-												<div
-													className={`flex  items-center gap-x-2 ${header.containerClass}`}
-												>
-													<h1 className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
+												<div className="flex justify-center items-center gap-x-2">
+													<div className="text-abrandc-dark-grey dark:text-white text-sm font-bold">
 														{header.name}
-													</h1>
+													</div>
 													{/* <div className="text-agrey-500 dark:text-agrey-600">
-													<i className="fa-sm far fa-info-circle" />
-												</div> */}
+                                                                                                <i className="fa-sm far fa-info-circle" />
+                  </div> */}
 												</div>
 											)}
 										</th>
@@ -221,7 +203,7 @@ export default function Transactions() {
 
 							{/* table body */}
 							<tbody>
-								{txnsData.transactions.map((txn, idx) => (
+								{txnHistoryData.transactions.map((txn, idx) => (
 									<tr
 										key={txn.txnHash}
 										className={` ${
@@ -253,10 +235,17 @@ export default function Transactions() {
 
 												<Link
 													href={`${ROUTES.transactions}/${txn.txnHash}`}
-													className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 												>
 													{shortenAddress(txn.txnHash)}
 												</Link>
+											</div>
+										</td>
+
+										{/* type */}
+										<td className="px-2 py-8">
+											<div className="dark:text-ablue-100 text-ablue-500 font-medium text-center block">
+												{txn.txnType}
 											</div>
 										</td>
 
@@ -272,7 +261,7 @@ export default function Transactions() {
 
 										{/* time ago */}
 										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
 												{timeAgo(txn.timeStamp)}
 											</div>
 										</td>
@@ -281,14 +270,14 @@ export default function Transactions() {
 										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
-													href={`${ROUTES.address}/${txn.from}`}
-													className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+													href="/"
+													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 												>
 													{shortenAddress(txn.from, 4)}
 												</Link>
 
 												<Tooltip
-													text="Copied to clipbloard"
+													text="Copied to clipboard"
 													position="up"
 													trigger="click"
 												>
@@ -312,12 +301,12 @@ export default function Transactions() {
 										</td>
 
 										{/* To */}
-										<td className="xl:pr-8 pr-2 pl-2 py-8">
+										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												{isAddress(txn.to) ? (
 													<Link
-														href="/"
-														className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+														href={`${ROUTES.address}/${txn.to}`}
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 													>
 														{shortenAddress(txn.to, 4)}
 													</Link>
@@ -328,12 +317,12 @@ export default function Transactions() {
 												)}
 
 												<Tooltip
-													text="Copied to clipbloard"
+													text="Copied to clipboard"
 													position="up"
 													trigger="click"
 												>
 													<button
-														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200    "
 														onClick={() => copyToClipboard(txn.to)}
 													>
 														<i className="far fa-clone" />
@@ -344,21 +333,26 @@ export default function Transactions() {
 
 										{/* value */}
 										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{BnToDec(txn.value, 9, 9)} PWR
+											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center whitespace-nowrap">
+												{BnToDec(txn.value, 9)} PWR
 											</div>
 										</td>
 									</tr>
 								))}
 							</tbody>
 						</table>
-					)}
-				</div>
 
-				<div>
-					<Pagination metadata={paginationMetadata} onPageChange={handlePageChange} />
-				</div>
-			</section>
-		</main>
+						<br />
+
+						<div>
+							<Pagination
+								metadata={paginationMetadata}
+								onPageChange={handlePageChange}
+							/>
+						</div>
+					</>
+				)}
+			</div>
+		</section>
 	);
 }

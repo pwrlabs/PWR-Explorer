@@ -13,6 +13,9 @@ export type TransactionDetailsSuccessResponse = {
 	txnFeeInUsd: string;
 	txnFee: string;
 	value: string;
+	success: boolean;
+	errorMessage: string;
+	extraData: Object;
 };
 
 type TransactionDetailFailureResponse = {

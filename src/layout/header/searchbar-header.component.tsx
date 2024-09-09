@@ -39,7 +39,7 @@ function PwrLogo() {
 	);
 }
 
-export default function HeaderComponent() {
+export default function SearchBarHeaderComponent() {
 	const pathname = usePathname();
 
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -71,10 +71,6 @@ export default function HeaderComponent() {
 			label: 'Blockchain',
 			href: '#',
 		},
-		// {
-		// 	label: 'Tokens',
-		// 	href: '#',
-		// },
 		// {
 		// 	label: 'Tokens',
 		// 	href: '#',
@@ -155,7 +151,7 @@ export default function HeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white dark:drop-shadow-white drop-shadow">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -166,15 +162,35 @@ export default function HeaderComponent() {
 				<div className="hidden md:flex items-center gap-x-6  h-full">
 					<div className="h-full grid place-items-center">
 						<Link
-							href={ROUTES.root}
-							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
+							href={ROUTES.transactions}
+							className={`navbar-link ${
+								pathname === ROUTES.transactions ? 'active' : ''
+							}`}
 						>
-							Explore
+							Transactions
+						</Link>
+					</div>
+
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.blocks}
+							className={`navbar-link ${pathname === ROUTES.blocks ? 'active' : ''}`}
+						>
+							Blocks
+						</Link>
+					</div>
+
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.nodes}
+							className={`navbar-link ${pathname === ROUTES.nodes ? 'active' : ''}`}
+						>
+							Nodes
 						</Link>
 					</div>
 
 					{/* dropdown */}
-					<div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
+					{/* <div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
 						<button className="text-sm font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 ">
 							<div>Blockchain</div>
 							<i className="fa-lg far fa-angle-down"></i>
@@ -199,54 +215,33 @@ export default function HeaderComponent() {
 								))}
 							</ul>
 						</div>
-					</div>
+					</div> */}
 
 					<div>
-						<form onSubmit={handleSubmit} className="w-full lg:w-[250px]">
+						<form onSubmit={handleSubmit} className="w-full lg:w-[325px]">
 							<div className="field">
 								{/* input contianer */}
 								<div
-									className={`search-bar-nav-container  ${errors.search ? ' !border-ared-500' : ''
-										}`}
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
 								>
-									{/* Filter */}
-									{/* <div className="">
-									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
-										<span>All Filters</span>
-										<Image
-											className="w-auto h-auto"
-											src="/icons/arrow-down.svg"
-											width={20}
-											height={20}
-											alt=""
-										/>
-									</button>
-								</div> */}
-									<input
-										className="search-bar-nav-input"
-										placeholder="Search by Address | Txn Hash | Block "
-										// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
-										name="search"
-										value={values.search}
-										onChange={handleChange}
-										onBlur={handleBlur}
-									/>
-
 									<button
 										className="flex items-center gap-x-2"
 										disabled={!dirty || !touched || !formik.isValid}
 										type="submit"
 									>
-										<Image
-											src="/media/icons/enter-arrow.svg"
-											width={24}
-											height={24}
-											alt=""
-										/>
-										<div className="text-agrey-500 font-bold text-sm">
-											Enter
-										</div>
+										<i className="fa-regular fa-magnifying-glass text-agrey-500"></i>
 									</button>
+									<input
+										className="search-bar-nav-input"
+										// placeholder="Search by Address | Txn Hash | Block "
+										placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
 								</div>
 							</div>
 						</form>
@@ -269,8 +264,9 @@ export default function HeaderComponent() {
 					>
 						<div className="dark:text-white">
 							<i
-								className={`fa-lg fa-solid fa-${currentTheme === 'light' ? 'sun-bright' : 'moon'
-									}`}
+								className={`fa-lg fa-solid fa-${
+									currentTheme === 'light' ? 'sun-bright' : 'moon'
+								}`}
 							></i>
 						</div>
 					</button>
@@ -295,53 +291,32 @@ export default function HeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
 								{/* input contianer */}
 								<div
-									className={`search-bar-nav-container  ${errors.search ? ' !border-ared-500' : ''
-										}`}
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
 								>
-									{/* Filter */}
-									{/* <div className="">
-									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
-										<span>All Filters</span>
-										<Image
-											className="w-auto h-auto"
-											src="/icons/arrow-down.svg"
-											width={20}
-											height={20}
-											alt=""
-										/>
-									</button>
-								</div> */}
-									<input
-										className="search-bar-nav-input"
-										placeholder="Search by Address | Txn Hash | Block "
-										// placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
-										name="search"
-										value={values.search}
-										onChange={handleChange}
-										onBlur={handleBlur}
-									/>
-
 									<button
 										className="flex items-center gap-x-2"
 										disabled={!dirty || !touched || !formik.isValid}
 										type="submit"
 									>
-										<Image
-											src="/media/icons/enter-arrow.svg"
-											width={24}
-											height={24}
-											alt=""
-										/>
-										<div className="text-agrey-500 font-bold text-sm">
-											Enter
-										</div>
+										<i className="fa-xs fas fa-search text-agrey-500"></i>
 									</button>
+									<input
+										className="search-bar-nav-input"
+										// placeholder="Search by Address | Txn Hash | Block "
+										placeholder="Search by Address / Txn Hash / Block / Token / Domain Name"
+										name="search"
+										value={values.search}
+										onChange={handleChange}
+										onBlur={handleBlur}
+									/>
 								</div>
 							</div>
 						</form>
@@ -349,13 +324,24 @@ export default function HeaderComponent() {
 						{/* links */}
 						<div className="space-y-2">
 							<Link
-								href={ROUTES.root}
+								href={ROUTES.transactions}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
 							>
-								<div>Explore</div>
+								<div>Transactions</div>
 							</Link>
-
-							<div>
+							<Link
+								href={ROUTES.blocks}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Blocks</div>
+							</Link>
+							<Link
+								href={ROUTES.nodes}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Nodes</div>
+							</Link>
+							{/* <div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"
 									onClick={toggleBlockchain}
@@ -364,8 +350,9 @@ export default function HeaderComponent() {
 
 									<div>
 										<i
-											className={`fa-lg far fa-angle-${blockchainOpened ? 'up' : 'down'
-												}`}
+											className={`fa-lg far fa-angle-${
+												blockchainOpened ? 'up' : 'down'
+											}`}
 										></i>
 									</div>
 								</button>
@@ -384,7 +371,7 @@ export default function HeaderComponent() {
 										))}
 									</ul>
 								)}
-							</div>
+							</div> */}
 						</div>
 
 						{/* buttons */}
@@ -407,8 +394,9 @@ export default function HeaderComponent() {
 							<div className="w-full bg-agrey-50 dark:bg-agrey-900 flex justify-between h-[52px] px-4 py-2 rounded-lg  items-center ">
 								<div className=" text-agrey-500 dark:text-white">
 									<i
-										className={`fa-lg fas ${currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
-											}`}
+										className={`fa-lg fas ${
+											currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
+										}`}
 									></i>
 								</div>
 

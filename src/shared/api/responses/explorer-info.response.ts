@@ -19,6 +19,10 @@ export type ExplorerSuccessResponse = {
 
 	blocks: Block[];
 
+	fourteenDaysTxn: {
+		[key: string]: number;
+	};
+
 	txns: Txn[];
 };
 
