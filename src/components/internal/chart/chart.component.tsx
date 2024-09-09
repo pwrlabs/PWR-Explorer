@@ -69,10 +69,14 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
         },
         yaxis: {
             show: true, // Show y-axis labels
+            min: Math.floor(minValue / 1000) * 1000,
+            max: Math.ceil(maxValue / 1000) * 1000,
             labels: {
                 formatter: (value) => {
-                    if (value === minValue || value === maxValue) {
-                        return `${value / 1000}k`;
+                    if (value === Math.floor(minValue / 1000) * 1000) {
+                        return `${Math.floor(value / 1000)}k`;
+                    } else if (value === Math.ceil(maxValue / 1000) * 1000) {
+                        return `${Math.ceil(value / 1000)}k`;
                     }
                     return '';
                 },
@@ -82,8 +86,6 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
                     fontWeight: 'bold',
                 },
             },
-            min: minValue,
-            max: maxValue,
         },
         tooltip: {
             enabled: true,
@@ -94,7 +96,7 @@ const TransactionChart = ({ data }: TransactionChartProps) => {
             },
             y: {
                 formatter: (value) => {
-                    return value.toString();
+                    return Math.round(value).toString();
                 },
             },
         },
