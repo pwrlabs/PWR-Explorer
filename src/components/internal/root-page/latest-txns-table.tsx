@@ -46,7 +46,7 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 									{/* block number */}
 									<Link
 										href={`${ROUTES.transactions}/${txn.txnHash}`}
-										className="font-medium pr-2 dark:text-ablue-300 text-ablue-200"
+										className="font-medium pr-2 dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 									>
 										{shortenAddress(txn.txnHash, 4)}
 									</Link>
@@ -66,7 +66,7 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 									</div>
 									<Link
 										href={`${ROUTES.address}/${txn.from}`}
-										className="font-medium dark:text-ablue-300 text-ablue-200 pl-1"
+										className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 pl-1"
 									>
 										{shortenAddress(txn.from, 4)}
 									</Link>
@@ -79,12 +79,12 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 									{isAddress(txn.to) ? (
 										<Link
 											href={`${ROUTES.address}/${txn.to}`}
-											className="dark:text-ablue-100 text-ablue-500 font-medium"
+											className="dark:text-ablue-100 text-ablue-500 font-medium dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
 											{shortenAddress(txn.to, 4)}
 										</Link>
 									) : (
-										<span className="dark:text-ablue-100 text-ablue-500 font-medium">
+										<span className="dark:text-ablue-100 text-ablue-500 	">
 											{txn.to}
 										</span>
 									)}

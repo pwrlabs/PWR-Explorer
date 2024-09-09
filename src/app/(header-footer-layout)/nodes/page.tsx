@@ -22,54 +22,42 @@ import { BnToDec, shortenAddress, timeAgo } from 'src/shared/utils/formatters';
 import ROUTES from 'src/static/router.data';
 import { copyToClipboard, isAddress } from 'src/shared/utils/functions';
 
-import './transactions.scss';
+import './nodes.scss';
 
 const headers = [
 	{
 		id: 0,
-		name: 'Txn Hash',
+		name: 'Node ID',
 		thClass: 'xl:px-8 px-2 ',
 		containerClass: 'justify-start pl-8',
 	},
 	{
 		id: 1,
-		name: 'Block',
+		name: 'Host',
 		thClass: 'xl:px-8 px-2',
 		containerClass: 'justify-center',
 	},
 	{
 		id: 2,
-		name: 'Timestamp',
+		name: 'Total Voting Power',
 		thClass: 'xl:px-8 px-2',
 		containerClass: 'justify-center',
 	},
 	{
 		id: 3,
-		name: 'From',
-		thClass: 'xl:pl-8 pl-2 pr-2',
+		name: 'Earnings (PWR)',
+		thClass: 'xl:px-8 px-2',
 		containerClass: 'justify-center',
 	},
 	{
 		id: 4,
-		name: '', // Direction
+		name: 'Blocks Submitted',
 		thClass: ' px-2',
-		containerClass: 'justify-center',
-	},
-	{
-		id: 5,
-		name: 'To',
-		thClass: 'xl:pr-8 pr-2 pl-2',
-		containerClass: 'justify-center',
-	},
-	{
-		id: 6,
-		name: 'Value',
-		thClass: 'xl:px-8 px-2',
 		containerClass: 'justify-center',
 	},
 ];
 
-export default function Transactions() {
+export default function Nodes() {
 	const [page, setPage] = useState<number>(1);
 	const [count, setCount] = useState<number>(10);
 
@@ -85,12 +73,12 @@ export default function Transactions() {
 	});
 
 	const {
-		data: txnsData,
-		isLoading: txnsLoading,
-		isError: txnsError,
+		data: nodesData,
+		isLoading: nodesLoading,
+		isError: nodesError,
 	} = useQuery(
-		[QUERY_KEYS.latest_txns, page, count],
-		() => QueryApi.transactions.latest(page, count),
+		[QUERY_KEYS.nodes_info, page, count],
+		() => QueryApi.nodes.nodesInfo(page, count),
 		{
 			staleTime: 1000 * 60 * 5,
 			cacheTime: 0,
@@ -104,20 +92,20 @@ export default function Transactions() {
 		setPage(page);
 	}
 
-	if (txnsError || (!txnsLoading && !txnsData)) return <ErrorComponent />;
+	if (nodesError || (!nodesLoading && !nodesData)) return <ErrorComponent />;
 
 	return (
 		<main className="container-2 mx-auto space-y-20">
 			<section className="space-y-4">
 				{/* Title */}
 				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
-					Transactions
+					Nodes Tracker
 				</h1>
 
 				{/* stats */}
 				<div className="grid xl:grid-cols-3 grid-cols1 gap-4">
 					{/* Transactions */}
-					{txnsLoading ? (
+					{nodesLoading ? (
 						<>
 							<StatBoxSkeleton />
 							<StatBoxSkeleton />
@@ -126,34 +114,31 @@ export default function Transactions() {
 					) : (
 						<>
 							<StatBox
-								title="TRANSACTIONS (24h)"
+								title="TOTAL ACTIVE NODES"
 								valueComp={() => (
 									<>
-										<span>{txnsData.transactionCountPast24Hours}</span>
+										<span>{nodesData.totalActiveNodes}</span>
 									</>
 								)}
-								icon="/icons/arrows.svg"
+								icon="/icons/check.svg"
+								tooltipText="Total number of active nodes on the network"
 							/>
 							<StatBox
-								title="TRANSACTION FEE (24h)"
-								valueComp={() => (
-									<span>
-										{BnToDec(txnsData.totalTransactionFeesPast24Hours, 9, 9)}{' '}
-										PWR
-									</span>
-								)}
-								icon="/icons/pwr.svg"
+								title="TOTAL STANDBY NODES"
+								valueComp={() => <span>{nodesData.totalStandbyNodes}</span>}
+								icon="/icons/nodes.svg"
+								tooltipText="Total number of standby nodes on the network"
 							/>
 
 							<StatBox
-								title="AVG. TRANSACTION FEE (24h)"
+								title="TOTAL VOTING POWER"
 								valueComp={() => (
 									<span>
-										{BnToDec(txnsData.averageTransactionFeePast24Hours, 9, 9)}{' '}
-										USD
+										{BnToDec(nodesData.totalVotingPower.toString(), 9, 0)} PWR
 									</span>
 								)}
-								icon="/icons/arrows.svg"
+								icon="/icons/pwr.svg"
+								tooltipText="Total voting power of all nodes on the network"
 							/>
 						</>
 					)}
@@ -164,7 +149,7 @@ export default function Transactions() {
 			<section>
 				{/* Title */}
 				<div className="flex flex-col lg:flex-row lg:justify-between  lg:items-center gap-y-4">
-					{txnsLoading ? (
+					{nodesLoading ? (
 						<div className="skeleton-container space-y-4">
 							<div className="skeleton-title w-[300px]"></div>
 							<div className="skeleton-line w-[200px]"></div>
@@ -172,7 +157,7 @@ export default function Transactions() {
 					) : (
 						<div>
 							<h1 className="leading-[26px] px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
-								More than {txnsData.metadata.totalItems} transactions found
+								More than {nodesData.metadata.totalItems} Nodes found
 							</h1>
 							<h2 className="text-xs px-2 py-1 dark:text-white text-abrandc-dark-grey font-medium">
 								(Showing the latest records)
@@ -190,7 +175,7 @@ export default function Transactions() {
 
 				{/* Table */}
 				<div className="w-full mt-5 overflow-x-auto scroll-sm">
-					{txnsLoading ? (
+					{nodesLoading ? (
 						<TableSkeleton />
 					) : (
 						<table className="table-auto bg-awhite w-full min-w-[900px] ">
@@ -221,9 +206,9 @@ export default function Transactions() {
 
 							{/* table body */}
 							<tbody>
-								{txnsData.transactions.map((txn, idx) => (
+								{nodesData.nodes.map((node, idx) => (
 									<tr
-										key={txn.txnHash}
+										key={node.address}
 										className={` ${
 											idx % 2 == 0
 												? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
@@ -233,119 +218,62 @@ export default function Transactions() {
 										{/* txn hash */}
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
-												<div className="eye_tooltip_container">
-													<Image
-														className="w-auto h-auto"
-														src="/icons/eye.svg"
-														width={20}
-														height={20}
-														alt=""
-													/>
-
-													<div className="tooltip">
-														<TransactionTooltipDetails
-															usdFee={txn.txnFeeInUsd}
-															fee={txn.txnFee}
-															nonce={txn.nonceOrValidationHash}
-														/>
-													</div>
-												</div>
-
-												<Link
-													href={`${ROUTES.transactions}/${txn.txnHash}`}
-													className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+												<h1
+													// href={`${ROUTES.transactions}/${node.address}`}
+													className="dark:text-ablue-100 text-ablue-500 font-medium"
 												>
-													{shortenAddress(txn.txnHash)}
-												</Link>
+													{shortenAddress(node.address)}
+												</h1>
+												<Tooltip
+													text="Copied to clipbloard"
+													position="up"
+													trigger="click"
+												>
+													<button
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+														onClick={() =>
+															copyToClipboard(node.address)
+														}
+													>
+														<i className="far fa-clone" />
+													</button>
+												</Tooltip>
 											</div>
 										</td>
 
 										{/* block */}
 										<td className="xl:px-8 px-2 py-8">
 											<Link
-												href={`${ROUTES.blocks}/${txn.block}`}
-												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-center block"
+												href={`${ROUTES.blocks}/${node.host}`}
+												className="dark:text-white  text-abrandc-dark-grey font-medium text-center block"
 											>
-												{txn.block}
+												{node.host}
 											</Link>
 										</td>
 
 										{/* time ago */}
 										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{timeAgo(txn.timeStamp)}
+											<div className="flex justify-center items-center">
+												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white  text-abrandc-dark-grey text-sm py-1 px-2 text-center w-auto">
+													{node.votingPowerInPwr} /{' '}
+													{node.votingPowerInPercentage}%
+												</h1>	
 											</div>
 										</td>
 
 										{/* from */}
-										<td className="xl:pl-8 pl-2 pr-2 py-8">
-											<div className="flex gap-x-2 justify-center">
-												<Link
-													href={`${ROUTES.address}/${txn.from}`}
-													className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-												>
-													{shortenAddress(txn.from, 4)}
-												</Link>
-
-												<Tooltip
-													text="Copied to clipbloard"
-													position="up"
-													trigger="click"
-												>
-													<button
-														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-														onClick={() => copyToClipboard(txn.from)}
-													>
-														<i className="far fa-clone" />
-													</button>
-												</Tooltip>
+										<td className="xl:px-8 px-2 py-8">
+											<div className="flex justify-center items-center">
+												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white  text-abrandc-dark-grey text-sm py-1 px-2 text-center w-auto">
+													{node.earnings}
+												</h1>
 											</div>
 										</td>
 
 										{/* direction */}
 										<td className="px-2 py-8 flex justify-center">
-											<div className="w-6 h-6 bg-violet-100 dark:bg-agrey-800 rounded-full grid place-items-center">
-												<div className="text-agrey-500 dark:text-agrey-600">
-													<i className="fas fa-arrow-right fa-sm" />
-												</div>
-											</div>
-										</td>
-
-										{/* To */}
-										<td className="xl:pr-8 pr-2 pl-2 py-8">
-											<div className="flex gap-x-2 justify-center">
-												{isAddress(txn.to) ? (
-													<Link
-														href="/"
-														className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-													>
-														{shortenAddress(txn.to, 4)}
-													</Link>
-												) : (
-													<span className="dark:text-ablue-100 text-ablue-500 font-medium">
-														{txn.to}
-													</span>
-												)}
-
-												<Tooltip
-													text="Copied to clipbloard"
-													position="up"
-													trigger="click"
-												>
-													<button
-														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-														onClick={() => copyToClipboard(txn.to)}
-													>
-														<i className="far fa-clone" />
-													</button>
-												</Tooltip>
-											</div>
-										</td>
-
-										{/* value */}
-										<td className="xl:px-8 px-2 py-8">
-											<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-												{BnToDec(txn.value, 9, 9)} PWR
+											<div className="dark:text-white  text-abrandc-dark-grey">
+												{node.blocksSubmitted}
 											</div>
 										</td>
 									</tr>

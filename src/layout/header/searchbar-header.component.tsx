@@ -55,11 +55,11 @@ export default function SearchBarHeaderComponent() {
 			label: 'Blocks',
 			href: ROUTES.blocks,
 		},
-		// {
-		// 	id: 2,
-		// 	label: 'Nodes',
-		// 	href: ROUTES.nodes,
-		// },
+		{
+			id: 2,
+			label: 'Nodes',
+			href: ROUTES.nodes,
+		},
 	];
 
 	const navigation = [
@@ -160,10 +160,12 @@ export default function SearchBarHeaderComponent() {
 
 				{/* desktop menu */}
 				<div className="hidden md:flex items-center gap-x-6  h-full">
-                <div className="h-full grid place-items-center">
+					<div className="h-full grid place-items-center">
 						<Link
 							href={ROUTES.transactions}
-							className={`navbar-link ${pathname === ROUTES.transactions ? 'active' : ''}`}
+							className={`navbar-link ${
+								pathname === ROUTES.transactions ? 'active' : ''
+							}`}
 						>
 							Transactions
 						</Link>
@@ -178,6 +180,14 @@ export default function SearchBarHeaderComponent() {
 						</Link>
 					</div>
 
+					<div className="h-full grid place-items-center">
+						<Link
+							href={ROUTES.nodes}
+							className={`navbar-link ${pathname === ROUTES.nodes ? 'active' : ''}`}
+						>
+							Nodes
+						</Link>
+					</div>
 
 					{/* dropdown */}
 					{/* <div className="navbar-dropdown relative  h-full grid place-items-center cursor-pointer">
@@ -221,7 +231,7 @@ export default function SearchBarHeaderComponent() {
 										disabled={!dirty || !touched || !formik.isValid}
 										type="submit"
 									>
-										<i className="fa-xs fas fa-search text-agrey-500"></i>
+										<i className="fa-regular fa-magnifying-glass text-agrey-500"></i>
 									</button>
 									<input
 										className="search-bar-nav-input"
@@ -319,13 +329,18 @@ export default function SearchBarHeaderComponent() {
 							>
 								<div>Transactions</div>
 							</Link>
-                            <Link
+							<Link
 								href={ROUTES.blocks}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
 							>
 								<div>Blocks</div>
 							</Link>
-                            
+							<Link
+								href={ROUTES.nodes}
+								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "
+							>
+								<div>Nodes</div>
+							</Link>
 							{/* <div>
 								<button
 									className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2  justify-between w-full"

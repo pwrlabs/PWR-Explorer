@@ -1,0 +1,46 @@
+.eye_tooltip_container {
+	@apply relative;
+	@apply cursor-pointer;
+
+	&:hover {
+		.tooltip {
+			@apply block;
+		}
+	}
+
+	.tooltip {
+		@apply hidden;
+		@apply absolute;
+		@apply bg-white;
+		@apply dark:bg-abrandc-dark-blackish;
+		@apply dark:shadow-white-lg-y-axis;
+
+
+
+		@apply top-1/2;
+		@apply -translate-y-1/2;
+		left: calc(100% + 8px);
+
+		// arrow
+		&::before {
+			content: '';
+			@apply absolute;
+			@apply border-solid;
+			@apply border-transparent;
+			@apply border-r-8;
+			@apply border-l-0;
+			@apply border-t-8;
+			@apply border-b-8;
+
+			@apply top-1/2;
+			@apply -translate-y-1/2;
+			@apply right-full;
+
+			@apply border-r-white;
+			@apply dark:border-r-abrandc-dark-blackish;
+
+			// border-right-color: ; // match the background color of the tooltip
+			// box-shadow: px 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+	}
+}

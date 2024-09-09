@@ -6,7 +6,7 @@ const ROUTES = {
 	blocks: '/blocks',
 	blockTxns: (blockNumber: number) => `/blocks/${blockNumber}/transactions`,
 
-	nodes: '/blockchain/nodes',
+	nodes: '/nodes',
 	address: '/address',
 
 	external: {

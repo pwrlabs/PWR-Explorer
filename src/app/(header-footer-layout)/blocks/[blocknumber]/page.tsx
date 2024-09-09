@@ -152,7 +152,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									<h2 className="leading-[24px] break-all text-sm">
 										<Link
 											href={ROUTES.blockTxns(blockNum)}
-											className="dark:text-ablue-100 text-ablue-500 font-medium"
+											className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 										>
 											{block_data.txnsCount} transactions
 										</Link>{' '}
@@ -179,7 +179,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								<div className="flex gap-x-2  gap-y-2">
 									<Link
 										href={`${ROUTES.address}/${block_data.blockSubmitter}`}
-										className="dark:text-ablue-100 text-ablue-500 font-medium text-ellipsis  overflow-hidden"
+										className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-ellipsis  overflow-hidden"
 									>
 										{block_data.blockSubmitter}
 									</Link>
@@ -193,7 +193,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 												copyToClipboard(block_data.blockSubmitter)
 											}
 										>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
