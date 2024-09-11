@@ -251,7 +251,7 @@ export default function SearchBarHeaderComponent() {
 					<Button
 						className="blue medium w-[117px]"
 						tag_type="link"
-						href="https://chrome.google.com/webstore/category/extensions"
+						href="https://chromewebstore.google.com/detail/pwr-wallet/kennjipeijpeengjlogfdjkiiadhbmjl"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -380,7 +380,7 @@ export default function SearchBarHeaderComponent() {
 							<Button
 								className="blue medium w-full"
 								tag_type="link"
-								href="https://chrome.google.com/webstore/category/extensions"
+								href="https://chromewebstore.google.com/detail/pwr-wallet/kennjipeijpeengjlogfdjkiiadhbmjl"
 								target="_blank"
 								rel="noopener noreferrer"
 							>

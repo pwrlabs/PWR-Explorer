@@ -206,8 +206,9 @@ export default function HeaderComponent() {
 							<div className="field">
 								{/* input contianer */}
 								<div
-									className={`search-bar-nav-container  ${errors.search ? ' !border-ared-500' : ''
-										}`}
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
 								>
 									{/* Filter */}
 									{/* <div className="">
@@ -256,7 +257,7 @@ export default function HeaderComponent() {
 					<Button
 						className="blue medium w-[117px]"
 						tag_type="link"
-						href="https://chrome.google.com/webstore/category/extensions"
+						href="https://chromewebstore.google.com/detail/pwr-wallet/kennjipeijpeengjlogfdjkiiadhbmjl"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -269,8 +270,9 @@ export default function HeaderComponent() {
 					>
 						<div className="dark:text-white">
 							<i
-								className={`fa-lg fa-solid fa-${currentTheme === 'light' ? 'sun-bright' : 'moon'
-									}`}
+								className={`fa-lg fa-solid fa-${
+									currentTheme === 'light' ? 'sun-bright' : 'moon'
+								}`}
 							></i>
 						</div>
 					</button>
@@ -301,8 +303,9 @@ export default function HeaderComponent() {
 							<div className="field">
 								{/* input contianer */}
 								<div
-									className={`search-bar-nav-container  ${errors.search ? ' !border-ared-500' : ''
-										}`}
+									className={`search-bar-nav-container  ${
+										errors.search ? ' !border-ared-500' : ''
+									}`}
 								>
 									{/* Filter */}
 									{/* <div className="">
@@ -364,8 +367,9 @@ export default function HeaderComponent() {
 
 									<div>
 										<i
-											className={`fa-lg far fa-angle-${blockchainOpened ? 'up' : 'down'
-												}`}
+											className={`fa-lg far fa-angle-${
+												blockchainOpened ? 'up' : 'down'
+											}`}
 										></i>
 									</div>
 								</button>
@@ -393,7 +397,7 @@ export default function HeaderComponent() {
 							<Button
 								className="blue medium w-full"
 								tag_type="link"
-								href="https://chrome.google.com/webstore/category/extensions"
+								href="https://chromewebstore.google.com/detail/pwr-wallet/kennjipeijpeengjlogfdjkiiadhbmjl"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
@@ -407,8 +411,9 @@ export default function HeaderComponent() {
 							<div className="w-full bg-agrey-50 dark:bg-agrey-900 flex justify-between h-[52px] px-4 py-2 rounded-lg  items-center ">
 								<div className=" text-agrey-500 dark:text-white">
 									<i
-										className={`fa-lg fas ${currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
-											}`}
+										className={`fa-lg fas ${
+											currentTheme === 'light' ? 'fa-sun' : 'fa-moon'
+										}`}
 									></i>
 								</div>
 
