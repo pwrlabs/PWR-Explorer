@@ -174,19 +174,23 @@ export default function AddressPage({ params }: AddressPageProps) {
 								</div>
 
 								{/* Pwr value */}
-								{/* <div className="space-y-1">
+								<div className="space-y-1">
 									<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 										PWR VALUE
 									</span>
 									<div className="space-x-2">
-										<span className="dark:text-white text-black font-bold">
+										{/* <span className="dark:text-white text-black font-bold">
 											${balanceData.balanceUsdValue}
 										</span>
 										<span className="text-agrey-500 dark:text-agrey-600">
 											(@ $1.00/PWR)
+										</span> */}
+										<span className="dark:text-white text-black font-bold">
+											{' '}
+											Currently Testnet
 										</span>
 									</div>
-								</div> */}
+								</div>
 							</div>
 
 							{/* Overview box */}
