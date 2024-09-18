@@ -165,11 +165,11 @@ export default function AddressPage({ params }: AddressPageProps) {
 										<span className="dark:text-white text-black font-bold">
 											{+BnToDec(balanceData.balance, 9, 9)} PWR
 										</span>
-										<span className="text-agrey-500 dark:text-agrey-600">
+										{/* <span className="text-agrey-500 dark:text-agrey-600">
 											<Tooltip text="lorem" position="up" trigger="hover">
 												<i className="far fa-info-circle" />
 											</Tooltip>
-										</span>
+										</span> */}
 									</div>
 								</div>
 
@@ -186,7 +186,6 @@ export default function AddressPage({ params }: AddressPageProps) {
 											(@ $1.00/PWR)
 										</span> */}
 										<span className="dark:text-white text-black font-bold">
-											{' '}
 											Currently Testnet
 										</span>
 									</div>
