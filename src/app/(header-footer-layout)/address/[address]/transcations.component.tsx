@@ -226,7 +226,7 @@ export default function TransactionComponent({
 
 													<div className="tooltip">
 														<TransactionTooltipDetails
-															usdFee={txn.txnFeeInUsd}
+															// usdFee={txn.txnFeeInUsd}
 															fee={txn.txnFee}
 															nonce={txn.nonceOrValidationHash}
 														/>
