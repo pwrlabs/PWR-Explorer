@@ -289,7 +289,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 				</div>
 			</section>
 
-			<section className="flex justify-between items-center">
+			<section className="flex justify-between flex-col-reverse md:flex-row gap-y-[10px] md:gap-0 md:items-center">
 				{/* Tab navigation */}
 				<div className="flex ">
 					<button

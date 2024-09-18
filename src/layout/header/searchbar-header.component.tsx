@@ -291,7 +291,7 @@ export default function SearchBarHeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-screen dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
