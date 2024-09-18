@@ -28,10 +28,10 @@ import ChartSkeleton from 'src/components/skeletons/root/chart-skeleton';
 
 function StatBox({ title, valueComp, icon }: { title: string; valueComp: any; icon: any }) {
 	return (
-		<div className="flex items-center gap-x-4 bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
+		<div className="flex items-center gap-x-4 bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl h-[88px] p-4 w-full">
 			<Image src={icon} width={28} height={28} alt="PWR Icon" />
 			<div className="flex flex-col gap-y-2">
-				<h1 className="text-agrey-600 text-sm font-medium	 leading-[24px]">{title}</h1>
+				<h1 className="text-agrey-600 text-sm font-medium leading-[24px]">{title}</h1>
 				<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
 					{valueComp()}
 				</h2>
@@ -177,10 +177,10 @@ export default function Home() {
 									<>
 										{/* Price */}
 										<StatBox
-											title="PWR PRICE"
+											title="PWR FEE PER BYTE"
 											valueComp={() => (
 												<>
-													<span>${infoData.price / 100}</span>
+													{/* <span>${infoData.price / 100}</span>
 													<span
 														className={`font-medium  pl-2 pr-2 ${
 															infoData.priceChange > 0
@@ -189,7 +189,8 @@ export default function Home() {
 														}`}
 													>
 														{infoData.priceChange}%
-													</span>
+													</span> */}
+													<span>0.0000001</span>
 												</>
 											)}
 											icon="/icons/pwr.svg"
@@ -200,7 +201,7 @@ export default function Home() {
 											title="PWR MARKET CAP"
 											valueComp={() => (
 												// <>${numberWithCommas(infoData.marketCap)}</>
-												<>$1,000,000,000</>
+												<>1,000,000,000</>
 											)}
 											icon="/icons/globe.svg"
 										/>

@@ -150,7 +150,7 @@ export default function Transactions() {
 								valueComp={() => (
 									<span>
 										{BnToDec(txnsData.averageTransactionFeePast24Hours, 9, 9)}{' '}
-										USD
+										PWR
 									</span>
 								)}
 								icon="/icons/arrows.svg"
@@ -244,7 +244,7 @@ export default function Transactions() {
 
 													<div className="tooltip">
 														<TransactionTooltipDetails
-															usdFee={txn.txnFeeInUsd}
+															// usdFee={txn.txnFeeInUsd}
 															fee={txn.txnFee}
 															nonce={txn.nonceOrValidationHash}
 														/>

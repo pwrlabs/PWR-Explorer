@@ -345,9 +345,9 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										{BnToDec(txnData.value, 9, 9)} PWR
 										{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 									</h1>
-									<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
+									{/* <h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
 										(${txnData.valueInUsd})
-									</h1>
+									</h1> */}
 								</div>
 							</div>
 
@@ -366,10 +366,10 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										{BnToDec(txnData.txnFee, 9, 9)} PWR
 										{/* 3 hrs 53 mins ago (May 09 2023 12:13:59 +UTC) */}
 									</h1>
-									<h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
+									{/* <h1 className="text-agrey-500 dark:text-agrey-600 font-medium text-sm">
 										($
 										{scNotToDec(+txnData.txnFeeInUsd, 10)})
-									</h1>
+									</h1> */}
 								</div>
 							</div>
 
