@@ -174,7 +174,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 								</div>
 
 								{/* Pwr value */}
-								<div className="space-y-1">
+								{/* <div className="space-y-1">
 									<span className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 										PWR VALUE
 									</span>
@@ -186,7 +186,7 @@ export default function AddressPage({ params }: AddressPageProps) {
 											(@ $1.00/PWR)
 										</span>
 									</div>
-								</div>
+								</div> */}
 							</div>
 
 							{/* Overview box */}
@@ -249,8 +249,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 										>
 											{shortenAddress(
-												txnHistoryData.firstLastTransactions.firstTransaction
-													.txnHash
+												txnHistoryData.firstLastTransactions
+													.firstTransaction.txnHash
 											)}
 										</Link>
 
@@ -274,8 +274,8 @@ export default function AddressPage({ params }: AddressPageProps) {
 
 										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
 											{timeAgo(
-												txnHistoryData.firstLastTransactions.firstTransaction
-													.timeStamp
+												txnHistoryData.firstLastTransactions
+													.firstTransaction.timeStamp
 											)}
 										</div>
 									</div>
