@@ -291,9 +291,9 @@ export default function SearchBarHeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-screen dark:bg-abrandc-dark-blackish bg-white md:hidden z-72 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-screen dark:bg-abrandc-dark-blackish bg-white md:hidden z-[999] p-4 mt-header space-y-6 overflow-hidden">
 						{/* Search */}
-						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
+						<form onSubmit={handleSubmit} className="w-full  lg:w-[800px]">
 							<div className="field">
 								{/* input contianer */}
 								<div
@@ -322,7 +322,7 @@ export default function SearchBarHeaderComponent() {
 						</form>
 
 						{/* links */}
-						<div className="space-y-2">
+						<div className="space-y-2 ">
 							<Link
 								href={ROUTES.transactions}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "

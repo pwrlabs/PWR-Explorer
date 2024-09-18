@@ -257,7 +257,7 @@ export default function Nodes() {
 												<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white  text-abrandc-dark-grey text-sm py-1 px-2 text-center w-auto">
 													{node.votingPowerInPwr} /{' '}
 													{node.votingPowerInPercentage}%
-												</h1>	
+												</h1>
 											</div>
 										</td>
 
