@@ -201,7 +201,8 @@ export default function Home() {
 											title="PWR MARKET CAP"
 											valueComp={() => (
 												// <>${numberWithCommas(infoData.marketCap)}</>
-												<>1,000,000,000</>
+												// <>1,000,000,000</>
+												<>Currently Testnet</>
 											)}
 											icon="/icons/globe.svg"
 										/>
