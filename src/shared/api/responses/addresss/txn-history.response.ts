@@ -11,12 +11,12 @@
 //         }
 //     },
 type firstLastTransactions = {
-	lastTransaction: {
+	lastTransaction?: {
 		txnHash: string;
 		timeStamp: number;
 		block: number;
 	};
-	firstTransaction: {
+	firstTransaction?: {
 		txnHash: string;
 		timeStamp: number;
 		block: number;

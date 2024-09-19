@@ -204,40 +204,48 @@ export default function AddressPage({ params }: AddressPageProps) {
 										LAST TXN SENT
 									</div>
 									<div className="flex gap-x-2">
-										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData.firstLastTransactions.lastTransaction.txnHash}`}
-											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-										>
-											{shortenAddress(
-												txnHistoryData.firstLastTransactions.lastTransaction
-													.txnHash
-											)}
-										</Link>
-
-										<Tooltip
-											position="up"
-											trigger="click"
-											text="copied to clipboard"
-										>
-											<button
-												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-												onClick={() =>
-													copyToClipboard(
+										{txnHistoryData.firstLastTransactions.lastTransaction ? (
+											<>
+												<Link
+													href={`${ROUTES.transactions}/${txnHistoryData.firstLastTransactions.lastTransaction.txnHash}`}
+													className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+												>
+													{shortenAddress(
 														txnHistoryData.firstLastTransactions
 															.lastTransaction.txnHash
-													)
-												}
-											>
-												<i className="far fa-clone "></i>
-											</button>
-										</Tooltip>
+													)}
+												</Link>
 
-										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-											{timeAgo(
-												txnHistoryData.firstLastTransactions.lastTransaction
-													.timeStamp
-											)}
-										</div>
+												<Tooltip
+													position="up"
+													trigger="click"
+													text="copied to clipboard"
+												>
+													<button
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+														onClick={() =>
+															copyToClipboard(
+																txnHistoryData.firstLastTransactions
+																	.lastTransaction?.txnHash || ''
+															)
+														}
+													>
+														<i className="far fa-clone "></i>
+													</button>
+												</Tooltip>
+
+												<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+													{timeAgo(
+														txnHistoryData.firstLastTransactions
+															.lastTransaction.timeStamp
+													)}
+												</div>
+											</>
+										) : (
+											<div className="dark:text-white text-black font-bold">
+												No transactions yet
+											</div>
+										)}
 									</div>
 								</div>
 
@@ -247,40 +255,48 @@ export default function AddressPage({ params }: AddressPageProps) {
 										FIRST TXN SENT
 									</span>
 									<div className="flex gap-x-2">
-										<Link
-											href={`${ROUTES.transactions}/${txnHistoryData.firstLastTransactions.firstTransaction.txnHash}`}
-											className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-										>
-											{shortenAddress(
-												txnHistoryData.firstLastTransactions
-													.firstTransaction.txnHash
-											)}
-										</Link>
-
-										<Tooltip
-											position="up"
-											trigger="click"
-											text="copied to clipboard"
-										>
-											<button
-												className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
-												onClick={() =>
-													copyToClipboard(
+										{txnHistoryData.firstLastTransactions.firstTransaction ? (
+											<>
+												<Link
+													href={`${ROUTES.transactions}/${txnHistoryData.firstLastTransactions.firstTransaction.txnHash}`}
+													className="text-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+												>
+													{shortenAddress(
 														txnHistoryData.firstLastTransactions
 															.firstTransaction.txnHash
-													)
-												}
-											>
-												<i className="far fa-clone "></i>
-											</button>
-										</Tooltip>
+													)}
+												</Link>
 
-										<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
-											{timeAgo(
-												txnHistoryData.firstLastTransactions
-													.firstTransaction.timeStamp
-											)}
-										</div>
+												<Tooltip
+													position="up"
+													trigger="click"
+													text="copied to clipboard"
+												>
+													<button
+														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
+														onClick={() =>
+															copyToClipboard(
+																txnHistoryData.firstLastTransactions
+																	.firstTransaction?.txnHash || ''
+															)
+														}
+													>
+														<i className="far fa-clone "></i>
+													</button>
+												</Tooltip>
+
+												<div className="text-agrey-500 dark:text-agrey-600 text-sm font-medium">
+													{timeAgo(
+														txnHistoryData.firstLastTransactions
+															.firstTransaction.timeStamp
+													)}
+												</div>
+											</>
+										) : (
+											<div className="dark:text-white text-black font-bold">
+												No transactions yet
+											</div>
+										)}
 									</div>
 								</div>
 							</div>
