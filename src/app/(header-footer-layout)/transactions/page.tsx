@@ -107,7 +107,7 @@ export default function Transactions() {
 	if (txnsError || (!txnsLoading && !txnsData)) return <ErrorComponent />;
 
 	return (
-		<main className="container-2 mx-auto space-y-20">
+		<main className="container-2 mx-auto xl:space-y-20 space-y-5">
 			<section className="space-y-4">
 				{/* Title */}
 				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">

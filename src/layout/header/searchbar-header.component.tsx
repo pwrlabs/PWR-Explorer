@@ -274,14 +274,19 @@ export default function SearchBarHeaderComponent() {
 
 				{/* Mobile burger icon */}
 				<div className="md:hidden">
-					<div
+					{/* This is a simple burger icon. You can replace this with any SVG or icon library you prefer. */}
+					<button
+						data-collapse-toggle="navbar-sticky"
+						type="button"
 						className={`burger ${mobileNavOpen ? 'active' : ''}`}
+						aria-controls="navbar-sticky"
+						aria-expanded="true"
 						onClick={toggleMobileNav}
 					>
-						<div className="bar"></div>
-						<div className="bar"></div>
-						<div className="bar"></div>
-					</div>
+						<div className="h-line h-line1"></div>
+						<div className="h-line h-line2"></div>
+						<div className="h-line h-line3"></div>
+					</button>
 				</div>
 
 				{/* Mobile navigation menu */}
