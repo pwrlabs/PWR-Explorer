@@ -191,7 +191,7 @@ export default function HeaderComponent() {
 									<li key={idx}>
 										<Link
 											href={a.href}
-											className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-agrey-800 dark:hover:text-white"
+											className="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-agrey-800 dark:hover:text-white"
 										>
 											{a.label}
 										</Link>

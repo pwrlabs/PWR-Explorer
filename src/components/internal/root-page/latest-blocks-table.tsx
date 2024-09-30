@@ -25,7 +25,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 				{blocks.map((block, idx) => (
 					<tr
 						key={idx}
-						className={`flex flex-col md:table-row ${
+						className={`flex flex-col md:table-row p-2 ${
 							idx % 2 == 0
 								? ' dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
 								: 'bg-transparent'
@@ -71,14 +71,12 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 									</Link>
 								</h1>
 
-								<br className="sm:hidden" />
-
-								<div className="flex gap-x-2">
-									<Link
+								<div className="flex gap-x-2 mt-4 xl:mt-0">
+								<Link
 										href={`${ROUTES.blockTxns(block.blockHeight)}`}
 										className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 									>
-										{block.txnsCount} txns	
+										{block.txnsCount} txns
 									</Link>
 
 									<div className="sm:hidden">
