@@ -12,11 +12,11 @@ type TransactionTooltipDetailsProps = {
 
 const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProps) => {
 	return (
-		<div className="flex flex-col gap-3 p-3 dark:bg-abrandc-dark-blackish bg-white text-agrey-900 dark:text-white rounded-2xl   w-60 z-index-3">
+		<div className="flex flex-col  p-3 dark:bg-abrandc-dark-blackish bg-white text-agrey-900 dark:text-white rounded-2xl   w-60 z-index-3">
 			<div className="text-left p-1">
 				<h1>Additional Info</h1>
 			</div>
-			<div className="border-b border-agrey-800 p-1 text-left">
+			<div className="border-b border-agrey-200 p-1 text-left">
 				<p className="text-agrey-600">Block</p>
 				<div className="flex items-center gap-1">
 					<Image
@@ -26,17 +26,21 @@ const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProp
 						className="inline-block"
 						alt=""
 					/>
+
 					<p className="text-abrandc-dark-green">success</p>
+					<h6 className="text-sm font-normal  w-full text-agrey-500">
+						(1 block confirmation)
+					</h6>
 				</div>
 			</div>
-			<div className="border-b border-agrey-800 p-1 text-left">
+			<div className="border-b border-agrey-200 p-3 text-left">
 				<p className="text-agrey-600">Transaction Fee:</p>
 				<p>
 					{BnToDec(fee, 9, 9)}
 					{/* <span>(${usdFee})</span> */}
 				</p>
 			</div>
-			<div className="text-left p-1">
+			<div className="text-left p-3">
 				<p className="text-agrey-600">Nonce</p>
 				<p>
 					{nonce}

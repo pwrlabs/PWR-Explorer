@@ -164,10 +164,111 @@ export default function Home() {
 							</form>
 						</div>
 
+						{/* for 768px only */}
+						<section className="hidden md:block lg:hidden">
+							{/* top (3 boxes) */}
+							{infoLoading ? (
+								<div>
+									<StatBoxSkeleton />
+									<StatBoxSkeleton />
+								</div>
+							) : (
+								<div className="flex items-center gap-x-2">
+									{/* Price */}
+									<StatBox
+										title="PWR FEE PER BYTE"
+										valueComp={() => (
+											<>
+												{/* <span>${infoData.price / 100}</span>
+													<span
+														className={`font-medium  pl-2 pr-2 ${
+															infoData.priceChange > 0
+																? 'text-green-500'
+																: 'text-ared-400'
+														}`}
+													>
+														{infoData.priceChange}%
+													</span> */}
+												<span>0.0000001</span>
+											</>
+										)}
+										icon="/icons/pwr.svg"
+									/>
+									{/* Transactions */}
+									<div className="flex items-center justify-between bg-abrandc-light-grey dark:bg-agrey-900 rounded-xl p-4 w-full">
+										<div className="flex items-center gap-x-4">
+											<Image
+												src="/icons/arrows.svg"
+												width={28}
+												height={28}
+												alt="PWR Icon"
+											/>
+											<div className="flex flex-col gap-y-2">
+												<h1 className="text-agrey-600 text-sm font-medium leading-[24px] ">
+													TRANSACTIONS
+												</h1>
+												<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
+													{infoData?.totalTransactionsCount}
+												</h2>
+											</div>
+										</div>
+
+										<div className="flex flex-col gap-y-2">
+											<h1 className="text-agrey-600 text-sm font-medium leading-[24px] text-right">
+												TPS
+											</h1>
+											<h2 className="text-base font-bold dark:text-white text-abrandc-dark-grey">
+												{infoData?.tps}
+											</h2>
+										</div>
+									</div>
+									{/* Market Cap */}
+									<StatBox
+										title="PWR MARKET CAP"
+										valueComp={() => (
+											// <>${numberWithCommas(infoData.marketCap)}</>
+											// <>1,000,000,000</>
+											<>Currently Testnet</>
+										)}
+										icon="/icons/globe.svg"
+									/>
+								</div>
+							)}
+
+							{/* bottom  */}
+							<div className="flex items-center justify-between gap-x-2 mt-2">
+								{/* blocks and validators con  */}
+								<div className="flex flex-col gap-y-2 w-[341px] ">
+									{/* Blocks */}
+									<StatBox
+										icon="/icons/clock.svg"
+										title="BLOCKS"
+										valueComp={() => <>{infoData?.blocksCount}</>}
+									/>
+									{/* validators nodes */}
+									<StatBox
+										icon="/icons/nodes.svg"
+										title="VALIDATOR NODES"
+										valueComp={() => <>{infoData?.validators}</>}
+									/>
+								</div>
+								{/* the graph con */}
+								<div className="">
+									{infoLoading ? (
+										<ChartSkeleton />
+									) : infoData?.fourteenDaysTxn ? (
+										<TransactionChart data={infoData?.fourteenDaysTxn} />
+									) : (
+										<p>Loading transaction history...</p>
+									)}
+								</div>
+							</div>
+						</section>
+
 						{/* Stats */}
-						<div className="grid grid-cols-1 xl:grid-cols-12 gap-4 ">
+						<div className="grid grid-cols-1 md:grid-cols-12 gap-4  md:hidden lg:grid  ">
 							{/* Pwr price and market cap  */}
-							<div className="xl:col-span-4 space-y-4">
+							<div className="md:col-span-4 space-y-4 ">
 								{infoLoading ? (
 									<>
 										<StatBoxSkeleton />
@@ -211,7 +312,7 @@ export default function Home() {
 							</div>
 
 							{/* Transactions, blocks, nodes */}
-							<div className="xl:col-span-4 space-y-4">
+							<div className="md:col-span-4 space-y-4 ">
 								{infoLoading ? (
 									<>
 										<StatBoxSkeleton />
@@ -252,7 +353,7 @@ export default function Home() {
 										</div>
 
 										{/* Blocks, nodes */}
-										<div className="flex flex-col xl:flex-row gap-4 ">
+										<div className="flex flex-col md:flex-row gap-4 ">
 											{/* Blocks */}
 											<StatBox
 												icon="/icons/clock.svg"
@@ -271,7 +372,7 @@ export default function Home() {
 								)}
 							</div>
 
-							<div className="xl:col-span-4">
+							<div className="md:col-span-4">
 								{infoLoading ? (
 									<ChartSkeleton />
 								) : infoData?.fourteenDaysTxn ? (
@@ -283,7 +384,7 @@ export default function Home() {
 						</div>
 
 						{/* Latest blocks & txns */}
-						<div className="grid grid-cols-1 xl:grid-cols-2 gap-x-8 gap-y-5">
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5">
 							{/* Latest Blocks */}
 							<div className="latest_blocks">
 								<h1 className="dark:text-white text-abrandc-dark-grey text-2xl font-medium leading-[36px] mb-3">

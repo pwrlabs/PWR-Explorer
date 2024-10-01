@@ -155,8 +155,8 @@ export default function HeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow ">
-			<div className="container-2 mx-auto flex items-center justify-between h-[80px]">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow-b-3xl ">
+			<div className="container-2 mx-auto flex items-center justify-between h-[80px] ">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
 					<PwrLogo />
@@ -164,7 +164,9 @@ export default function HeaderComponent() {
 
 				{/* desktop menu */}
 				<div className="hidden md:flex items-center gap-x-6  h-full">
-					<div className="h-full grid place-items-center">
+					{/* the desktop nav links */}
+
+					<div className="h-full  place-items-center hidden xl:grid ">
 						<Link
 							href={ROUTES.root}
 							className={`navbar-link ${pathname === ROUTES.root ? 'active' : ''}`}
@@ -181,17 +183,17 @@ export default function HeaderComponent() {
 						</button>
 						<div
 							id="dropdown"
-							className="nav-dropdown-menu absolute top-full left-0 z-10  bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-abrandc-dark-grey"
+							className="nav-dropdown-menu absolute top-14 left-0 z-10  bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-abrandc-dark-grey"
 						>
 							<ul
-								className="py-2 text-sm text-gray-700 dark:text-gray-200"
+								className="py-2 text-sm text-gray-700 dark:text-gray-200 "
 								aria-labelledby="dropdownDefaultButton"
 							>
 								{blockchainLinks.map((a, idx) => (
 									<li key={idx}>
 										<Link
 											href={a.href}
-											className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-agrey-800 dark:hover:text-white"
+											className="block px-4 py-2 hover:bg-agrey-200 dark:hover:bg-agrey-800 dark:hover:text-white"
 										>
 											{a.label}
 										</Link>
@@ -201,15 +203,17 @@ export default function HeaderComponent() {
 						</div>
 					</div>
 
-					<div>
+					<div className="hidden xl:grid">
 						<form onSubmit={handleSubmit} className="w-full lg:w-[250px]">
 							<div className="field">
 								{/* input contianer */}
 								<div
-									className={`search-bar-nav-container  ${
+									className={`search-bar-nav-container rounded-lg flex items-center ${
 										errors.search ? ' !border-ared-500' : ''
 									}`}
 								>
+									{/* search icon */}
+									<i className="fa-solid fa-magnifying-glass dark:text-white"></i>
 									{/* Filter */}
 									{/* <div className="">
 									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
@@ -232,22 +236,6 @@ export default function HeaderComponent() {
 										onChange={handleChange}
 										onBlur={handleBlur}
 									/>
-
-									<button
-										className="flex items-center gap-x-2"
-										disabled={!dirty || !touched || !formik.isValid}
-										type="submit"
-									>
-										<Image
-											src="/media/icons/enter-arrow.svg"
-											width={24}
-											height={24}
-											alt=""
-										/>
-										<div className="text-agrey-500 font-bold text-sm">
-											Enter
-										</div>
-									</button>
 								</div>
 							</div>
 						</form>
@@ -271,7 +259,7 @@ export default function HeaderComponent() {
 						<div className="dark:text-white">
 							<i
 								className={`fa-lg fa-solid fa-${
-									currentTheme === 'light' ? 'sun-bright' : 'moon'
+									currentTheme === 'light' ? 'moon' : 'sun-bright'
 								}`}
 							></i>
 						</div>
@@ -280,19 +268,15 @@ export default function HeaderComponent() {
 
 				{/* Mobile burger icon */}
 				<div className="md:hidden">
-					{/* This is a simple burger icon. You can replace this with any SVG or icon library you prefer. */}
-					<button
-						data-collapse-toggle="navbar-sticky"
-						type="button"
-						className={`burger ${mobileNavOpen ? 'active' : ''}`}
-						aria-controls="navbar-sticky"
-						aria-expanded="true"
-						onClick={toggleMobileNav}
-					>
-						<div className="h-line h-line1"></div>
-						<div className="h-line h-line2"></div>
-						<div className="h-line h-line3"></div>
-					</button>
+					{/* the menu icon */}
+
+					<div onClick={toggleMobileNav}>
+						{mobileNavOpen ? (
+							<i className="fa-solid fa-xmark  dark:text-agrey-600 text-2xl "></i>
+						) : (
+							<i className="fa-solid fa-bars dark:text-agrey-600 text-2xl "></i>
+						)}
+					</div>
 				</div>
 
 				{/* Mobile navigation menu */}
@@ -340,8 +324,9 @@ export default function HeaderComponent() {
 											width={24}
 											height={24}
 											alt=""
+											className="hidden lg:block"
 										/>
-										<div className="text-agrey-500 font-bold text-sm">
+										<div className="text-agrey-500 font-bold text-sm hidden  lg:block">
 											Enter
 										</div>
 									</button>
@@ -350,7 +335,7 @@ export default function HeaderComponent() {
 						</form>
 
 						{/* links */}
-						<div className="space-y-2">
+						<div className="space-y-4">
 							<Link
 								href={ROUTES.root}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "

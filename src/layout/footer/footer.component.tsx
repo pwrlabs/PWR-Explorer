@@ -61,7 +61,7 @@ export default function FooterComponent() {
 	const formik = useFormik({
 		initialValues: { email: '' },
 		validationSchema: yup.object({
-			email: yup.string().email('Invalid email address').required('Input is empty, fill your email'),
+			email: yup.string().email('Invalid email').required('Input is empty, fill your email'),
 		}),
 		onSubmit: (values) => {
 			// Intentionally left empty for custom handling outside Formik
@@ -76,8 +76,11 @@ export default function FooterComponent() {
 
 		if (!formik.isValidating && !formik.errors.email) {
 			// Simulate API call or some operation with the email
-			console.log("Form submitted with email:", formik.values.email);
-			setNotification({ message: 'You have successfully subscribed to our newsletter!', type: 'success' });
+			console.log('Form submitted with email:', formik.values.email);
+			setNotification({
+				message: 'You have successfully subscribed to our newsletter!',
+				type: 'success',
+			});
 			setShowNotification(true);
 			setTimeout(() => {
 				setShowNotification(false);
@@ -93,7 +96,6 @@ export default function FooterComponent() {
 			}, 3000);
 		}
 	};
-
 
 	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
@@ -124,7 +126,7 @@ export default function FooterComponent() {
 							{navigation.map((item, idx) => (
 								<Link
 									href={item.href}
-									className="font-medium hover:text-ablue-800 dark:text-white dark:hover:text-ablue-200"
+									className="font-medium hover:text-ablue-200 dark:text-white dark:hover:text-ablue-200"
 									key={idx}
 								>
 									{item.label}
@@ -135,28 +137,35 @@ export default function FooterComponent() {
 
 					{/* Newsletter */}
 
-					<form onSubmit={handleFormSubmit} className="flex flex-col gap-y-2 mt-2">
-						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
+					<form onSubmit={handleFormSubmit} className="flex flex-col  mt-2">
+						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium mb-2">
 							Join our newsletter
 						</h2>
 						<div className="flex items-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
-									className={`text-field ${inputError ? 'invalid' : ''}`}
+									className={`text-field focus:!border focus:!border-black  ${
+										inputError ? 'invalid' : ''
+									}`}
 									placeholder="Enter your email"
 									value={formik.values.email}
 									name="email"
 									onChange={formik.handleChange}
 								/>
 							</div>
-							<Button className="blue medium w-[116px]" type="submit">
+							<Button
+								className="blue medium w-[116px]"
+								type="submit"
+								disabled={!formik.isValid || !formik.dirty}
+							>
 								Subscribe
 							</Button>
 						</div>
 						{showNotification && (
 							<div
-								className={`mt-4 text-center text-white px-6 py-2 rounded-md notification ${notification.type === 'success' ? 'success' : 'error'
-									} ${showNotification ? 'show' : ''}`}
+								className={` text-red-400 ${
+									notification.type === 'success' ? 'success' : 'error'
+								} ${showNotification ? 'show' : ''}`}
 							>
 								{notification.message}
 							</div>

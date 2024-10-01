@@ -82,6 +82,7 @@ const config: Config = {
 						blue: '#3333FF',
 						red: '#FC4137',
 						green: '#009545',
+						lightGreen: '#e2fff0',
 						dark_grey: '#1E1F31',
 					},
 					white: '#FFFFFF',
@@ -92,8 +93,11 @@ const config: Config = {
 			},
 			boxShadow: {
 				'3xl': '8px 8px 56px 0px rgba(174, 174, 192, 0.16)', // Custom boxShadow
-				'white-lg': '0 10px 15px  rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05)',
-				'white-lg-y-axis': '0 -10px 15px -3px rgba(255, 255, 255, 0.1), 0 10px 15px -3px rgba(255, 255, 255, 0.1)',
+				'white-lg':
+					'0 10px 15px  rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05)',
+				'white-lg-y-axis':
+					'0 -10px 15px -3px rgba(255, 255, 255, 0.1), 0 10px 15px -3px rgba(255, 255, 255, 0.1)',
+				b: '8px 8px 56px 0px rgba(174, 174, 192, 0.16)',
 			},
 		},
 	},
