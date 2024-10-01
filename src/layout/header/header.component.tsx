@@ -155,7 +155,7 @@ export default function HeaderComponent() {
 	const { values, touched, dirty, errors, handleChange, handleBlur, handleSubmit } = formik;
 
 	return (
-		<nav className="dark:bg-abrandc-dark-blackish bg-white  shadow-b-3xl ">
+		<nav className="dark:bg-abrandc-dark-blackish bg-white  dark:drop-shadow-white drop-shadow ">
 			<div className="container-2 mx-auto flex items-center justify-between h-[80px] ">
 				{/* brand */}
 				<Link href={ROUTES.root} className="brand">
@@ -281,7 +281,7 @@ export default function HeaderComponent() {
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-full dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
+					<div className="fixed top-0 left-0 w-full h-screen dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full lg:w-[800px]">
 							<div className="field">
