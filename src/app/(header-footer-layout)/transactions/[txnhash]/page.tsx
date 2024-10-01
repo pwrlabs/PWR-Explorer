@@ -131,7 +131,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</div>
 								{txnData.success ? (
 									// Success Status
-									<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2">
+									<div className="flex items-center w-fit bg-abrandc-light-lightGreen dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2">
 										<svg
 											width="22"
 											height="22"

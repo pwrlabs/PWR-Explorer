@@ -47,7 +47,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
 			{/* Title */}
 			<div className="flex items-center gap-x-2">
-				<h1 className="px-2 py-1 text-[36px] font-bold leading-[44px]">Blocks Details</h1>
+				<h1 className=" py-1 text-[36px] font-bold leading-[44px]">Blocks Details</h1>
 				<Tags>{blockNum}</Tags>
 			</div>
 
@@ -66,7 +66,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							{/* Block height */}
 							<div className="lg:flex space-y-2">
 								<div className="flex items-center gap-x-2 w-[300px]">
-									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm">
+									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm ">
 										Block Height
 									</h1>
 									{/* <Tooltip text="text" large position="right">
@@ -84,10 +84,21 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2 ">
-									<svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<div className="flex items-center w-fit bg-abrandc-light-lightGreen dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2 ">
+									<svg
+										width="22"
+										height="22"
+										viewBox="0 0 18 18"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
 										<circle cx="9" cy="9" r="6.75" fill="#00B85B" />
-										<path d="M6 9.34517L7.95126 11.2206C7.99202 11.2598 8.05807 11.2598 8.09884 11.2206L12.75 6.75" stroke="white" stroke-linecap="round" stroke-linejoin="round" />
+										<path
+											d="M6 9.34517L7.95126 11.2206C7.99202 11.2598 8.05807 11.2598 8.09884 11.2206L12.75 6.75"
+											stroke="white"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
 									</svg>
 
 									<span className="ml-2 py-1">Success</span>
@@ -233,7 +244,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 				<br />
 
 				{/* Disclaimer */}
-				<div className="flex items-center gap-x-2 ">
+				<div className="flex  gap-x-2 ">
 					<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 " />
 					<p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
 						Blocks are batches of transactions linked via cryptographic hashes. Any

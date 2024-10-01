@@ -107,7 +107,7 @@ export default function Transactions() {
 	if (txnsError || (!txnsLoading && !txnsData)) return <ErrorComponent />;
 
 	return (
-		<main className="container-2 mx-auto md:space-y-20 space-y-10">
+		<main className="container-2 mx-auto space-y-8">
 			<section className="space-y-4">
 				{/* Title */}
 				<h1 className="text-4xl font-bold dark:text-white text-abrandc-dark-grey px-2 py-1">
@@ -234,13 +234,7 @@ export default function Transactions() {
 										<td className="xl:px-8 px-2 py-8">
 											<div className="flex gap-x-2 justify-start">
 												<div className="eye_tooltip_container">
-													<Image
-														className="w-auto h-auto"
-														src="/icons/eye.svg"
-														width={20}
-														height={20}
-														alt=""
-													/>
+													<i className="fa-sharp fa-light fa-eye size-5 text-agrey-500 hover:text-agrey-900 dark:hover:text-agrey-500"></i>
 
 													<div className="tooltip">
 														<TransactionTooltipDetails

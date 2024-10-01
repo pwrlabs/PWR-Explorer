@@ -95,7 +95,7 @@ export default function Blocks() {
 						Blocks
 					</h1>
 					{/* stats */}
-					<div className="grid xl:grid-cols-2 grid-cols-1 gap-4">
+					<div className="grid xl:grid-cols-3 grid-cols-1 gap-4">
 						{/* <StatBox
 							title="NETWORK UTILIZATION (24h)"
 							valueComp={() => (

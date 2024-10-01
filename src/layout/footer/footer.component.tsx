@@ -61,10 +61,7 @@ export default function FooterComponent() {
 	const formik = useFormik({
 		initialValues: { email: '' },
 		validationSchema: yup.object({
-			email: yup
-				.string()
-				.email('Invalid email address')
-				.required('Input is empty, fill your email'),
+			email: yup.string().email('Invalid email').required('Input is empty, fill your email'),
 		}),
 		onSubmit: (values, { resetForm }) => {
 			// Simulate API call
@@ -86,6 +83,36 @@ export default function FooterComponent() {
 		},
 	});
 
+	// Custom submission handler
+	const handleFormSubmit = async (e: any) => {
+		e.preventDefault();
+		await formik.validateForm();
+		formik.setTouched({ email: true });
+
+		if (!formik.isValidating && !formik.errors.email) {
+			// Simulate API call or some operation with the email
+			console.log('Form submitted with email:', formik.values.email);
+			setNotification({
+				message: 'You have successfully subscribed to our newsletter!',
+				type: 'success',
+			});
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false);
+			}, 3000);
+
+			// Reset the form (optional)
+			formik.resetForm();
+		} else if (formik.errors.email) {
+			setNotification({ message: formik.errors.email, type: 'error' });
+			setShowNotification(true);
+			setTimeout(() => {
+				setShowNotification(false);
+			}, 3000);
+		}
+	};
+
+	const [email, setEmail] = useState('');
 	const [notification, setNotification] = useState({ message: '', type: '' });
 	const [showNotification, setShowNotification] = useState(false);
 	const [inputError, setInputError] = useState(false);
@@ -114,7 +141,7 @@ export default function FooterComponent() {
 							{navigation.map((item, idx) => (
 								<Link
 									href={item.href}
-									className="font-medium hover:text-ablue-200 dark:text-white dark:hover:text-ablue-300"
+									className="font-medium hover:text-ablue-200 dark:text-white dark:hover:text-ablue-200"
 									key={idx}
 								>
 									{item.label}
@@ -125,18 +152,16 @@ export default function FooterComponent() {
 
 					{/* Newsletter */}
 
-					<form onSubmit={formik.handleSubmit} className="flex flex-col gap-y-2 mt-2">
-						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium">
+					<form onSubmit={handleFormSubmit} className="flex flex-col  mt-2">
+						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium mb-2">
 							Join our newsletter
 						</h2>
 						<div className="flex items-start justify-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
-									className={`text-field !text-black ${
-										formik.touched.email && formik.errors.email
-											? '!border !border-red-500'
-											: ''
-									}`}	
+									className={`text-field focus:!border focus:!border-black  ${
+										inputError ? 'invalid' : ''
+									}`}
 									placeholder="Enter your email"
 									value={formik.values.email}
 									name="email"
@@ -150,16 +175,20 @@ export default function FooterComponent() {
 									</p>
 								)}
 							</div>
-							<Button className="blue medium w-[116px]" type="submit">
+							<Button
+								className="blue medium w-[116px]"
+								type="submit"
+								disabled={!formik.isValid || !formik.dirty}
+							>
 								Subscribe
 							</Button>
 						</div>
 						{/* Notification message after submission */}
 						{showNotification && (
 							<div
-								className={`mt-4 text-center px-6 py-2 rounded-md notification ${
-									notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-								}`}
+								className={` text-red-400 ${
+									notification.type === 'success' ? 'success' : 'error'
+								} ${showNotification ? 'show' : ''}`}
 							>
 								{notification.message}
 							</div>

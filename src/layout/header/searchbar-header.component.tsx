@@ -217,7 +217,7 @@ export default function SearchBarHeaderComponent() {
 						</div>
 					</div> */}
 
-					<div>
+					<div className="hidden xl:grid">
 						<form onSubmit={handleSubmit} className="w-full lg:w-[325px]">
 							<div className="field">
 								{/* input contianer */}
@@ -274,24 +274,19 @@ export default function SearchBarHeaderComponent() {
 
 				{/* Mobile burger icon */}
 				<div className="md:hidden">
-					{/* This is a simple burger icon. You can replace this with any SVG or icon library you prefer. */}
-					<button
-						data-collapse-toggle="navbar-sticky"
-						type="button"
-						className={`burger ${mobileNavOpen ? 'active' : ''}`}
-						aria-controls="navbar-sticky"
-						aria-expanded="true"
-						onClick={toggleMobileNav}
-					>
-						<div className="h-line h-line1"></div>
-						<div className="h-line h-line2"></div>
-						<div className="h-line h-line3"></div>
-					</button>
+					{/* the menu icon */}
+					<div onClick={toggleMobileNav}>
+						{mobileNavOpen ? (
+							<i className="fa-solid fa-xmark  dark:text-agrey-600 text-2xl "></i>
+						) : (
+							<i className="fa-solid fa-bars dark:text-agrey-600 text-2xl "></i>
+						)}
+					</div>
 				</div>
 
 				{/* Mobile navigation menu */}
 				{mobileNavOpen && (
-					<div className="fixed top-0 left-0 w-full h-screen dark:bg-abrandc-dark-blackish bg-white md:hidden z-[999] p-4 mt-header space-y-6 overflow-hidden">
+					<div className="fixed top-0 left-0 w-full h-screen dark:bg-abrandc-dark-blackish bg-white md:hidden z-50 p-4 mt-header space-y-6">
 						{/* Search */}
 						<form onSubmit={handleSubmit} className="w-full  lg:w-[800px]">
 							<div className="field">
@@ -322,7 +317,7 @@ export default function SearchBarHeaderComponent() {
 						</form>
 
 						{/* links */}
-						<div className="space-y-2 ">
+						<div className="space-y-4 ">
 							<Link
 								href={ROUTES.transactions}
 								className=" font-medium text-agrey-900 dark:text-white flex items-center gap-x-2 "

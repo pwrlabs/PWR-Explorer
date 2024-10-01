@@ -32,16 +32,16 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 						}`}
 					>
 						{/* block height */}
-						<td className="lg:p-4 p-2">
+						<td className="md:p-4 p-2">
 							<div className="flex gap-x-4">
 								<Image
-									className=" xl:block hidden"
+									className=" md:block hidden"
 									src="/icons/block.svg"
 									width={32}
 									height={32}
 									alt=""
 								/>
-								<div className="lg:space-y-2 lg:block flex  items-center gap-x-2">
+								<div className="md:space-y-2 md:block flex  items-center gap-x-2">
 									{/* block number */}
 									<Link
 										href={`${ROUTES.blocks}/${block.blockHeight}`}
@@ -57,7 +57,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 						</td>
 
 						{/* receiver */}
-						<td className="lg:p-4 p-2">
+						<td className="md:p-4 ">
 							<div className="">
 								<h1 className="">
 									<span className="dark:text-white text-abrandc-dark-grey inline-block md:hidden lg:hidden 2xl:inline-block mr-2">
@@ -72,7 +72,7 @@ export default function LatestBlocksTable({ blocks }: LatestBlocksProps) {
 								</h1>
 
 								<div className="flex gap-x-2 mt-4 xl:mt-0">
-								<Link
+									<Link
 										href={`${ROUTES.blockTxns(block.blockHeight)}`}
 										className="font-medium dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 									>
