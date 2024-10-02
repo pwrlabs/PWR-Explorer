@@ -28,7 +28,7 @@
 	}
 	.border-red-500 {
 		border: 2px solid red;
-	  }
+	}
 	.pagination-btn {
 		// shape
 		@apply p-2;
@@ -67,4 +67,26 @@
 input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
+}
+
+// the new styles
+.pagination-btn {
+	padding: 0.5rem 1rem;
+	margin: 0 0.25rem;
+	min-width: 20px; // Ensure buttons have a minimum width to avoid squashing
+	text-align: center;
+}
+
+.pagination {
+	white-space: nowrap;
+}
+
+.prev-button,
+.next-button {
+	cursor: pointer;
+}
+
+.prev-button[disabled],
+.next-button[disabled] {
+	cursor: not-allowed;
 }

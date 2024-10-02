@@ -145,8 +145,8 @@ export default function FooterComponent() {
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
 									className={`text-field focus:!border focus:!border-black  ${
-										inputError ? 'invalid' : ''
-									}`}
+										inputError ? 'invalid ' : ''
+									} ${!formik.isValid ? '!border-ared-500' : ''}`}
 									placeholder="Enter your email"
 									value={formik.values.email}
 									name="email"
@@ -156,7 +156,7 @@ export default function FooterComponent() {
 							<Button
 								className="blue medium w-[116px]"
 								type="submit"
-								disabled={!formik.isValid || !formik.dirty}
+								// disabled={!formik.isValid || !formik.dirty}
 							>
 								Subscribe
 							</Button>

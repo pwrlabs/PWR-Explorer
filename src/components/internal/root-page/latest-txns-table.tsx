@@ -26,14 +26,14 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 				{transactions.map((txn, idx) => (
 					<tr
 						key={idx}
-						className={`flex flex-col md:table-row p-4 gap-4 ${
+						className={`flex flex-col  md:table-row p-3 gap-2 ${
 							idx % 2 == 0
 								? 'dark:bg-abrandc-dark-grey bg-abrandc-light-grey'
 								: 'bg-transparent'
 						}`}
 					>
 						{/* txn hash */}
-						<td className="md:p-4 p-0">
+						<td className="md:py-[26px] md:pl-2 xl:p-4">
 							<div className="flex gap-x-4 flex-1">
 								<Image
 									className=" md:block hidden"
@@ -42,7 +42,7 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 									height={32}
 									alt=""
 								/>
-								<h1 className="block md:hidden dark:text-white text-abrandc-dark-grey">
+								<h1 className="block md:hidden dark:text-white text-abrandc-dark-grey ">
 									TX#
 								</h1>
 								<div className="flex flex-row md:flex-col  justify-center gap-2">
@@ -61,10 +61,10 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 						</td>
 
 						{/* txn and reward */}
-						<td className="md:p-4 p-0 ">
-							<div className="flex justify-between items-end">
+						<td className="md:p-4 p-0  ">
+							<div className="flex justify-between items-end md:items-center gap-x-2 w-full ">
 								<div>
-									<h1 className="flex gap-x-2">
+									<h1 className="flex ">
 										<div className="dark:text-white text-abrandc-dark-grey">
 											From
 										</div>
@@ -76,7 +76,7 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 										</Link>
 									</h1>
 
-									<h1 className="flex gap-x-2 lg:mt-0 mt-4">
+									<h1 className="flex gap-x-2 mt-2  xl:mt-0 ">
 										<span className="dark:text-white text-abrandc-dark-grey">
 											To
 										</span>
@@ -94,10 +94,10 @@ export default function LatestTxnsTable({ transactions }: LatestTransactionsProp
 										)}
 									</h1>
 								</div>
-								<div>
+								<div className="">
 									{/* time ago on smaller screens */}
-									<h1 className="xl:p-4 p-0 xl:hidden block">
-										<h1 className="dark:bg-agrey-800 bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[104px]">
+									<h1 className="xl:p-4 p-0  xl:hidden block">
+										<h1 className="dark:bg-agrey-800 text-nowrap bg-ghostly_grey-50 rounded-lg dark:text-white text-abrandc-dark-grey text-sm py-1 px-2 text-center w-[104px] ">
 											{BnToDec(txn.value, 9, 9)} PWR
 										</h1>
 									</h1>

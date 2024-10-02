@@ -160,6 +160,12 @@ export default function Home() {
 											</div>
 										</button>
 									</div>
+									{/* Error Message */}
+									{formik.errors.search && formik.touched.search && (
+										<div className="text-red-500 mt-2 text-sm">
+											{formik.errors.search}
+										</div>
+									)}
 								</div>
 							</form>
 						</div>

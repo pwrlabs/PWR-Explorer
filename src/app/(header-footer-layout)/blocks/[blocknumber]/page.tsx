@@ -84,15 +84,15 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center w-fit bg-abrandc-light-lightGreen dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2 ">
+								<div className="flex items-center w-fit bg-abrandc-light-lightGreen dark:bg-gray-800 text-abrandc-light-green font-medium text-bold border border-abrandc-light-green rounded-lg px-2 ">
 									<svg
-										width="22"
-										height="22"
+										xmlns="http://www.w3.org/2000/svg"
+										width="18"
+										height="18"
 										viewBox="0 0 18 18"
 										fill="none"
-										xmlns="http://www.w3.org/2000/svg"
 									>
-										<circle cx="9" cy="9" r="6.75" fill="#00B85B" />
+										<circle cx="9" cy="9" r="6.75" fill="#009545" />
 										<path
 											d="M6 9.34517L7.95126 11.2206C7.99202 11.2598 8.05807 11.2598 8.09884 11.2206L12.75 6.75"
 											stroke="white"
