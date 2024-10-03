@@ -44,7 +44,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 	if (block_error || (!block_loading && !block_data)) return <ErrorComponent />;
 
 	return (
-		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
+		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey pb-6">
 			{/* Title */}
 			<div className="flex items-center gap-x-2">
 				<h1 className=" py-1 text-[36px] font-bold leading-[44px]">Blocks Details</h1>
@@ -245,7 +245,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 
 				{/* Disclaimer */}
 				<div className="flex  gap-x-2 ">
-					<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 " />
+					<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 align-middle mt-2 " />
 					<p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
 						Blocks are batches of transactions linked via cryptographic hashes. Any
 						tampering of a block would invalidate all following blocks as all subsequent
