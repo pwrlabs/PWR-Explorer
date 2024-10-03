@@ -159,8 +159,8 @@ export default function FooterComponent() {
 						<div className="flex items-start justify-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
-									className={`text-field focus:!border focus:!border-black  ${
-										inputError ? 'invalid' : ''
+									className={`text-field  focus:!border-black  ${
+										formik.errors.email ? '!border !border-red-500' : ''
 									}`}
 									placeholder="Enter your email"
 									value={formik.values.email}
