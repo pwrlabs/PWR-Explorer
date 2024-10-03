@@ -7,7 +7,7 @@ export default function HeaderFooterLayout({ children }: { children: React.React
 			{/* *~~*~~*~~ LAYOUT ~~*~~*~~* */}
 			<SearchBarHeaderComponent />
 
-			<div className="dark:bg-abrandc-dark-blackish bg-white min-h-screen-2 py-header">
+			<div className="dark:bg-abrandc-dark-blackish bg-white min-h-screen-2 pt-8">
 				{children}
 			</div>
 

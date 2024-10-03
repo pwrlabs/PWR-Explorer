@@ -178,7 +178,7 @@ export default function FooterComponent() {
 							<Button
 								className="blue medium w-[116px]"
 								type="submit"
-								disabled={!formik.isValid || !formik.dirty}
+								// disabled={!formik.isValid || !formik.dirty}
 							>
 								Subscribe
 							</Button>

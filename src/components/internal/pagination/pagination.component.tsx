@@ -25,12 +25,14 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 	let firstPage = 1;
 	let endPage = totalPages;
 
+	// Adjust pagination when there are more pages than buttons to show
 	if (totalPages > buttonsToShow) {
 		const half = Math.floor(buttonsToShow / 2);
 		if (currentPage <= half) {
 			endPage = buttonsToShow;
 		} else if (currentPage + half >= totalPages) {
-			firstPage = totalPages - buttonsToShow + 1;
+			firstPage = totalPages - buttonsToShow + 1 > 1 ? totalPages - buttonsToShow + 1 : 1;
+			endPage = totalPages;
 		} else {
 			firstPage = currentPage - half;
 			endPage = currentPage + half;
@@ -39,27 +41,22 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 
 	// *~~*~~*~~ handle clicks ~~*~~*~~* //
 	function loadPrevPage() {
-		if (metadata.previousPage) {
-			console.log(
-				'PREVIOUS PAGE BUTTON CLICKED: \nthis is the next page: ',
-				metadata.nextPage,
-				'\n this is the previous page: ',
-				metadata.previousPage,
-				'\n this is the current page: ',
-				metadata.currentPage
-			);
-
+		if (metadata.previousPage !== -1) {
 			onPageChange(metadata.previousPage);
 		}
 	}
+
 	function loadNextPage() {
-		if (metadata.nextPage) {
+		if (metadata.nextPage !== -1) {
 			onPageChange(metadata.nextPage);
 		}
 	}
+
 	function handlePageClick(pageNumber: number) {
-		onPageChange(pageNumber);
-		console.log('HANDLE PAGE CLICKS IS WORKING');
+		// Validate that the clicked page is within the valid range
+		if (pageNumber >= 1 && pageNumber <= totalPages) {
+			onPageChange(pageNumber);
+		}
 	}
 
 	const [inputValue, setInputValue] = useState<number>(metadata.currentPage);
@@ -69,35 +66,29 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 
 		// Check if the input is valid (greater than 0 and less than or equal to total pages)
 		if (targetPage > 0 && targetPage <= metadata.totalPages) {
-			// Reset the red border and navigate to the selected page
 			e.target.style.borderColor = ''; // Reset the border color
 			onPageChange(targetPage);
 		} else {
-			// Set a red border around the input
-			e.target.style.borderColor = 'red';
+			e.target.style.borderColor = 'red'; // Set a red border around the input
 		}
 	}
 
 	// *~~*~~*~~ render buttons ~~*~~*~~* //
-
-	// create buttons
 	const pageButtons = [];
 	for (let i = firstPage; i <= endPage; i++) {
-		console.log('This is the total NUMBER OF ITEMS', metadata.totalItems);
 		pageButtons.push(
 			<button
 				key={i}
 				onClick={() => handlePageClick(i)}
-				className={`pagination-btn ${metadata.currentPage === i && 'active'}`}
+				className={`pagination-btn !w-fit ${metadata.currentPage === i ? 'active ' : ''}`}
 			>
 				{i}
 			</button>
 		);
 	}
 
-	//
+	// Add ellipsis and first page button if needed
 	if (firstPage > 1) {
-		// if first page is not 1, add ellipsis and first page button
 		if (firstPage > 2) {
 			pageButtons.unshift(
 				<span key="ellipsis-start" className="text-agrey-500 dark:text-agrey-600">
@@ -113,6 +104,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 		);
 	}
 
+	// Add ellipsis and last page button if needed
 	if (endPage < totalPages) {
 		if (endPage < totalPages - 1) {
 			pageButtons.push(
@@ -122,14 +114,14 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 			);
 		}
 		pageButtons.push(
-			<button onClick={() => handlePageClick(totalPages)} className="pagination-btn !w-auto">
+			<button onClick={() => handlePageClick(totalPages)} className="pagination-btn">
 				{totalPages}
 			</button>
 		);
 	}
 
 	return (
-		<div className="pagination">
+		<div className="pagination flex justify-between items-center ">
 			{/* total results */}
 			<div className="hidden md:block">
 				<h1 className="text-agrey-900 dark:text-white text-sm font-medium">
@@ -147,11 +139,15 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 					<i className="far fa-angle-left fa-lg"></i>
 				</button>
 
-				<ul className="flex gap-x-1">
-					{pageButtons.map((btn, idx) => (
-						<li key={idx}>{btn}</li>
-					))}
-				</ul>
+				<div className="w-[220px] sm:w-full sm:overflow-visible overflow-hidden">
+					<ul className="flex gap-x-1 sm:overflow-visible overflow-x-auto hide-scrollbar">
+						{pageButtons.map((btn, idx) => (
+							<li key={idx} className="shrink-0">
+								{btn}
+							</li>
+						))}
+					</ul>
+				</div>
 
 				<button
 					onClick={loadNextPage}

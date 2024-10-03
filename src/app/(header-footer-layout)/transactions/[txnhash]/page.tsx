@@ -131,7 +131,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</div>
 								{txnData.success ? (
 									// Success Status
-									<div className="flex items-center w-fit bg-abrandc-light-lightGreen dark:bg-gray-800 text-green-500 text-bold border border-green-500 rounded-lg px-2">
+									<div className="flex items-center w-fit bg-abrandc-light-lightGreen dark:bg-gray-800 text-abrandc-light-green font-medium text-bold border border-abrandc-light-green rounded-lg px-2">
 										<svg
 											width="22"
 											height="22"
@@ -264,10 +264,10 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center gap-x-2">
+								<div className="flex items-center gap-x-2 ">
 									<Link
 										href={`${ROUTES.address}/${txnData.from}`}
-										className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm"
+										className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium text-sm truncate overflow-hidden whitespace-nowrap"
 									>
 										{txnData.from}
 									</Link>
@@ -309,7 +309,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 												trigger="click"
 											>
 												<button onClick={() => copyToClipboard(txnData.to)}>
-													<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+													<i className="far fa-clone  text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 												</button>
 											</Tooltip>
 										</>
@@ -383,24 +383,31 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 									<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 								</Tooltip> */}
 								</div>
-								<div className="flex items-center justify-between gap-x-2 flex-grow min-w-0">
+								<div className=" flex-grow min-w-0  border border-agrey-300 rounded-[12px] p-3">
+									<div className="w-full flex justify-between mb-2">
+										<h1></h1>
+										<Tooltip
+											text="Copied to clipboard!"
+											position="up"
+											trigger="click"
+											className="text-right"
+										>
+											<button
+												onClick={() =>
+													copyToClipboard(txnData.data || '0x')
+												}
+											>
+												<i className="far fa-clone   text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+											</button>
+										</Tooltip>
+									</div>
+
 									<h1 className="leading-[24px] break-all text-sm">
 										{txnData.data || '0x'}
 									</h1>
-									<Tooltip
-										text="Copied to clipboard!"
-										position="up"
-										trigger="click"
-									>
-										<button
-											onClick={() => copyToClipboard(txnData.data || '0x')}
-										>
-											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
-										</button>
-									</Tooltip>
 								</div>
 							</div>
-
+							{/* flex  items-center justify-between gap-x-2 */}
 							{/* Extra Data */}
 
 							{txnData.extraData ? (
@@ -456,7 +463,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 			<br />
 
 			{/* Disclaimer */}
-			<div className="flex items-center gap-x-2 ">
+			<div className="flex  gap-x-2 ">
 				<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 " />
 				<p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
 					A transaction is a cryptographically signed instruction that changes the

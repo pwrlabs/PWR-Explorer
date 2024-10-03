@@ -213,7 +213,7 @@ export default function HeaderComponent() {
 									}`}
 								>
 									{/* search icon */}
-									<i className="fa-solid fa-magnifying-glass dark:text-white"></i>
+									<i className="fa-solid fa-magnifying-glass text-agrey-500"></i>
 									{/* Filter */}
 									{/* <div className="">
 									<button className="flex items-center gap-x-2 dark:bg-agrey-900 bg-abrandc-light-grey rounded-[8px] px-2 py-1 dark:text-white text-xl font-medium">
