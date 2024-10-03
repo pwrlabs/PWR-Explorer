@@ -12,7 +12,7 @@ type TransactionTooltipDetailsProps = {
 
 const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProps) => {
 	return (
-		<div className="flex flex-col  p-3 dark:bg-abrandc-dark-blackish bg-white text-agrey-900 dark:text-white rounded-2xl   w-60 z-index-3">
+		<div className="flex flex-col  p-3 dark:bg-abrandc-dark-blackish bg-white text-agrey-900 dark:text-white rounded-2xl   w-64 z-index-3">
 			<div className="text-left p-1">
 				<h1>Additional Info</h1>
 			</div>
@@ -28,7 +28,7 @@ const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProp
 					/>
 
 					<p className="text-abrandc-dark-green">success</p>
-					<h6 className="text-sm font-normal  w-full text-agrey-500">
+					<h6 className="text-sm font-normal  w-full text-agrey-500 text-nowrap">
 						(1 block confirmation)
 					</h6>
 				</div>

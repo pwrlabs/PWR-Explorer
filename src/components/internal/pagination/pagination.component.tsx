@@ -139,7 +139,7 @@ export default function Pagination({ metadata, onPageChange }: PaginationProps) 
 					<i className="far fa-angle-left fa-lg"></i>
 				</button>
 
-				<div className="w-[220px] sm:w-full sm:overflow-visible overflow-hidden">
+				<div className="w-[238px] sm:w-full sm:overflow-visible overflow-hidden hide-scrollbar">
 					<ul className="flex gap-x-1 sm:overflow-visible overflow-x-auto hide-scrollbar">
 						{pageButtons.map((btn, idx) => (
 							<li key={idx} className="shrink-0">

@@ -52,7 +52,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 	if (txnError || (!txnLoading && !txnData)) return <ErrorComponent />;
 
 	return (
-		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey">
+		<div className="container-2 mx-auto dark:text-white text-abrandc-dark-grey pb-6">
 			{/* Title */}
 			<div className="flex xl:flex-row flex-col justify-between xl:items-center">
 				<div className="flex flex-1 items-center xl:gap-x-2 gap-x-8 ">
@@ -464,7 +464,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 
 			{/* Disclaimer */}
 			<div className="flex  gap-x-2 ">
-				<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 " />
+				<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 mt-2 md:mt-1" />
 				<p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
 					A transaction is a cryptographically signed instruction that changes the
 					blockchain state. Block explorers trach the details of all transactions in
