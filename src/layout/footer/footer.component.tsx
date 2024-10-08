@@ -63,8 +63,23 @@ export default function FooterComponent() {
 		validationSchema: yup.object({
 			email: yup.string().email('Invalid email').required('Input is empty, fill your email'),
 		}),
-		onSubmit: (values) => {
-			// Intentionally left empty for custom handling outside Formik
+		onSubmit: (values, { resetForm }) => {
+			// Simulate API call
+			if (values.email) {
+				// Here you would normally handle the form submission to an API
+				setNotification({
+					message: 'You have successfully subscribed to the newsletter!',
+					type: 'success',
+				});
+				setShowNotification(true);
+				resetForm(); // Reset the form after submission
+			} else {
+				setNotification({
+					message: 'Subscription failed. Please try again.',
+					type: 'error',
+				});
+				setShowNotification(true);
+			}
 		},
 	});
 
@@ -141,17 +156,24 @@ export default function FooterComponent() {
 						<h2 className="text-sm dark:text-white text-abrandc-dark-black font-medium mb-2">
 							Join our newsletter
 						</h2>
-						<div className="flex items-center gap-x-2">
+						<div className="flex items-start justify-center gap-x-2">
 							<div className="field lg:w-[235px] md:w-[185px]">
 								<input
-									className={`text-field focus:!border focus:!border-black  ${
-										inputError ? 'invalid ' : ''
-									} ${!formik.isValid ? '!border-ared-500' : ''}`}
+									className={`text-field  focus:!border-black  ${
+										formik.errors.email ? '!border !border-red-500' : ''
+									}`}
 									placeholder="Enter your email"
 									value={formik.values.email}
 									name="email"
 									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
 								/>
+								{/* Display error message */}
+								{formik.touched.email && formik.errors.email && (
+									<p className="text-red-500 text-xs mt-1">
+										{formik.errors.email}
+									</p>
+								)}
 							</div>
 							<Button
 								className="blue medium w-[116px]"
@@ -161,6 +183,7 @@ export default function FooterComponent() {
 								Subscribe
 							</Button>
 						</div>
+						{/* Notification message after submission */}
 						{showNotification && (
 							<div
 								className={` text-red-400 ${
