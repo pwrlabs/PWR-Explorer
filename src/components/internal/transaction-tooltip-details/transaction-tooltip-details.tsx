@@ -19,15 +19,23 @@ const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProp
 			<div className="border-b border-agrey-200 p-1 text-left">
 				<p className="text-agrey-600">Block</p>
 				<div className="flex items-center gap-1">
-					<Image
-						src="/icons/verification.png"
-						width={25}
-						height={25}
-						className="inline-block"
-						alt=""
-					/>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 25 24"
+						fill="none"
+						className="inline-block w-6 h-6"
+					>
+						<circle cx="12.2969" cy="12" r="9" fill="#009545" />
+						<path
+							d="M8.29688 12.4602L10.8985 14.9608C10.9529 15.013 11.041 15.0131 11.0953 14.9608L17.2969 9"
+							stroke="white"
+							stroke-width="1.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
 
-					<p className="text-abrandc-dark-green">success</p>
+					<p className="text-abrandc-light-green">success</p>
 					<h6 className="text-sm font-normal  w-full text-agrey-500 text-nowrap">
 						(1 block confirmation)
 					</h6>
