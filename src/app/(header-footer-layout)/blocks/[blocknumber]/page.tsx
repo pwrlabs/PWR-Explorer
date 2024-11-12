@@ -75,16 +75,16 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								</div>
 								<h2 className="text-sm">{blockNum}</h2>
 							</div>
-							<div className="lg:flex space-y-2">
+													<div className="lg:flex space-y-2">
 								<div className="flex items-center gap-x-2 w-[300px]">
 									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm ">
 										Block Hash
 									</h1>
 									{/* <Tooltip text="text" large position="right">
-								<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
-							</Tooltip> */}
+										<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
+									</Tooltip> */}
 								</div>
-								<h2 className="text-sm">{block_data.blockHash}</h2>
+								<h2 className="text-sm">0x{block_data.blockHash}</h2>
 							</div>
 							<div className="lg:flex space-y-2">
 								<div className="flex items-center gap-x-2 w-[300px]">
