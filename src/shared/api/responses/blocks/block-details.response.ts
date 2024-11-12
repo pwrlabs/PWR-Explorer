@@ -6,6 +6,7 @@ export type BlockDetailsSuccessResponse = {
 	blockReward: string;
 	blockSize: number;
 	blockSubmitter: string;
+	blockHash: string;
 };
 
 type BlockDetailsFailureResponse = {

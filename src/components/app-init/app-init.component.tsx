@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import ThemeSvcContext from 'src/shared/services/theme/theme.context';
 import ThemeService from 'src/shared/services/theme/theme.service';
 
+
 function LoadingComponent() {
 	return (
 		<div className="h-full w-full grid place-items-center">

@@ -45,11 +45,6 @@ const headers = [
 		name: 'Reward', // Direction
 		thClass: 'xl:px-8 px-2',
 	},
-	{
-		id: 5,
-		name: 'Shared Rewards',
-		thClass: 'xl:px-8 px-2',
-	},
 ];
 
 export default function Blocks() {
@@ -257,21 +252,6 @@ export default function Blocks() {
 											<td className="xl:px-8 px-2 py-8">
 												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
 													{BnToDec(block.blockReward, 9, 9)} PWR
-												</div>
-											</td>
-
-											{/* Shared Rewards */}
-											<td className="xl:px-8 px-2 py-8">
-												<div className="dark:text-white text-abrandc-dark-grey font-normal text-center">
-													<span>
-														{parseFloat(
-															BnToDec(block.blockReward, 9, 9)
-														) / 2}{' '}
-														PWR
-													</span>{' '}
-													<span className="dark:text-agrey-600 text-agrey-500">
-														(50%)
-													</span>
 												</div>
 											</td>
 										</tr>
