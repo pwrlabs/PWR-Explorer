@@ -235,7 +235,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</Tooltip> */}
 								</div>
 								<div className="flex items-center gap-x-2 ">
-									<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
+									<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg w-5" />
 
 									<h2 className="leading-[24px] break-all text-sm">
 										{timeAgo(txnData.timeStamp)} (
@@ -277,7 +277,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										trigger="click"
 									>
 										<button onClick={() => copyToClipboard(txnData.from)}>
-											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+											<i className="far fa-clone dark:text-agrey-600 text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
@@ -309,7 +309,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 												trigger="click"
 											>
 												<button onClick={() => copyToClipboard(txnData.to)}>
-													<i className="far fa-clone  text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+													<i className="far fa-clone dark:text-agrey-600 text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 												</button>
 											</Tooltip>
 										</>

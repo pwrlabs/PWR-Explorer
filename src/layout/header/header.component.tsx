@@ -183,7 +183,7 @@ export default function HeaderComponent() {
 						</button>
 						<div
 							id="dropdown"
-							className="nav-dropdown-menu absolute top-14 left-0 z-10  bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-abrandc-dark-grey"
+							className="nav-dropdown-menu  absolute top-14 left-0 z-10  bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:!bg-abrandc-dark-blackish"
 						>
 							<ul
 								className="py-2 text-sm text-gray-700 dark:text-gray-200 "

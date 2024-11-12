@@ -75,7 +75,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 								</div>
 								<h2 className="text-sm">{blockNum}</h2>
 							</div>
-													<div className="lg:flex space-y-2">
+							<div className="lg:flex space-y-2">
 								<div className="flex items-center gap-x-2 w-[300px]">
 									<h1 className="text-agrey-500 dark:text-agrey-600 text-sm ">
 										Block Hash
@@ -126,7 +126,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 							</Tooltip> */}
 								</div>
 								<div className="flex items-center gap-x-2 ">
-									<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg" />
+									<i className="far fa-clock text-agrey-500 dark:text-agrey-600 fa-lg  w-5" />
 
 									<h2 className="leading-[24px] break-all text-sm">
 										{timeAgo(block_data.timeStamp)} (
@@ -215,7 +215,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 												copyToClipboard(block_data.blockSubmitter)
 											}
 										>
-											<i className="far fa-clone dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+											<i className="far fa-clone dark:text-agrey-500 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>
@@ -256,7 +256,7 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 
 				{/* Disclaimer */}
 				<div className="flex  gap-x-2 ">
-					<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 align-middle mt-2 " />
+					<i className="far fa-info-circle text-agrey-500 dark:text-agrey-600 align-middle mt-1 " />
 					<p className="text-sm text-agrey-500 dark:text-agrey-600 leading-[24px] break-all">
 						Blocks are batches of transactions linked via cryptographic hashes. Any
 						tampering of a block would invalidate all following blocks as all subsequent
