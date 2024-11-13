@@ -84,7 +84,25 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 										<i className="fa-sm far fa-info-circle text-agrey-500 dark:text-agrey-600" />
 									</Tooltip> */}
 								</div>
-								<h2 className="text-sm">0x{block_data.blockHash}</h2>
+								{/* the blockHash and the copy */}
+								<div className="flex items-center flex-wrap md:flex-nowrap gap-x-2  ">
+									<h2 className="text-sm break-words w-full">
+										0x{block_data.blockHash}
+									</h2>
+
+									{/* the copy */}
+									<Tooltip
+										text="copied to clipboard"
+										position="right"
+										trigger="click"
+									>
+										<button
+											onClick={() => copyToClipboard(block_data.blockHash)}
+										>
+											<i className="far fa-clone dark:text-agrey-500 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+										</button>
+									</Tooltip>
+								</div>
 							</div>
 							<div className="lg:flex space-y-2">
 								<div className="flex items-center gap-x-2 w-[300px]">
