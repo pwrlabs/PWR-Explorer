@@ -102,7 +102,7 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 										trigger="click"
 									>
 										<button onClick={() => copyToClipboard(txnData.txnHash)}>
-											<i className="far fa-clone text-agrey-500 dark:text-agrey-600" />
+											<i className="far fa-clone dark:text-agrey-600 text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 										</button>
 									</Tooltip>
 								</div>

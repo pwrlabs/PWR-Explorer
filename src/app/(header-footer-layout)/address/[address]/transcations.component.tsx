@@ -270,7 +270,7 @@ export default function TransactionComponent({
 										<td className="xl:pl-8 pl-2 pr-2 py-8">
 											<div className="flex gap-x-2 justify-center">
 												<Link
-													href="/"
+													href={`${ROUTES.address}/${txn.from}`}
 													className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200 font-medium"
 												>
 													{shortenAddress(txn.from, 4)}
@@ -285,7 +285,7 @@ export default function TransactionComponent({
 														className="dark:text-ablue-100 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200"
 														onClick={() => copyToClipboard(txn.from)}
 													>
-														<i className="far fa-clone" />
+														<i className="far fa-clone dark:text-agrey-600 text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
 													</button>
 												</Tooltip>
 											</div>

@@ -99,8 +99,8 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 										<button
 											onClick={() => copyToClipboard(block_data.blockHash)}
 										>
-											<i className="far fa-clone dark:text-agrey-500 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
-										</button>
+											<i className="far fa-clone dark:text-agrey-600 text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+											</button>
 									</Tooltip>
 								</div>
 							</div>
@@ -233,8 +233,8 @@ export default function SingleBlock({ params }: BlockTransactionsProps) {
 												copyToClipboard(block_data.blockSubmitter)
 											}
 										>
-											<i className="far fa-clone dark:text-agrey-500 text-ablue-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
-										</button>
+											<i className="far fa-clone dark:text-agrey-600 text-agrey-500 dark:hover:text-ablue-300 hover:text-ablue-200" />
+											</button>
 									</Tooltip>
 								</div>
 							</div>
