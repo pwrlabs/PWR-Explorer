@@ -384,8 +384,10 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 								</Tooltip> */}
 								</div>
 								<div className=" flex-grow min-w-0  border border-agrey-300 rounded-[12px] p-3">
-									<div className="w-full flex justify-between mb-2">
-										<h1></h1>
+									<div className="w-full flex justify-center gap-4">
+										<h1 className="leading-[24px] break-all text-sm">
+											{txnData.data || '0x'}
+										</h1>
 										<Tooltip
 											text="Copied to clipboard!"
 											position="up"
@@ -401,10 +403,6 @@ export default function TransactionDetails({ params }: TransactionDetailsProps) 
 											</button>
 										</Tooltip>
 									</div>
-
-									<h1 className="leading-[24px] break-all text-sm">
-										{txnData.data || '0x'}
-									</h1>
 								</div>
 							</div>
 							{/* flex  items-center justify-between gap-x-2 */}
