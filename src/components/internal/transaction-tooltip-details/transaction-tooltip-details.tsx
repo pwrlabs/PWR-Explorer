@@ -48,6 +48,7 @@ const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProp
 					{/* <span>(${usdFee})</span> */}
 				</p>
 			</div>
+			{/* Commented */}
 			{/* <div className="text-left p-3">
 				<p className="text-agrey-600">Nonce</p>
 				<p>
