@@ -41,20 +41,20 @@ const TransactionTooltipDetails = ({ fee, nonce }: TransactionTooltipDetailsProp
 					</h6>
 				</div>
 			</div>
-			<div className="border-b border-agrey-200 p-3 text-left">
+			<div className=" p-3 text-left">
 				<p className="text-agrey-600">Transaction Fee:</p>
 				<p>
 					{BnToDec(fee, 9, 9)}
 					{/* <span>(${usdFee})</span> */}
 				</p>
 			</div>
-			<div className="text-left p-3">
+			{/* <div className="text-left p-3">
 				<p className="text-agrey-600">Nonce</p>
 				<p>
 					{nonce}
-					{/* <span className="font-normal text-agrey-600">(in the position 149)</span> */}
+					<span className="font-normal text-agrey-600">(in the position 149)</span>
 				</p>
-			</div>
+			</div> */}
 		</div>
 	);
 };
